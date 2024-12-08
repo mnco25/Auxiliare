@@ -20,10 +20,10 @@
                 <div class="project-header">
                     <h3>{{ $project->title }}</h3>
                     <div class="project-actions">
-                        <button class="edit-btn" onclick="enableEditing({{ $project->id }})">
+                        <button class="edit-btn" onclick="enableEditing('{{ $project->id }}')">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="delete-btn" onclick="deleteProject({{ $project->id }})">
+                        <button class="delete-btn" onclick="deleteProject('{{ $project->id }}')">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -58,8 +58,10 @@
                         </div>
                     </div>
                     <div class="form-actions">
-                        <button type="submit" class="save-btn"><i class="fas fa-save"></i> Save Changes</button>
-                        <button type="button" class="cancel-btn" onclick="cancelEditing({{ $project->id }})">
+                        <button type="submit" class="save-btn">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button type="button" class="cancel-btn" onclick="cancelEditing('{{ $project->id }}')">
                             <i class="fas fa-times"></i> Cancel
                         </button>
                     </div>
@@ -84,29 +86,29 @@
 
 @section('scripts')
 <script>
-function enableEditing(projectId) {
-    document.querySelector(`#content-${projectId}`).style.display = 'none';
-    document.querySelector(`#form-${projectId}`).style.display = 'block';
-}
-
-function cancelEditing(projectId) {
-    document.querySelector(`#form-${projectId}`).style.display = 'none';
-    document.querySelector(`#content-${projectId}`).style.display = 'block';
-}
-
-function deleteProject(projectId) {
-    if (confirm('Are you sure you want to delete this project?')) {
-        fetch(`/projects/${projectId}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            }
-        }).then(response => {
-            if (response.ok) {
-                document.querySelector(`[data-project-id="${projectId}"]`).remove();
-            }
-        });
+    function enableEditing(projectId) {
+        document.querySelector(`#content-${projectId}`).style.display = 'none';
+        document.querySelector(`#form-${projectId}`).style.display = 'block';
     }
-}
+
+    function cancelEditing(projectId) {
+        document.querySelector(`#form-${projectId}`).style.display = 'none';
+        document.querySelector(`#content-${projectId}`).style.display = 'block';
+    }
+
+    function deleteProject(projectId) {
+        if (confirm('Are you sure you want to delete this project?')) {
+            fetch(`/projects/${projectId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            }).then(response => {
+                if (response.ok) {
+                    document.querySelector(`[data-project-id="${projectId}"]`).remove();
+                }
+            });
+        }
+    }
 </script>
 @endsection
