@@ -62,36 +62,47 @@ modalOverlay.addEventListener("click", () => {
     editProfileModal.classList.add("hidden");
 });
 
-// Save profile updates
-saveProfileBtn.addEventListener("click", (event) => {
-    event.preventDefault(); // Prevent form from submitting and refreshing the page
+// Update form submission to use PUT method
+document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Show loading state
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    submitBtn.disabled = true;
 
-    // Get the updated values from the form
-    profileName.textContent = editName.value;
-    profileLocation.textContent = editLocation.value;
-    profileBio.textContent = editBio.value;
-
-    // Update the skills list
-    profileSkills.innerHTML = "";
-    const skills = editSkills.value.split(",").map((skill) => skill.trim());
-    skills.forEach((skill) => {
-        const li = document.createElement("li");
-        li.textContent = skill;
-        profileSkills.appendChild(li);
+    fetch(form.action, {
+        method: 'POST', // Laravel uses POST with method override for PUT
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'X-HTTP-Method-Override': 'PUT' // Method override to simulate PUT request
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update UI
+            updateProfileUI(formData);
+            modalOverlay.classList.add('hidden');
+            editProfileModal.classList.add('hidden');
+            showNotification('Profile updated successfully!', 'success');
+        } else {
+            throw new Error(data.message || 'Failed to update profile');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification(error.message || 'Failed to update profile', 'error');
+    })
+    .finally(() => {
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        submitBtn.disabled = false;
     });
-
-    // Update profile picture if a new one is selected
-    if (editProfilePic.files.length > 0) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            profilePic.src = e.target.result;
-        };
-        reader.readAsDataURL(editProfilePic.files[0]);
-    }
-
-    // Close the modal
-    modalOverlay.classList.add("hidden");
-    editProfileModal.classList.add("hidden");
 });
 
 // Update profile picture if a new one is selected
@@ -113,45 +124,6 @@ editProfilePic.addEventListener('change', function(e) {
         };
         reader.readAsDataURL(this.files[0]);
     }
-});
-
-// Update form submission
-document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const form = this;
-    const formData = new FormData(form);
-    const submitBtn = form.querySelector('button[type="submit"]');
-    
-    // Show loading state
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-    submitBtn.disabled = true;
-
-    fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Update UI
-            updateProfileUI(formData);
-            hideModal();
-            showNotification('Profile updated successfully!', 'success');
-        } else {
-            showNotification('Failed to update profile', 'error');
-        }
-    })
-    .catch(error => {
-        showNotification('An error occurred', 'error');
-    })
-    .finally(() => {
-        submitBtn.innerHTML = 'Save';
-        submitBtn.disabled = false;
-    });
 });
 
 function showNotification(message, type = 'success') {

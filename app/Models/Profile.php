@@ -13,7 +13,7 @@ class Profile extends Model
         'bio',
         'skills',
         'profile_pic',
-        'profile_pic_url'  // Add this line
+        'profile_pic_url'
     ];
 
     protected $casts = [
