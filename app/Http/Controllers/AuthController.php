@@ -130,6 +130,7 @@ class AuthController extends Controller
     {
         Auth::logout();
         Session::flush();
+        Session::regenerate(); // Regenerate session ID to prevent session fixation
         return redirect()->route('login')->with('success_message', 'Successfully logged out.');
     }
 }
