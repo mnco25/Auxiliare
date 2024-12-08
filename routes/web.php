@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EntrepreneurController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProfileController;
 
 // Public routes
 Route::get('/', function () {
@@ -41,6 +41,8 @@ Route::middleware(['auth', 'entrepreneur'])->group(function () {
     Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
     Route::get('/financial', [EntrepreneurController::class, 'financial'])->name('entrepreneur.financial');
+    Route::get('/entrepreneur/profile', [ProfileController::class, 'show'])->name('entrepreneur.profile');
+    Route::post('/entrepreneur/profile/update', [ProfileController::class, 'update'])->name('entrepreneur.profile.update');
 });
 
 // Include route files
