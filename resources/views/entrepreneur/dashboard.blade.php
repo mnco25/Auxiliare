@@ -69,6 +69,25 @@
 
                 <div class="project-content" id="content-{{ $project->id }}">
                     <p class="description">{{ $project->description }}</p>
+
+                    <div class="funding-progress">
+                        @php
+                        $percentage = ($project->current_funding / $project->funding_goal) * 100;
+                        $percentage = min(100, round($percentage));
+                        @endphp
+                        <div class="progress-info">
+                            <span class="progress-label">Funding Progress</span>
+                            <span class="progress-percentage">{{ $percentage }}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: {{ $percentage }}%"></div>
+                        </div>
+                        <div class="funding-stats">
+                            <span>₱{{ number_format($project->current_funding) }} raised</span>
+                            <span>of ₱{{ number_format($project->funding_goal) }} goal</span>
+                        </div>
+                    </div>
+
                     <div class="project-meta">
                         <span><i class="fas fa-coins"></i> ₱{{ number_format($project->funding_goal) }}</span>
                         <span><i class="fas fa-tag"></i> {{ $project->category }}</span>
