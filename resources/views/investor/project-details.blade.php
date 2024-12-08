@@ -1,4 +1,3 @@
-
 @extends('investor.layout')
 
 @section('title', 'Project Details - Auxiliare')
@@ -14,7 +13,7 @@
             <a href="{{ route('investor.projects') }}" class="back-link">
                 <i class="fas fa-arrow-left"></i> Back to Projects
             </a>
-            
+
             <div class="project-detail-card">
                 <div class="project-header">
                     <div class="title-section">
@@ -63,6 +62,77 @@
                         <button class="invest-btn primary">Invest in Project</button>
                         <button class="contact-entrepreneur">Contact Entrepreneur</button>
                     </div>
+
+
+                    <div class="modal fade" id="investmentModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Invest in {{ $project->title }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="investmentForm">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label>Investment Amount (₱)</label>
+                                            <input type="number" name="amount" class="form-control"
+                                                min="{{ $project->minimum_investment }}" step="100" required>
+                                            <small class="text-muted">Minimum investment: ₱{{ number_format($project->minimum_investment) }}</small>
+                                        </div>
+                                        <div class="balance-info">
+                                            Your current balance: ₱<span id="currentBalance">{{ number_format(auth()->user()->balance) }}</span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary" id="confirmInvestment">Confirm Investment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @push('scripts')
+                    <script>
+                        document.getElementById('confirmInvestment').addEventListener('click', async function() {
+                            const form = document.getElementById('investmentForm');
+                            const amount = form.querySelector('[name="amount"]').value;
+
+                            try {
+                                const response = await fetch(`/projects/${@json($project->id)}/invest`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                    },
+                                    body: JSON.stringify({
+                                        amount
+                                    })
+                                });
+
+                                const data = await response.json();
+
+                                if (data.success) {
+                                    // Update UI elements
+                                    document.getElementById('currentBalance').textContent = number_format(data.new_balance);
+                                    document.querySelector('.funding-stats .current-funding').textContent =
+                                        '₱' + number_format(data.project_funding);
+
+                                    // Close modal and show success message
+                                    $('#investmentModal').modal('hide');
+                                    toastr.success('Investment successful!');
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            } catch (error) {
+                                toastr.error('An error occurred while processing your investment');
+                            }
+                        });
+                    </script>
+                    @endpush
+
+
                 </div>
             </div>
         </div>

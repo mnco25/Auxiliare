@@ -7,6 +7,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\Investor\InvestorProjectController;
+use App\Http\Controllers\InvestmentController;
 
 // Public routes
 Route::get('/', function () {
@@ -71,4 +72,8 @@ Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
     });
     Route::get('/investor/financial', [InvestorController::class, 'financial'])->name('investor.financial');
     Route::post('/deposit', [InvestorController::class, 'deposit'])->name('investor.deposit');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/projects/{project}/invest', [InvestmentController::class, 'invest'])->name('projects.invest');
 });
