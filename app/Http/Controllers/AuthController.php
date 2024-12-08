@@ -41,7 +41,7 @@ class AuthController extends Controller
                     case 'Entrepreneur':
                         return redirect()->route('entrepreneur.home');
                     case 'Investor':
-                        return redirect()->route('investor.dashboard');
+                        return redirect()->route('investor.home');
                     default:
                         return redirect()->route('home');
                 }

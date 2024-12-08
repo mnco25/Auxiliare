@@ -1,0 +1,85 @@
+.greeting-section {
+    padding: 2rem 0;
+    margin-bottom: 3rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.greeting-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.greeting-text {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: #1f2b77;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.greeting-text i {
+    color: #3d5af1;
+    font-size: 2.2rem;
+}
+
+.greeting-time {
+    font-size: 1.2rem;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.greeting-time i {
+    color: #3d5af1;
+}
+
+/* Gradient line below greeting */
+.greeting-section::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        rgba(61, 90, 241, 0),
+        rgba(31, 43, 119, 0.3),
+        rgba(61, 90, 241, 0)
+    );
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.greeting-section {
+    animation: fadeIn 0.4s ease;
+}
+
+@media (max-width: 768px) {
+    .greeting-text {
+        font-size: 2rem;
+    }
+
+    .greeting-time {
+        font-size: 1rem;
+    }
+}

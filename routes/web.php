@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EntrepreneurController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\InvestorController;
 
 // Public routes
 Route::get('/', function () {
@@ -52,4 +53,14 @@ require __DIR__ . '/entrepreneur.php';
 Route::middleware(['auth'])->group(function () {
     // ...existing routes...
     Route::post('/entrepreneur/profile/update', [ProfileController::class, 'update'])->name('entrepreneur.profile.update');
+});
+
+// Investor routes
+Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
+    Route::get('/home', [InvestorController::class, 'home'])->name('investor.home');
+    Route::get('/projects', [InvestorController::class, 'projects'])->name('investor.projects'); // Add this line
+    Route::get('/portfolio', [InvestorController::class, 'portfolio'])->name('investor.portfolio');
+    Route::get('/financial', [InvestorController::class, 'financial'])->name('investor.financial');
+    Route::get('/profile', [InvestorController::class, 'profile'])->name('investor.profile');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('investor.logout');
 });

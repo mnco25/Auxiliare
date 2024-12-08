@@ -29,7 +29,7 @@ class RouteServiceProvider extends ServiceProvider
                 case 'Entrepreneur':
                     return route('entrepreneur.home');
                 case 'Investor':
-                    return route('investor.dashboard');
+                    return route('investor.home');
                 default:
                     return self::HOME;
             }
