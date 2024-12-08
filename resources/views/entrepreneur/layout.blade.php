@@ -22,6 +22,7 @@
                 <li><a href="{{ route('entrepreneur.home') }}" class="{{ request()->routeIs('entrepreneur.home') ? 'active' : '' }}">Home</a></li>
                 <li><a href="{{ route('entrepreneur.dashboard') }}" class="{{ request()->routeIs('entrepreneur.dashboard') ? 'active' : '' }}">Dashboard</a></li>
                 <li><a href="{{ route('entrepreneur.create_project') }}" class="{{ request()->routeIs('entrepreneur.create_project') ? 'active' : '' }}">Create</a></li>
+                <li><a href="{{ route('entrepreneur.financial') }}" class="{{ request()->routeIs('entrepreneur.financial') ? 'active' : '' }}">Financial</a></li>
                 <li><a href="#messaging">Chat</a></li>
                 <li><a href="#profile">Profile</a></li>
                 <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>

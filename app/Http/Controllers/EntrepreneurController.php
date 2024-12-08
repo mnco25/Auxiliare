@@ -78,4 +78,44 @@ class EntrepreneurController extends Controller
             'categoryData'
         ));
     }
+
+    public function financial()
+    {
+        $projects = auth()->user()->projects;
+        
+        // Calculate basic financial metrics
+        $totalRevenue = $projects->sum('revenue');
+        $totalExpenses = $projects->sum('expenses');
+        
+        // Calculate monthly growth (example calculation)
+        $lastMonth = $projects->sum('last_month_revenue');
+        $currentMonth = $projects->sum('current_month_revenue');
+        $monthlyGrowth = $lastMonth > 0 ? (($currentMonth - $lastMonth) / $lastMonth) * 100 : 0;
+        
+        // Calculate profit margin
+        $profitMargin = $totalRevenue > 0 ? (($totalRevenue - $totalExpenses) / $totalRevenue) * 100 : 0;
+        
+        // Prepare monthly data for charts
+        $monthlyRevenue = $projects->pluck('monthly_revenue')->flatten()->take(6);
+        $monthlyExpenses = $projects->pluck('monthly_expenses')->flatten()->take(6);
+        $cashFlow = collect($monthlyRevenue)->map(function($revenue, $key) use ($monthlyExpenses) {
+            return $revenue - ($monthlyExpenses[$key] ?? 0);
+        });
+        
+        // Get recent transactions
+        $transactions = $projects->flatMap(function($project) {
+            return $project->transactions;
+        })->sortByDesc('created_at')->take(10);
+    
+        return view('entrepreneur.financial', compact(
+            'totalRevenue',
+            'totalExpenses',
+            'monthlyGrowth',
+            'profitMargin',
+            'monthlyRevenue',
+            'monthlyExpenses',
+            'cashFlow',
+            'transactions'
+        ));
+    }
 }
