@@ -59,7 +59,7 @@ class InvestorController extends Controller
         // Create a new transaction
         Transaction::create([
             'investment_id' => null, // or appropriate investment_id
-            'user_id' => $user->id,
+            'user_id' => $user->user_id, // Ensure this is set correctly
             'amount' => $amount,
             'transaction_type' => 'Deposit',
             'transaction_status' => 'Success',
