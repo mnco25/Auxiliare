@@ -117,15 +117,29 @@
 
     function deleteProject(projectId) {
         if (confirm('Are you sure you want to delete this project?')) {
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            
             fetch(`/projects/${projectId}`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const projectElement = document.querySelector(`[data-project-id="${projectId}"]`);
+                    projectElement.remove();
+                } else {
+                    alert(data.error || 'Failed to delete project');
                 }
-            }).then(response => {
-                if (response.ok) {
-                    document.querySelector(`[data-project-id="${projectId}"]`).remove();
-                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to delete project. Please try again.');
             });
         }
     }

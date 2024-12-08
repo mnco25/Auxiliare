@@ -7,6 +7,7 @@
     <title>@yield('title', 'Entrepreneur Home - Auxiliare')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/entrepreneur/home.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('additional_css')
 </head>
 
