@@ -9,7 +9,9 @@ class EntrepreneurController extends Controller
 {
     public function home()
     {
-        return view('entrepreneur.home');
+        $user = Auth::user();
+        $firstname = $user->first_name ?? 'Entrepreneur'; // Changed from firstname to first_name to match database column
+        return view('entrepreneur.home', compact('firstname'));
     }
 
     public function logout(Request $request)

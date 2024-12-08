@@ -26,7 +26,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password', 
-        'first_name',
+        'first_name',  // Make sure this field is included
         'last_name',
         'user_type',
         'account_status',
