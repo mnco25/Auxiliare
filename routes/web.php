@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EntrepreneurController;
+use App\Http\Controllers\ProjectController;
 
 // Public routes
 Route::get('/', function () {
@@ -27,7 +28,13 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.su
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(base_path('routes/admin.php'));
 
 // Entrepreneur routes
-Route::middleware(['auth', 'entrepreneur'])->prefix('entrepreneur')->group(base_path('routes/entrepreneur.php'));
+Route::middleware(['auth', 'entrepreneur'])->prefix('entrepreneur')->group(function () {
+    Route::get('/home', [EntrepreneurController::class, 'home'])->name('entrepreneur.home');
+    // ...other entrepreneur routes...
+    require base_path('routes/entrepreneur.php');
+});
+
+Route::resource('projects', ProjectController::class)->except(['index']);
 
 // Include route files
 require __DIR__ . '/admin.php';

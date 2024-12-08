@@ -13,7 +13,7 @@
             <h2><i class="fas fa-rocket"></i> Create New Project</h2>
             <hr>
         </header>
-        <form action="{{ route('entrepreneur.store_project') }}" method="POST" class="project-form">
+        <form action="{{ route('projects.store') }}" method="POST" class="project-form">
             @csrf
             <div class="form-section">
                 <h3 class="section-title"><i class="fas fa-info-circle"></i> Project Information</h3>
