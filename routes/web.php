@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AuthAdmin;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\EntrepreneurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,5 +53,10 @@ require __DIR__ . '/admin.php'; // Ensure this line is present and correct
 Route::middleware(['auth', 'entrepreneur'])->prefix('entrepreneur')->group(base_path('routes/entrepreneur.php'));
 
 require __DIR__ . '/entrepreneur.php'; // Ensure this line is added
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/create-project', [EntrepreneurController::class, 'createProject'])->name('entrepreneur.create_project');
+    Route::post('/store-project', [EntrepreneurController::class, 'storeProject'])->name('entrepreneur.store_project');
+});
 
 Route::get('/home', [HomeController::class, 'index'])->name('home.index');
