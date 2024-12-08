@@ -11,8 +11,10 @@
     <div class="profile-card">
         <div class="profile-header">
             <div class="profile-pic-container">
-                @if($profile->profile_pic)
-                <img src="{{ Storage::url('public/profile_pictures/' . $profile->profile_pic) }}" alt="Profile Picture" class="profile-pic" id="profile-pic">
+                @if($profile && $profile->profile_pic)
+                <img src="{{ asset('storage/profile_pictures/' . $profile->profile_pic) }}" alt="Profile Picture" class="profile-pic" id="profile-pic">
+                @elseif($profile && $profile->profile_pic_url)
+                <img src="{{ $profile->profile_pic_url }}" alt="Profile Picture" class="profile-pic" id="profile-pic">
                 @else
                 <div class="profile-pic profile-icon" id="profile-pic">
                     <i class="fas fa-user-circle"></i>
@@ -109,8 +111,17 @@
                 <input type="text" id="edit-skills" name="skills" value="{{ is_array($profile->skills) ? implode(', ', $profile->skills) : '' }}" required>
             </div>
             <div class="form-group">
-                <label for="edit-profile-pic">Profile Picture</label>
-                <input type="file" id="edit-profile-pic" name="profile_pic" accept="image/*">
+                <label>Profile Picture</label>
+                <div class="profile-pic-options">
+                    <div class="upload-option">
+                        <label for="edit-profile-pic">Upload Image</label>
+                        <input type="file" id="edit-profile-pic" name="profile_pic" accept="image/*">
+                    </div>
+                    <div class="url-option">
+                        <label for="profile-pic-url">Or Enter Image URL</label>
+                        <input type="url" id="profile-pic-url" name="profile_pic_url" placeholder="https://example.com/image.jpg">
+                    </div>
+                </div>
             </div>
             <button type="submit" id="save-profile-btn" class="save-btn">Save</button>
         </form>

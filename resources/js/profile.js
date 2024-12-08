@@ -19,6 +19,23 @@ const editBio = document.getElementById("edit-bio");
 const editSkills = document.getElementById("edit-skills");
 const editProfilePic = document.getElementById("edit-profile-pic");
 
+// Add URL input handler
+const profilePicUrl = document.getElementById('profile-pic-url');
+
+profilePicUrl.addEventListener('input', function(e) {
+    if (this.value) {
+        // Clear file input if URL is entered
+        editProfilePic.value = '';
+    }
+});
+
+editProfilePic.addEventListener('change', function(e) {
+    if (this.files.length > 0) {
+        // Clear URL input if file is selected
+        profilePicUrl.value = '';
+    }
+});
+
 // Open modal
 editProfileBtn.addEventListener("click", () => {
     modalOverlay.classList.remove("hidden");

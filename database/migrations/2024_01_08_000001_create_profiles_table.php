@@ -16,6 +16,7 @@ class CreateProfilesTable extends Migration
             $table->text('bio')->nullable();
             $table->json('skills')->nullable();
             $table->string('profile_pic')->nullable();
+            $table->string('profile_pic_url')->nullable();
             $table->timestamps();
         });
     }
