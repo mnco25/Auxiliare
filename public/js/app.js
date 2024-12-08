@@ -2134,6 +2134,12 @@ function clearForms() {
   });
 }
 
+// Ensure that the Register button is disabled by default
+document.addEventListener('DOMContentLoaded', function () {
+  var registerButton = document.getElementById('registerButton');
+  registerButton.disabled = true;
+});
+
 /***/ }),
 
 /***/ "./resources/js/script.js":
@@ -2212,7 +2218,7 @@ saveProfileBtn.addEventListener("click", function (event) {
   editProfileModal.classList.add("hidden");
 });
 
-// For login -- clearing the input fields
+// For login -- clearing the input
 document.getElementById("openModal").onclick = function () {
   document.getElementById("registerModal").style.display = "block";
 };

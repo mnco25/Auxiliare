@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -24,14 +25,19 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Retrieve User
-        $user = DB::table('users')->where('email', $request->email)->first();
+        // Retrieve User using the User model
+        $user = User::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
             if ($user->account_status === 'Active') {
-                Session::put('user_id', $user->user_id); // Changed from $user->id
-                Session::put('user_type', $user->user_type);
-                return redirect()->route('home');
+                // Log in the user
+                Auth::login($user);
+
+                if ($user->user_type === 'Admin') {
+                    return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
+                }
+
+                return redirect()->route('home'); // Redirect to home for non-admin users
             } else {
                 return back()->with('error_message', 'Your account is not active. Please contact support.');
             }
@@ -52,7 +58,7 @@ class AuthController extends Controller
                 'password' => 'required|min:6|confirmed',
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
-                'user_type' => 'required|in:Entrepreneur,Investor',
+                'user_type' => 'required|in:Entrepreneur,Investor,Admin',
             ], [
                 'username.unique' => 'This username is already taken.',
                 'email.unique' => 'This email is already registered.',
@@ -110,5 +116,12 @@ class AuthController extends Controller
                 ->with('error_message', 'Registration failed: ' . $e->getMessage())
                 ->withInput();
         }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        Session::flush();
+        return redirect()->route('login')->with('success_message', 'Successfully logged out.');
     }
 }

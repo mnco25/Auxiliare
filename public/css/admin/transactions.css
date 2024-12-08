@@ -1,0 +1,139 @@
+/* Import base admin styles */
+@import "admin.css";
+
+/* transactions specific styles */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stats-category {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Ensure transactions content aligns with content-wrapper */
+.transactions-content {
+    /* ...existing styles... */
+    /* Adjust margins or padding if necessary */
+}
+
+/* Table styles */
+.table-container {
+    margin-top: 1rem;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 1.2rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    color: #333;
+}
+
+/* Status styles */
+.completed {
+    color: #2ecc71;
+    font-weight: 600;
+}
+
+.pending {
+    color: #f1c40f;
+    font-weight: 600;
+}
+
+.failed {
+    color: #e74c3c;
+    font-weight: 600;
+}
+
+/* Header actions */
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    width: 300px;
+}
+
+.date-filter input {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.5rem;
+    outline: none;
+}
+
+/* Adjust content-wrapper to occupy full space beside the sidebar */
+.content-wrapper {
+    /* Remove top margin or padding if previously set for the header */
+    /* ...existing code... */
+
+    /* Ensure it spans the full width minus the sidebar */
+    margin-left: 260px; /* Updated sidebar width */
+    width: calc(100% - 260px);
+
+    /* Additional adjustments if necessary */
+    /* ...existing code... */
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 992px) {
+    .content-wrapper {
+        margin-left: 70px; /* Adjusted for collapsed sidebar */
+        width: calc(100% - 70px);
+    }
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .date-filter {
+        width: 100%;
+    }
+
+    .date-filter input {
+        width: 100%;
+    }
+}

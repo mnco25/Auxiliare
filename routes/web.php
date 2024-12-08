@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\AdminController;
+use App\Http\Middleware\AuthAdmin;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,11 +37,13 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 // Handle registration form submission
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
-Route::get('/debug-database', function() {
-    try {
-        DB::getPdo();
-        return "Database is connected: " . DB::connection()->getDatabaseName();
-    } catch (\Exception $e) {
-        return "Database connection failed: " . $e->getMessage();
-    }
+Route::middleware(['auth', AuthAdmin::class])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    // ...existing admin routes...
+    Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 });
+
+// Include admin routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(base_path('routes/admin.php'));
+
+require __DIR__ . '/admin.php'; // Ensure this line is present and correct

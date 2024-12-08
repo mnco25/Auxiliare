@@ -12,8 +12,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'users';  // Changed to lowercase
-    protected $primaryKey = 'user_id';  // Specify the primary key
+    protected $table = 'users';  // Ensure the table name is correct
+    protected $primaryKey = 'user_id';  // Ensure the primary key is correct
     public $incrementing = true;        // Ensure the key is incrementing
     protected $keyType = 'int';         // Set the key type
 
@@ -25,7 +25,7 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'email',
-        'password', // Changed from password_hash to password
+        'password', 
         'first_name',
         'last_name',
         'user_type',
