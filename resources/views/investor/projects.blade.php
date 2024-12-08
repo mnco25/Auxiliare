@@ -4,6 +4,8 @@
 
 @section('additional_css')
 <link rel="stylesheet" href="{{ asset('css/investor/projects.css') }}">
+<link rel="stylesheet" href="{{ asset('css/entrepreneur/home.css') }}">
+
 @endsection
 
 @section('content')
