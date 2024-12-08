@@ -1,5 +1,12 @@
 @extends('investor.layout')
 
+@section('title', 'Home - Auxiliare')
+
+@section('additional_css')
+<link rel="stylesheet" href="{{ asset('css/entrepreneur/home.css') }}">
+<link rel="stylesheet" href="{{ asset('css/investor/financial.css') }}">
+@endsection
+
 @section('content')
 <section class="content">
     <div class="container-fluid">
