@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\AuthAdmin;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,9 @@ Route::middleware(['auth', AuthAdmin::class])->group(function () {
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(base_path('routes/admin.php'));
 
 require __DIR__ . '/admin.php'; // Ensure this line is present and correct
+
+Route::middleware(['auth', 'entrepreneur'])->prefix('entrepreneur')->group(base_path('routes/entrepreneur.php'));
+
+require __DIR__ . '/entrepreneur.php'; // Ensure this line is added
+
+Route::get('/home', [HomeController::class, 'index'])->name('home.index');

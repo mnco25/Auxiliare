@@ -25,25 +25,29 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // Retrieve User using the User model
-        $user = User::where('email', $request->email)->first();
-
-        if ($user && Hash::check($request->password, $user->password)) {
+        $credentials = $request->only('email', 'password');
+        
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            
             if ($user->account_status === 'Active') {
-                // Log in the user
-                Auth::login($user);
-
-                if ($user->user_type === 'Admin') {
-                    return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
+                switch ($user->user_type) {
+                    case 'Admin':
+                        return redirect()->route('admin.dashboard');
+                    case 'Entrepreneur':
+                        return redirect()->route('entrepreneur.dashboard');
+                    case 'Investor':
+                        return redirect()->route('investor.dashboard');
+                    default:
+                        return redirect()->route('home');
                 }
-
-                return redirect()->route('home'); // Redirect to home for non-admin users
-            } else {
-                return back()->with('error_message', 'Your account is not active. Please contact support.');
             }
-        } else {
-            return back()->with('error_message', 'Invalid email or password.');
+            
+            Auth::logout();
+            return back()->with('error_message', 'Your account is not active.');
         }
+        
+        return back()->with('error_message', 'Invalid credentials.');
     }
 
     public function register(Request $request)
