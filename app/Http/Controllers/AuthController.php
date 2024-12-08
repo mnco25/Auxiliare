@@ -26,27 +26,27 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        
+
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            
+
             if ($user->account_status === 'Active') {
                 switch ($user->user_type) {
                     case 'Admin':
                         return redirect()->route('admin.dashboard');
                     case 'Entrepreneur':
-                        return redirect()->route('entrepreneur.dashboard');
+                        return redirect()->route('entrepreneur.home');
                     case 'Investor':
                         return redirect()->route('investor.dashboard');
                     default:
                         return redirect()->route('home');
                 }
             }
-            
+
             Auth::logout();
             return back()->with('error_message', 'Your account is not active.');
         }
-        
+
         return back()->with('error_message', 'Invalid credentials.');
     }
 

@@ -27,7 +27,7 @@ class RouteServiceProvider extends ServiceProvider
                 case 'Admin':
                     return route('admin.dashboard');
                 case 'Entrepreneur':
-                    return route('entrepreneur.dashboard');
+                    return route('entrepreneur.home');
                 case 'Investor':
                     return route('investor.dashboard');
                 default:
@@ -67,11 +67,6 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
-
-            // Remove or adjust if not using a separate admin routes file
-            // Route::middleware('web')
-            //     ->prefix('admin')
-            //     ->group(base_path('routes/admin.php'));
         });
     }
 

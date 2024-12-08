@@ -1,6 +1,6 @@
 @extends('entrepreneur.layout')
 
-@section('title', 'Dashboard - Auxiliare')
+@section('title', 'Home - Auxiliare')
 
 @section('content')
 <div class="half">

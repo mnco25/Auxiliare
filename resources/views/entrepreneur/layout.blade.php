@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Entrepreneur Dashboard - Auxiliare')</title>
+    <title>@yield('title', 'Entrepreneur Home - Auxiliare')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/entrepreneur/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/entrepreneur/home.css') }}">
     @yield('additional_css')
 </head>
 
@@ -18,7 +18,7 @@
         </div>
         <nav aria-label="Main Navigation">
             <ul class="nav-menu">
-                <li><a href="{{ route('entrepreneur.dashboard') }}" class="{{ request()->routeIs('entrepreneur.dashboard') ? 'active' : '' }}">Home</a></li>
+                <li><a href="{{ route('entrepreneur.home') }}" class="{{ request()->routeIs('entrepreneur.home') ? 'active' : '' }}">Home</a></li>
                 <li><a href="{{ route('entrepreneur.create_project') }}" class="{{ request()->routeIs('entrepreneur.create_project') ? 'active' : '' }}">Create</a></li>
                 <li><a href="#messaging">Chat</a></li>
                 <li><a href="#profile">Profile</a></li>

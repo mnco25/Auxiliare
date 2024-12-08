@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 class EntrepreneurController extends Controller
 {
-    public function dashboard()
+    public function home()
     {
         $user = Auth::user();
         if ($user->user_type !== 'Entrepreneur') {
             return redirect()->route('login')->with('error_message', 'Unauthorized access.');
         }
-        return view('entrepreneur.dashboard', ['user' => $user]);
+        return view('entrepreneur.home', ['user' => $user]);
     }
 
     public function logout(Request $request)
@@ -43,8 +43,8 @@ class EntrepreneurController extends Controller
         ]);
 
         // TODO: Add project storage logic here
-        
-        return redirect()->route('entrepreneur.dashboard')
+
+        return redirect()->route('entrepreneur.home')
             ->with('success_message', 'Project created successfully!');
     }
 }
