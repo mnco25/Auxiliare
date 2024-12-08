@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -24,5 +25,11 @@ class AdminController extends Controller
     public function userManagement()
     {
         return view('admin.user_management');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login')->with('success_message', 'Successfully logged out.');
     }
 }
