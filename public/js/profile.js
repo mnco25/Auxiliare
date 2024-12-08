@@ -64,38 +64,44 @@ modalOverlay.addEventListener("click", function () {
   editProfileModal.classList.add("hidden");
 });
 
-// Save profile updates
-saveProfileBtn.addEventListener("click", function (event) {
-  event.preventDefault(); // Prevent form from submitting and refreshing the page
+// Update form submission to use PUT method
+document.getElementById('edit-profile-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var form = this;
+  var formData = new FormData(form);
+  var submitBtn = form.querySelector('button[type="submit"]');
 
-  // Get the updated values from the form
-  profileName.textContent = editName.value;
-  profileLocation.textContent = editLocation.value;
-  profileBio.textContent = editBio.value;
-
-  // Update the skills list
-  profileSkills.innerHTML = "";
-  var skills = editSkills.value.split(",").map(function (skill) {
-    return skill.trim();
+  // Show loading state
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+  submitBtn.disabled = true;
+  fetch(form.action, {
+    method: 'POST',
+    // Laravel uses POST with method override for PUT
+    body: formData,
+    headers: {
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+      'X-HTTP-Method-Override': 'PUT' // Method override to simulate PUT request
+    },
+    credentials: 'same-origin'
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    if (data.success) {
+      // Update UI
+      updateProfileUI(formData);
+      modalOverlay.classList.add('hidden');
+      editProfileModal.classList.add('hidden');
+      showNotification('Profile updated successfully!', 'success');
+    } else {
+      throw new Error(data.message || 'Failed to update profile');
+    }
+  })["catch"](function (error) {
+    console.error('Error:', error);
+    showNotification(error.message || 'Failed to update profile', 'error');
+  })["finally"](function () {
+    submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+    submitBtn.disabled = false;
   });
-  skills.forEach(function (skill) {
-    var li = document.createElement("li");
-    li.textContent = skill;
-    profileSkills.appendChild(li);
-  });
-
-  // Update profile picture if a new one is selected
-  if (editProfilePic.files.length > 0) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      profilePic.src = e.target.result;
-    };
-    reader.readAsDataURL(editProfilePic.files[0]);
-  }
-
-  // Close the modal
-  modalOverlay.classList.add("hidden");
-  editProfileModal.classList.add("hidden");
 });
 
 // Update profile picture if a new one is selected
@@ -117,41 +123,6 @@ editProfilePic.addEventListener('change', function (e) {
     };
     reader.readAsDataURL(this.files[0]);
   }
-});
-
-// Update form submission
-document.getElementById('edit-profile-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  var form = this;
-  var formData = new FormData(form);
-  var submitBtn = form.querySelector('button[type="submit"]');
-
-  // Show loading state
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-  submitBtn.disabled = true;
-  fetch(form.action, {
-    method: 'POST',
-    body: formData,
-    headers: {
-      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-    }
-  }).then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    if (data.success) {
-      // Update UI
-      updateProfileUI(formData);
-      hideModal();
-      showNotification('Profile updated successfully!', 'success');
-    } else {
-      showNotification('Failed to update profile', 'error');
-    }
-  })["catch"](function (error) {
-    showNotification('An error occurred', 'error');
-  })["finally"](function () {
-    submitBtn.innerHTML = 'Save';
-    submitBtn.disabled = false;
-  });
 });
 function showNotification(message) {
   var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
