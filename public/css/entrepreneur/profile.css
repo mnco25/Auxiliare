@@ -3,8 +3,9 @@
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 260px); /* Adjust for footer height */
     background: linear-gradient(135deg, #f5f7fa 0%, #e4e7ec 100%);
+    margin-bottom: 60px; /* Add space for footer */
 }
 
 .profile-card {
@@ -133,10 +134,11 @@
     display: flex;
     justify-content: center;
     align-items: flex-start; /* Changed from center to flex-start */
-    z-index: 1000;
+    z-index: 1050; /* Increase z-index to be above footer */
     backdrop-filter: blur(5px);
     overflow-y: auto; /* Enable scrolling */
     padding: 2rem 1rem; /* Add padding for better mobile view */
+    padding-bottom: 100px; /* Add padding to prevent content being hidden behind footer */
 }
 
 .modal-content {
@@ -149,7 +151,7 @@
     position: relative;
     overflow: visible; /* Changed from hidden to visible */
     border: none;
-    margin: 0 auto; /* Center the content */
+    margin: 20px auto 80px; /* Add bottom margin to create space above footer */
     transform: translateY(0); /* Reset transform */
     transition: all 0.3s ease;
 }
@@ -493,6 +495,7 @@
     .modal {
         padding: 20px 10px;
         align-items: flex-start;
+        padding-bottom: 80px;
     }
 
     .modal-content {
@@ -529,6 +532,11 @@
         gap: 1.25rem;
         padding: 0.75rem;
     }
+
+    .profile-container {
+        margin-bottom: 40px;
+        min-height: calc(100vh - 220px);
+    }
 }
 
 /* Add smooth scrollbar for modern browsers */
@@ -548,4 +556,9 @@
 
 .modal::-webkit-scrollbar-thumb:hover {
     background: rgba(61, 90, 241, 0.7);
+}
+
+.main-footer {
+    z-index: 1000; /* Ensure footer stays below modal */
+    position: relative; /* Change from fixed if it was fixed */
 }
