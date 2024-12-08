@@ -66,4 +66,7 @@ Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
     Route::get('/profile', [InvestorController::class, 'profile'])->name('investor.profile');
     Route::post('/logout', [AuthController::class, 'logout'])->name('investor.logout');
     Route::get('/filter-projects', [InvestorProjectController::class, 'filterProjects'])->name('investor.filter.projects');
+    Route::get('/investor/portfolio', function () {
+        return view('investor.portfolio');
+    });
 });
