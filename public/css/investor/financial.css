@@ -225,6 +225,118 @@
     border: 1px solid rgba(46, 204, 113, 0.2);
 }
 
+/* Enhanced Stats Row */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.stats-category {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.stats-category:hover {
+    transform: translateY(-5px);
+}
+
+.category-title {
+    color: #1f2b77;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(61, 90, 241, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-title i {
+    color: var(--primary-color);
+}
+
+/* Enhanced Info Box */
+.info-box {
+    display: flex;
+    align-items: center;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(145deg, #ffffff, #f6f7f9);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.info-box:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.info-box-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.info-box-content {
+    flex: 1;
+}
+
+.info-box-content span:first-child {
+    display: block;
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 0.3rem;
+}
+
+.info-box-content span:last-child {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2b77;
+}
+
+/* Action Row Styling */
+.action-row {
+    margin-bottom: 2rem;
+}
+
+.deposit-card {
+    background: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.deposit-card .card-header {
+    background: linear-gradient(145deg, #ffffff, #f6f7f9);
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.deposit-card .card-header h3 {
+    margin: 0;
+    color: #1f2b77;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.deposit-card .card-header h3 i {
+    color: var(--primary-color);
+}
+
 /* Responsive Design */
 @media (max-width: 992px) {
     .col-lg-3 {

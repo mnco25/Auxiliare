@@ -24,19 +24,91 @@ class InvestorController extends Controller
 
     public function financial()
     {
-        $user = Auth::user();
-        $transactions = Transaction::where('user_id', $user->user_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
+        $user_id = auth()->id();
+        
+        // Fetch basic stats
         $stats = [
-            'total_deposits' => $transactions->where('transaction_type', 'Deposit')->sum('amount'),
-            'total_investments' => $transactions->where('transaction_type', 'Investment')->sum('amount'),
-            'current_balance' => $user->balance,
-            'pending_transactions' => $transactions->where('transaction_status', 'Pending')->count()
+            'current_balance' => $this->calculateBalance($user_id),
+            'total_deposits' => Transaction::where('user_id', $user_id)
+                ->where('transaction_type', 'Deposit')
+                ->where('transaction_status', 'Success')
+                ->sum('amount'),
+            'total_investments' => Transaction::where('user_id', $user_id)
+                ->where('transaction_type', 'Investment')
+                ->where('transaction_status', 'Success')
+                ->sum('amount'),
+            'pending_transactions' => Transaction::where('user_id', $user_id)
+                ->where('transaction_status', 'Pending')
+                ->count()
         ];
 
-        return view('investor.financial', compact('transactions', 'stats'));
+        // Prepare chart data
+        $chartData = [
+            'months' => $this->getLast6Months(),
+            'investments' => $this->getMonthlyData($user_id, 'Investment'),
+            'deposits' => $this->getMonthlyData($user_id, 'Deposit'),
+            'monthlyInvestments' => $this->getMonthlyData($user_id, 'Investment'),
+            'transactionTypes' => ['Deposit', 'Investment', 'Milestone Payment', 'Refund'],
+            'transactionAmounts' => $this->getTransactionTypeDistribution($user_id)
+        ];
+
+        $transactions = Transaction::where('user_id', $user_id)
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+
+        return view('investor.financial', compact('stats', 'chartData', 'transactions'));
+    }
+
+    private function getLast6Months()
+    {
+        return collect(range(5, 0))->map(function($i) {
+            return now()->subMonths($i)->format('M Y');
+        })->toArray();
+    }
+
+    private function getMonthlyData($user_id, $type)
+    {
+        return collect(range(5, 0))->map(function($i) use ($user_id, $type) {
+            $month = now()->subMonths($i);
+            return Transaction::where('user_id', $user_id)
+                ->where('transaction_type', $type)
+                ->where('transaction_status', 'Success')
+                ->whereYear('created_at', $month->year)
+                ->whereMonth('created_at', $month->month)
+                ->sum('amount');
+        })->toArray();
+    }
+
+    private function getTransactionTypeDistribution($user_id)
+    {
+        return collect(['Deposit', 'Investment', 'Milestone Payment', 'Refund'])
+            ->map(function($type) use ($user_id) {
+                return Transaction::where('user_id', $user_id)
+                    ->where('transaction_type', $type)
+                    ->where('transaction_status', 'Success')
+                    ->sum('amount');
+            })->toArray();
+    }
+
+    private function calculateBalance($user_id)
+    {
+        $deposits = Transaction::where('user_id', $user_id)
+            ->where('transaction_type', 'Deposit')
+            ->where('transaction_status', 'Success')
+            ->sum('amount');
+            
+        $investments = Transaction::where('user_id', $user_id)
+            ->whereIn('transaction_type', ['Investment', 'Milestone Payment'])
+            ->where('transaction_status', 'Success')
+            ->sum('amount');
+            
+        $refunds = Transaction::where('user_id', $user_id)
+            ->where('transaction_type', 'Refund')
+            ->where('transaction_status', 'Success')
+            ->sum('amount');
+            
+        return $deposits - $investments + $refunds;
     }
 
     public function profile()
