@@ -8,6 +8,65 @@
 
 @section('content')
 <div class="dashboard-container">
+    <!-- Add Stats Section -->
+    <div class="stats-row">
+        <div class="stats-category">
+            <h4 class="category-title">
+                <i class="fas fa-chart-pie"></i> Project Overview
+            </h4>
+            <div class="info-box">
+                <span class="info-box-icon bg-primary"><i class="fas fa-briefcase"></i></span>
+                <div class="info-box-content">
+                    <span>Total Projects</span>
+                    <span>{{ $totalProjects }}</span>
+                </div>
+            </div>
+            <div class="info-box">
+                <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
+                <div class="info-box-content">
+                    <span>Active Projects</span>
+                    <span>{{ $activeProjects }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-category">
+            <h4 class="category-title">
+                <i class="fas fa-coins"></i> Funding Statistics
+            </h4>
+            <div class="info-box">
+                <span class="info-box-icon bg-info"><i class="fas fa-hand-holding-usd"></i></span>
+                <div class="info-box-content">
+                    <span>Total Funding</span>
+                    <span>₱{{ number_format($totalFunding) }}</span>
+                </div>
+            </div>
+            <div class="info-box">
+                <span class="info-box-icon bg-warning"><i class="fas fa-percentage"></i></span>
+                <div class="info-box-content">
+                    <span>Avg. Funding Progress</span>
+                    <span>{{ round($avgFundingProgress) }}%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Charts Container -->
+    <div class="charts-container">
+        <div class="chart-card">
+            <h3>Funding Progress</h3>
+            <div class="chart-wrapper">
+                <canvas id="fundingChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>Project Categories</h3>
+            <div class="chart-wrapper">
+                <canvas id="categoryChart"></canvas>
+            </div>
+        </div>
+    </div>
+
     <div class="dashboard-card">
         <header class="card-header">
             <h2><i class="fas fa-tasks"></i> My Projects</h2>
@@ -104,7 +163,56 @@
 @endsection
 
 @section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Funding Progress Chart
+        new Chart(document.getElementById("fundingChart").getContext("2d"), {
+            type: "line",
+            data: {
+                labels: {!! json_encode($fundingLabels) !!},
+                datasets: [{
+                    label: "Monthly Funding (₱)",
+                    data: {!! json_encode($fundingData) !!},
+                    borderColor: "#3d5af1",
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: "rgba(61, 90, 241, 0.1)"
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Category Distribution Chart
+        new Chart(document.getElementById("categoryChart").getContext("2d"), {
+            type: "doughnut",
+            data: {
+                labels: {!! json_encode($categoryLabels) !!},
+                datasets: [{
+                    data: {!! json_encode($categoryData) !!},
+                    backgroundColor: [
+                        "rgba(61, 90, 241, 0.8)",
+                        "rgba(46, 204, 113, 0.8)",
+                        "rgba(52, 152, 219, 0.8)",
+                        "rgba(155, 89, 182, 0.8)",
+                        "rgba(241, 196, 15, 0.8)"
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: "bottom" }
+                }
+            }
+        });
+    });
+
     function enableEditing(projectId) {
         document.querySelector(`#content-${projectId}`).style.display = 'none';
         document.querySelector(`#form-${projectId}`).style.display = 'block';

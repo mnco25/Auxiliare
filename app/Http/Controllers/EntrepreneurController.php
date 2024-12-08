@@ -43,4 +43,39 @@ class EntrepreneurController extends Controller
         return redirect()->route('entrepreneur.home')
             ->with('success_message', 'Project created successfully!');
     }
+
+    public function dashboard()
+    {
+        $projects = auth()->user()->projects;
+
+        // Calculate statistics
+        $totalProjects = $projects->count();
+        $activeProjects = $projects->where('status', 'active')->count();
+        $totalFunding = $projects->sum('current_funding');
+        $avgFundingProgress = $projects->avg(function ($project) {
+            return ($project->current_funding / $project->funding_goal) * 100;
+        }) ?? 0;
+
+        // Prepare funding chart data
+        $fundingLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+        $fundingData = $projects->pluck('current_funding')->toArray();
+
+        // Prepare category chart data
+        $categories = $projects->groupBy('category')
+            ->map->count();
+        $categoryLabels = $categories->keys();
+        $categoryData = $categories->values();
+
+        return view('entrepreneur.dashboard', compact(
+            'projects',
+            'totalProjects',
+            'activeProjects',
+            'totalFunding',
+            'avgFundingProgress',
+            'fundingLabels',
+            'fundingData',
+            'categoryLabels',
+            'categoryData'
+        ));
+    }
 }

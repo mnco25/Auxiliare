@@ -37,7 +37,7 @@ Route::middleware(['auth', 'entrepreneur'])->prefix('entrepreneur')->group(funct
 Route::resource('projects', ProjectController::class)->except(['index']);
 
 Route::middleware(['auth', 'entrepreneur'])->group(function () {
-    Route::get('/dashboard', [ProjectController::class, 'dashboard'])->name('entrepreneur.dashboard');
+    Route::get('/dashboard', [EntrepreneurController::class, 'dashboard'])->name('entrepreneur.dashboard');
     Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
 });

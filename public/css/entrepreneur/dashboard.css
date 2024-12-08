@@ -264,6 +264,101 @@
     color: #6c757d;
 }
 
+/* Stats Row Styles */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.stats-category {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.category-title {
+    color: #1f2b77;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-box {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem 0;
+    background: linear-gradient(145deg, #ffffff, #f6f7f9);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.info-box-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin-right: 1rem;
+    color: #ffffff;
+}
+
+.bg-primary { background: linear-gradient(45deg, #3d5af1, #1f2b77); }
+.bg-success { background: linear-gradient(45deg, #2ecc71, #27ae60); }
+.bg-info { background: linear-gradient(45deg, #3498db, #2980b9); }
+.bg-warning { background: linear-gradient(45deg, #f1c40f, #f39c12); }
+
+.info-box-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-box-content span:first-child {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.info-box-content span:last-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1f2b77;
+}
+
+/* Charts Container Styles */
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.chart-card h3 {
+    color: #1f2b77;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.chart-wrapper {
+    height: 300px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 @keyframes shimmer {
     from {
         transform: translateX(-100%);
@@ -287,5 +382,17 @@
     
     .dashboard-card {
         padding: 30px 20px;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    .charts-container {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-wrapper {
+        height: 250px;
     }
 }
