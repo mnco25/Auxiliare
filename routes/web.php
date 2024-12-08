@@ -74,6 +74,4 @@ Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
     Route::post('/deposit', [InvestorController::class, 'deposit'])->name('investor.deposit');
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::post('/projects/{project}/invest', [InvestmentController::class, 'invest'])->name('projects.invest');
-});
+Route::post('/investor/projects/{project}/invest', [InvestmentController::class, 'invest'])->name('investor.invest')->middleware('auth');

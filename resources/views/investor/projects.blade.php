@@ -110,9 +110,9 @@
                             Deadline: {{ date('M d, Y', strtotime($project->end_date)) }}
                         </span>
                     </div>
-                    <a href="{{ route('investor.project.details', $project->id) }}" class="invest-btn">
+                    <button class="invest-btn" data-project-id="{{ $project->id }}" data-min-investment="{{ $project->minimum_investment }}">
                         <i class="fas fa-chart-line"></i> Invest Now
-                    </a>
+                    </button>
                 </div>
             </div>
             @empty
@@ -121,6 +121,35 @@
                 <p>No projects available for investment at this time.</p>
             </div>
             @endforelse
+        </div>
+
+        <!-- Investment Modal -->
+        <div class="modal fade" id="investmentModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Make an Investment</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="investmentForm">
+                            @csrf
+                            <div class="form-group">
+                                <label>Investment Amount (₱)</label>
+                                <input type="number" name="amount" class="form-control" required>
+                                <small class="text-muted">Minimum investment: ₱<span id="minInvestment"></span></small>
+                            </div>
+                            <div class="balance-info">
+                                Your current balance: ₱<span id="currentBalance">{{ number_format(auth()->user()->balance) }}</span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="confirmInvestment">Confirm Investment</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -178,6 +207,74 @@ document.addEventListener('DOMContentLoaded', function() {
                 projectsGrid.style.pointerEvents = 'auto';
             }
         });
+    });
+
+    // Investment handling
+    let currentProjectId = null;
+    const investButtons = document.querySelectorAll('.invest-btn');
+    const modal = document.getElementById('investmentModal');
+
+    investButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            currentProjectId = this.dataset.projectId;
+            const minInvestment = this.dataset.minInvestment;
+            document.getElementById('minInvestment').textContent = minInvestment;
+            document.querySelector('[name="amount"]').min = minInvestment;
+            $('#investmentModal').modal('show');
+        });
+    });
+
+    document.getElementById('confirmInvestment').addEventListener('click', async function() {
+        const form = document.getElementById('investmentForm');
+        const amount = form.querySelector('[name="amount"]').value;
+
+        if (!amount || parseFloat(amount) <= 0) {
+            alert('Please enter a valid investment amount');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/investor/projects/${currentProjectId}/invest`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    amount: parseFloat(amount)
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                $('#investmentModal').modal('hide');
+                alert('Investment successful!');
+                window.location.reload();
+            } else {
+                alert(data.message || 'Investment failed');
+            }
+        } catch (error) {
+            console.error('Investment error:', error);
+            alert('An error occurred while processing your investment. Please try again.');
+        }
+    });
+
+    // Amount input validation
+    const amountInput = document.querySelector('[name="amount"]');
+    amountInput.addEventListener('input', function() {
+        const currentBalance = parseFloat(document.getElementById('currentBalance').textContent.replace(/[^0-9.-]+/g,""));
+        const minInvestment = parseFloat(document.getElementById('minInvestment').textContent);
+
+        if (parseFloat(this.value) > currentBalance) {
+            this.setCustomValidity('Amount exceeds your current balance');
+        } else if (parseFloat(this.value) < minInvestment) {
+            this.setCustomValidity(`Minimum investment amount is ₱${minInvestment}`);
+        } else {
+            this.setCustomValidity('');
+        }
     });
 });
 </script>
