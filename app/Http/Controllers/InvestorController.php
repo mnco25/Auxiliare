@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Project;
 
 class InvestorController extends Controller
 {
@@ -31,7 +32,11 @@ class InvestorController extends Controller
 
     public function projects()
     {
-        return view('investor.projects');
+        $projects = Project::with('user')->get();
+        $totalProjects = $projects->count();
+        $totalFundingNeeded = $projects->sum('funding_goal');
+
+        return view('investor.projects', compact('projects', 'totalProjects', 'totalFundingNeeded'));
     }
 
     public function logout(Request $request)

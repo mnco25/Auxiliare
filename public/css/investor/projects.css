@@ -1,0 +1,295 @@
+.projects-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 30px;
+}
+
+/* Stats Section - Reusing styles from dashboard.css */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.stats-category {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.info-box {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem 0;
+    background: linear-gradient(145deg, #ffffff, #f6f7f9);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.info-box-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin-right: 1rem;
+    color: #ffffff;
+}
+
+.bg-primary {
+    background: linear-gradient(45deg, #3d5af1, #1f2b77);
+}
+.bg-success {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+}
+
+.info-box-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-box-content span:first-child {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.info-box-content span:last-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1f2b77;
+}
+
+/* Projects Grid */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.project-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.project-header h3 {
+    font-size: 1.25rem;
+    color: #1f2b77;
+    margin: 0;
+}
+
+.category-badge {
+    background: #e8ecff;
+    color: #3d5af1;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.description {
+    color: #495057;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Entrepreneur Info */
+.entrepreneur-info {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f8faff;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+}
+
+.info .name {
+    color: #1f2b77;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.info .email {
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.project-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eef1ff;
+}
+
+.invest-btn {
+    background: linear-gradient(135deg, #3d5af1, #1f2b77);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.invest-btn:hover {
+    transform: translateY(-2px);
+}
+
+.no-projects {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    background: #f8faff;
+    border-radius: 15px;
+    color: #6c757d;
+}
+
+.no-projects i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+/* Enhanced Project Card Styles */
+.projects-container .project-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+/* Funding Progress Styles */
+.funding-progress {
+    margin: 20px 0;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.progress-label {
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.progress-percentage {
+    color: #3d5af1;
+    font-weight: 600;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar .progress {
+    height: 100%;
+    background: linear-gradient(to right, #3d5af1, #1f2b77);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.funding-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 0.9rem;
+}
+
+.funding-stats span:first-child {
+    color: #3d5af1;
+    font-weight: 600;
+}
+
+.funding-stats span:last-child {
+    color: #6c757d;
+}
+
+/* Enhanced Entrepreneur Info */
+.projects-container .entrepreneur-info {
+    margin: 15px 0;
+    padding: 12px;
+    background: #f8faff;
+    border-radius: 10px;
+}
+
+/* Enhanced Button Styles */
+.projects-container .invest-btn {
+    background: linear-gradient(135deg, #3d5af1, #1f2b77);
+    color: #ffffff !important;
+    padding: 8px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.projects-container .invest-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(61, 90, 241, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-container {
+        padding: 20px;
+    }
+}
+
+/* Ensure proper grid layout */
+@media (max-width: 768px) {
+    .projects-container .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .projects-container {
+        padding: 15px;
+        margin: 20px auto;
+    }
+}
