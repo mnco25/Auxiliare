@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    <div class="dashboard-card">
+    <div class="dashboard-card" id="dashboard-card">
         <header class="card-header">
             <h2><i class="fas fa-tasks"></i> My Projects</h2>
             <hr>

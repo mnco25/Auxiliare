@@ -110,7 +110,7 @@
                 <div class="card-body">
                     <p>Every great success story begins with an idea, but it’s the courage to act that turns dreams into reality. Auxiliare is here to empower you with the tools, community, and opportunities to bring your vision to life. Whether you’re creating something new or refining an existing idea, today is the day to take that first bold step. Your journey to innovation and impact starts now—let’s shape the future together.</p>
                     <a href="{{ route('entrepreneur.create_project') }}" class="cta-button">Create New Project</a>
-                    <a href="#edit-project" class="cta-button">Edit Existing Project</a>
+                    <a href="{{ route('entrepreneur.dashboard') }}#dashboard-card" class="cta-button">Edit Existing Project</a>
                 </div>
             </section>
         </div>
