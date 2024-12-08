@@ -25,7 +25,7 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'email',
-        'password', 
+        'password',
         'first_name',  // Make sure this field is included
         'last_name',
         'user_type',
@@ -49,7 +49,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'skills'=> 'array',
+        'skills' => 'array',
     ];
 
     public function projects()
@@ -60,5 +60,10 @@ class User extends Authenticatable
     public function profile()
     {
         return $this->hasOne(Profile::class, 'user_id', 'user_id');
+    }
+
+    public function investments()
+    {
+        return $this->hasMany(Investment::class);
     }
 }

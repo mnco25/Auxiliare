@@ -69,4 +69,6 @@ Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
     Route::get('/investor/portfolio', function () {
         return view('investor.portfolio');
     });
+    Route::get('/investor/financial', [InvestorController::class, 'financial'])->name('investor.financial');
+    Route::post('/deposit', [InvestorController::class, 'deposit'])->name('investor.deposit');
 });

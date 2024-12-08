@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
+use App\Models\Transaction; // Ensure this line is present
+use App\Models\User;
 
 class InvestorController extends Controller
 {
@@ -43,5 +45,31 @@ class InvestorController extends Controller
     {
         Auth::logout();
         return redirect()->route('login');
+    }
+
+    public function deposit(Request $request)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:0.01',
+        ]);
+
+        $user = auth()->user();
+        $amount = $request->input('amount');
+
+        // Create a new transaction
+        Transaction::create([
+            'investment_id' => null, // or appropriate investment_id
+            'user_id' => $user->id,
+            'amount' => $amount,
+            'transaction_type' => 'Deposit',
+            'transaction_status' => 'Success',
+            'payment_gateway' => 'YourPaymentGateway', // or appropriate value
+        ]);
+
+        // Update user's balance
+        $user->balance += $amount;
+        $user->save();
+
+        return redirect()->route('investor.financial')->with('success', 'Deposit successful.');
     }
 }

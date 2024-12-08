@@ -18,6 +18,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id('transaction_id');
             $table->unsignedBigInteger('investment_id');
+            $table->unsignedBigInteger('user_id'); // Add user_id column
             $table->decimal('amount', 10, 2);
             $table->enum('transaction_type', ['Investment', 'Milestone Payment', 'Refund']);
             $table->timestamp('transaction_date')->useCurrent()->nullable();
@@ -26,6 +27,7 @@ class CreateTransactionsTable extends Migration
             $table->timestamps();
 
             $table->foreign('investment_id')->references('investment_id')->on('investments')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); // Add foreign key constraint
 
             $table->index('investment_id');
         });
