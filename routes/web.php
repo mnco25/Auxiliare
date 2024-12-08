@@ -6,6 +6,7 @@ use App\Http\Controllers\EntrepreneurController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InvestorController;
+use App\Http\Controllers\Investor\InvestorProjectController;
 
 // Public routes
 Route::get('/', function () {
@@ -58,7 +59,8 @@ Route::middleware(['auth'])->group(function () {
 // Investor routes
 Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
     Route::get('/home', [InvestorController::class, 'home'])->name('investor.home');
-    Route::get('/projects', [InvestorController::class, 'projects'])->name('investor.projects'); // Add this line
+    Route::get('/projects', [InvestorProjectController::class, 'index'])->name('investor.projects');
+    Route::get('/projects/{project}', [InvestorProjectController::class, 'show'])->name('investor.project.details');
     Route::get('/portfolio', [InvestorController::class, 'portfolio'])->name('investor.portfolio');
     Route::get('/financial', [InvestorController::class, 'financial'])->name('investor.financial');
     Route::get('/profile', [InvestorController::class, 'profile'])->name('investor.profile');

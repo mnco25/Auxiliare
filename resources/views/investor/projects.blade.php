@@ -11,39 +11,68 @@
 @section('content')
 <div class="projects-wrapper">
     <div class="projects-container">
-        <!-- Statistics Section -->
+        <!-- Investment Overview Section -->
         <div class="stats-row">
             <div class="stats-category">
                 <h4 class="category-title">
-                    <i class="fas fa-chart-pie"></i> Investment Overview
+                    <i class="fas fa-chart-pie"></i> Investment Dashboard
                 </h4>
                 <div class="info-box">
-                    <span class="info-box-icon bg-primary"><i class="fas fa-briefcase"></i></span>
+                    <span class="info-box-icon bg-primary"><i class="fas fa-rocket"></i></span>
                     <div class="info-box-content">
-                        <span>Available Projects</span>
+                        <span>Active Opportunities</span>
                         <span>{{ $totalProjects }}</span>
                     </div>
                 </div>
                 <div class="info-box">
-                    <span class="info-box-icon bg-success"><i class="fas fa-chart-line"></i></span>
+                    <span class="info-box-icon bg-success"><i class="fas fa-hand-holding-usd"></i></span>
                     <div class="info-box-content">
-                        <span>Total Investment Opportunities</span>
+                        <span>Total Investment Pool</span>
                         <span>₱{{ number_format($totalFundingNeeded) }}</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Projects List -->
+        <!-- Category Filters -->
+        <div class="filter-section">
+            <h4><i class="fas fa-filter"></i> Filter Projects</h4>
+            <div class="category-filters">
+                <button class="category-filter active" data-category="all">All Projects</button>
+                @foreach($categories as $category)
+                    <button class="category-filter" data-category="{{ $category }}">
+                        {{ $category }}
+                    </button>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Projects Grid -->
         <div class="projects-grid">
             @forelse($projects as $project)
             <div class="project-card">
                 <div class="project-header">
-                    <h3>{{ $project->title }}</h3>
-                    <span class="category-badge">{{ $project->category }}</span>
+                    <div class="title-section">
+                        <h3>{{ $project->title }}</h3>
+                        <span class="category-badge">{{ $project->category }}</span>
+                    </div>
+                    <div class="status-badge {{ strtotime($project->end_date) < time() ? 'closed' : 'active' }}">
+                        {{ strtotime($project->end_date) < time() ? 'Closed' : 'Active' }}
+                    </div>
                 </div>
 
                 <p class="description">{{ $project->description }}</p>
+
+                <div class="investment-details">
+                    <div class="detail-item">
+                        <i class="fas fa-users"></i>
+                        <span>Min. Investment: ₱{{ number_format($project->minimum_investment) }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <span>{{ \Carbon\Carbon::parse($project->end_date)->diffForHumans() }}</span>
+                    </div>
+                </div>
 
                 <div class="funding-progress">
                     @php
@@ -64,16 +93,26 @@
                 </div>
 
                 <div class="entrepreneur-info">
-                    <img src="{{ asset('assets/default-avatar.png') }}" alt="Entrepreneur" class="avatar">
+                    <img src="{{ $project->user->avatar ?? asset('assets/default-avatar.png') }}" alt="Entrepreneur" class="avatar">
                     <div class="info">
                         <span class="name">{{ $project->user->firstname }} {{ $project->user->lastname }}</span>
-                        <span class="email">{{ $project->user->email }}</span>
+                        <span class="role">Project Lead</span>
                     </div>
+                    <button class="contact-btn" title="Contact Entrepreneur">
+                        <i class="fas fa-envelope"></i>
+                    </button>
                 </div>
 
                 <div class="project-meta">
-                    <span><i class="fas fa-calendar"></i> Ends: {{ date('M d, Y', strtotime($project->end_date)) }}</span>
-                    <a href="#" class="invest-btn">Invest Now</a>
+                    <div class="meta-info">
+                        <span class="deadline">
+                            <i class="fas fa-calendar-alt"></i>
+                            Deadline: {{ date('M d, Y', strtotime($project->end_date)) }}
+                        </span>
+                    </div>
+                    <a href="{{ route('investor.project.details', $project->id) }}" class="invest-btn">
+                        <i class="fas fa-chart-line"></i> Invest Now
+                    </a>
                 </div>
             </div>
             @empty
@@ -85,4 +124,36 @@
         </div>
     </div>
 </div>
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.category-filter');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            const category = this.dataset.category;
+            const url = new URL(window.location);
+            
+            if (category === 'all') {
+                url.searchParams.delete('category');
+            } else {
+                url.searchParams.set('category', category);
+            }
+            
+            window.location.href = url.toString();
+        });
+    });
+
+    // Set active state based on current URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentCategory = urlParams.get('category') || 'all';
+    document.querySelector(`[data-category="${currentCategory}"]`)?.classList.add('active');
+});
+</script>
 @endsection

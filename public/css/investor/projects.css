@@ -293,3 +293,152 @@
         margin: 20px auto;
     }
 }
+
+/* ...existing code... */
+
+.title-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-badge.active {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.closed {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.investment-details {
+    display: flex;
+    gap: 20px;
+    margin: 15px 0;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #546e7a;
+    font-size: 0.9rem;
+}
+
+.detail-item i {
+    color: #3d5af1;
+}
+
+.entrepreneur-info {
+    position: relative;
+}
+
+.contact-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #f0f2ff;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    color: #3d5af1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+    background: #3d5af1;
+    color: white;
+}
+
+.info .role {
+    font-size: 0.8rem;
+    color: #78909c;
+}
+
+.meta-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.deadline {
+    color: #546e7a;
+    font-size: 0.9rem;
+}
+
+.invest-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ...existing code... */
+
+.filter-section {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.filter-section h4 {
+    color: #1f2b77;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.category-filter {
+    padding: 0.5rem 1rem;
+    border: 2px solid #e8ecff;
+    border-radius: 25px;
+    background: transparent;
+    color: #546e7a;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.category-filter:hover {
+    background: #f0f2ff;
+    color: #3d5af1;
+    border-color: #3d5af1;
+}
+
+.category-filter.active {
+    background: #3d5af1;
+    color: white;
+    border-color: #3d5af1;
+}
+
+@media (max-width: 768px) {
+    .category-filters {
+        gap: 0.5rem;
+    }
+
+    .category-filter {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* ...existing code... */
