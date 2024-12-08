@@ -26,4 +26,29 @@ class ProjectController extends Controller
 
         return redirect()->route('entrepreneur.home')->with('success', 'Project created successfully.');
     }
+
+    public function dashboard()
+    {
+        $projects = auth()->user()->projects;
+        return view('entrepreneur.dashboard', compact('projects'));
+    }
+
+    public function update(Request $request, Project $project)
+    {
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'funding_goal' => 'required|numeric|min:0',
+            'category' => 'required|in:Technology,Healthcare,Education,Finance,Environment'
+        ]);
+
+        $project->update($validated);
+        return back()->with('success', 'Project updated successfully');
+    }
+
+    public function destroy(Project $project)
+    {
+        $project->delete();
+        return response()->json(['success' => true]);
+    }
 }

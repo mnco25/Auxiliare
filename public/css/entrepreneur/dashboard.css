@@ -1,0 +1,135 @@
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 30px;
+}
+
+.dashboard-card {
+    background: linear-gradient(to bottom, #ffffff, #fafbfc);
+    border-radius: 20px;
+    padding: 50px;
+    color: #0a1a3c;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #3d5af1, #1f2b77);
+    border-radius: 20px 20px 0 0;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.project-item {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef1ff;
+    transition: transform 0.3s ease;
+}
+
+.project-item:hover {
+    transform: translateY(-5px);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.project-header h3 {
+    font-size: 1.25rem;
+    color: #1f2b77;
+    margin: 0;
+}
+
+.project-actions button {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.edit-btn { color: #3d5af1; }
+.edit-btn:hover { color: #1f2b77; }
+.delete-btn { color: #dc3545; }
+.delete-btn:hover { color: #c82333; }
+
+.project-content {
+    margin-top: 15px;
+}
+
+.description {
+    color: #495057;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.project-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.project-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Form Styles */
+.project-form {
+    margin-top: 20px;
+}
+
+/* Inherit existing form styles from create_project.css */
+.form-group, .form-row, .form-actions {
+    // ...existing code...
+}
+
+.save-btn, .cancel-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.save-btn {
+    background: linear-gradient(135deg, #3d5af1, #1f2b77);
+    color: #fff;
+    margin-right: 10px;
+}
+
+.cancel-btn {
+    background: #dc3545;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-card {
+        padding: 30px 20px;
+    }
+}

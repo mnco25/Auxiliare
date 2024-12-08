@@ -19,7 +19,7 @@
         <nav aria-label="Main Navigation">
             <ul class="nav-menu">
                 <li><a href="{{ route('entrepreneur.home') }}" class="{{ request()->routeIs('entrepreneur.home') ? 'active' : '' }}">Home</a></li>
-                <li><a href="#messaging">Dashboard</a></li>
+                <li><a href="{{ route('entrepreneur.dashboard') }}" class="{{ request()->routeIs('entrepreneur.dashboard') ? 'active' : '' }}">Dashboard</a></li>
                 <li><a href="{{ route('entrepreneur.create_project') }}" class="{{ request()->routeIs('entrepreneur.create_project') ? 'active' : '' }}">Create</a></li>
                 <li><a href="#messaging">Chat</a></li>
                 <li><a href="#profile">Profile</a></li>
