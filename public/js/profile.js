@@ -23,6 +23,21 @@ var editBio = document.getElementById("edit-bio");
 var editSkills = document.getElementById("edit-skills");
 var editProfilePic = document.getElementById("edit-profile-pic");
 
+// Add URL input handler
+var profilePicUrl = document.getElementById('profile-pic-url');
+profilePicUrl.addEventListener('input', function (e) {
+  if (this.value) {
+    // Clear file input if URL is entered
+    editProfilePic.value = '';
+  }
+});
+editProfilePic.addEventListener('change', function (e) {
+  if (this.files.length > 0) {
+    // Clear URL input if file is selected
+    profilePicUrl.value = '';
+  }
+});
+
 // Open modal
 editProfileBtn.addEventListener("click", function () {
   modalOverlay.classList.remove("hidden");
@@ -106,12 +121,64 @@ editProfilePic.addEventListener('change', function (e) {
 
 // Update form submission
 document.getElementById('edit-profile-form').addEventListener('submit', function (e) {
-  saveProfileBtn.textContent = 'Saving...';
-  saveProfileBtn.disabled = true;
+  e.preventDefault();
+  var form = this;
+  var formData = new FormData(form);
+  var submitBtn = form.querySelector('button[type="submit"]');
 
-  // Let the form submit normally
-  return true;
+  // Show loading state
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+  submitBtn.disabled = true;
+  fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    headers: {
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+    }
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    if (data.success) {
+      // Update UI
+      updateProfileUI(formData);
+      hideModal();
+      showNotification('Profile updated successfully!', 'success');
+    } else {
+      showNotification('Failed to update profile', 'error');
+    }
+  })["catch"](function (error) {
+    showNotification('An error occurred', 'error');
+  })["finally"](function () {
+    submitBtn.innerHTML = 'Save';
+    submitBtn.disabled = false;
+  });
 });
+function showNotification(message) {
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
+  var notification = document.createElement('div');
+  notification.className = "notification ".concat(type);
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  setTimeout(function () {
+    notification.remove();
+  }, 3000);
+}
+function updateProfileUI(formData) {
+  profileName.textContent = formData.get('name');
+  profileLocation.textContent = formData.get('location');
+  profileBio.textContent = formData.get('bio');
+
+  // Update skills
+  var skills = formData.get('skills').split(',').map(function (skill) {
+    return skill.trim();
+  });
+  profileSkills.innerHTML = '';
+  skills.forEach(function (skill) {
+    var li = document.createElement('li');
+    li.textContent = skill;
+    profileSkills.appendChild(li);
+  });
+}
 
 // Remove the old saveProfileBtn click handler since we're using form submission
 /******/ })()

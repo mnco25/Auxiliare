@@ -48,3 +48,8 @@ Route::middleware(['auth', 'entrepreneur'])->group(function () {
 // Include route files
 require __DIR__ . '/admin.php';
 require __DIR__ . '/entrepreneur.php';
+
+Route::middleware(['auth'])->group(function () {
+    // ...existing routes...
+    Route::post('/entrepreneur/profile/update', [ProfileController::class, 'update'])->name('entrepreneur.profile.update');
+});

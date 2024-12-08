@@ -117,11 +117,67 @@ editProfilePic.addEventListener('change', function(e) {
 
 // Update form submission
 document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
-    saveProfileBtn.textContent = 'Saving...';
-    saveProfileBtn.disabled = true;
+    e.preventDefault();
     
-    // Let the form submit normally
-    return true;
+    const form = this;
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Show loading state
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    submitBtn.disabled = true;
+
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update UI
+            updateProfileUI(formData);
+            hideModal();
+            showNotification('Profile updated successfully!', 'success');
+        } else {
+            showNotification('Failed to update profile', 'error');
+        }
+    })
+    .catch(error => {
+        showNotification('An error occurred', 'error');
+    })
+    .finally(() => {
+        submitBtn.innerHTML = 'Save';
+        submitBtn.disabled = false;
+    });
 });
+
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+function updateProfileUI(formData) {
+    profileName.textContent = formData.get('name');
+    profileLocation.textContent = formData.get('location');
+    profileBio.textContent = formData.get('bio');
+    
+    // Update skills
+    const skills = formData.get('skills').split(',').map(skill => skill.trim());
+    profileSkills.innerHTML = '';
+    skills.forEach(skill => {
+        const li = document.createElement('li');
+        li.textContent = skill;
+        profileSkills.appendChild(li);
+    });
+}
 
 // Remove the old saveProfileBtn click handler since we're using form submission

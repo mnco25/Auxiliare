@@ -72,58 +72,53 @@
 <div id="edit-profile-modal" class="modal hidden">
     <div class="modal-content">
         <header class="modal-header">
-            <h2>Edit Profile</h2>
+            <h2><i class="fas fa-user-edit"></i> Edit Profile</h2>
             <button id="close-modal-btn" class="close-btn">&times;</button>
         </header>
         <form id="edit-profile-form" action="{{ route('entrepreneur.profile.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-info-circle"></i> Basic Information</h3>
+                <div class="form-group">
+                    <label for="edit-name"><i class="fas fa-user"></i> Name</label>
+                    <input type="text" id="edit-name" name="name" value="{{ $profile->name ?? '' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-location"><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <input type="text" id="edit-location" name="location" value="{{ $profile->location ?? '' }}" required>
+                </div>
+            </div>
 
-            @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-id-card"></i> Profile Details</h3>
+                <div class="form-group">
+                    <label for="edit-bio"><i class="fas fa-pen"></i> Bio</label>
+                    <textarea id="edit-bio" name="bio" required>{{ $profile->bio ?? '' }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-skills"><i class="fas fa-tools"></i> Skills</label>
+                    <input type="text" id="edit-skills" name="skills" value="{{ is_array($profile->skills) ? implode(', ', $profile->skills) : '' }}" required>
+                </div>
             </div>
-            @endif
 
-            @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-            @endif
-
-            <div class="form-group">
-                <label for="edit-name">Name</label>
-                <input type="text" id="edit-name" name="name" value="{{ $profile->name ?? '' }}" required>
-            </div>
-            <div class="form-group">
-                <label for="edit-location">Location</label>
-                <input type="text" id="edit-location" name="location" value="{{ $profile->location ?? '' }}" required>
-            </div>
-            <div class="form-group">
-                <label for="edit-bio">Bio</label>
-                <textarea id="edit-bio" name="bio" required>{{ $profile->bio ?? '' }}</textarea>
-            </div>
-            <div class="form-group">
-                <label for="edit-skills">Skills</label>
-                <input type="text" id="edit-skills" name="skills" value="{{ is_array($profile->skills) ? implode(', ', $profile->skills) : '' }}" required>
-            </div>
-            <div class="form-group">
-                <label>Profile Picture</label>
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-camera"></i> Profile Picture</h3>
                 <div class="profile-pic-options">
-                    <div class="upload-option">
-                        <label for="edit-profile-pic">Upload Image</label>
+                    <div class="form-group">
+                        <label for="edit-profile-pic"><i class="fas fa-upload"></i> Upload Image</label>
                         <input type="file" id="edit-profile-pic" name="profile_pic" accept="image/*">
                     </div>
-                    <div class="url-option">
-                        <label for="profile-pic-url">Or Enter Image URL</label>
+                    <div class="form-group">
+                        <label for="profile-pic-url"><i class="fas fa-link"></i> Or Enter Image URL</label>
                         <input type="url" id="profile-pic-url" name="profile_pic_url" placeholder="https://example.com/image.jpg">
                     </div>
                 </div>
             </div>
-            <button type="submit" id="save-profile-btn" class="save-btn">Save</button>
+
+            <button type="submit" id="save-profile-btn" class="save-btn">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
         </form>
     </div>
 </div>
