@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <label for="login-email">
                                 <i class="fas fa-envelope"></i>
-                                <input type="email" id="login-email" name="email" placeholder="Enter email" class="form-control" required />
+                                <input type="text" id="login-email" name="login" placeholder="Enter username or email" class="form-control" required />
                             </label>
                         </div>
 

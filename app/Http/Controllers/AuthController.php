@@ -21,11 +21,15 @@ class AuthController extends Controller
     {
         // Validate Input
         $request->validate([
-            'email' => 'required|email',
+            'login' => 'required',
             'password' => 'required',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $loginField = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $credentials = [
+            $loginField => $request->login,
+            'password' => $request->password
+        ];
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
