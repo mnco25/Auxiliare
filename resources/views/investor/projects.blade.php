@@ -129,31 +129,56 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const filterButtons = document.querySelectorAll('.category-filter');
+    const projectsGrid = document.querySelector('.projects-grid');
+    const statsContent = document.querySelector('.stats-category');
     
     filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', async function() {
             // Remove active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('active'));
             // Add active class to clicked button
             this.classList.add('active');
             
             const category = this.dataset.category;
-            const url = new URL(window.location);
             
-            if (category === 'all') {
-                url.searchParams.delete('category');
-            } else {
-                url.searchParams.set('category', category);
+            try {
+                // Show loading state
+                projectsGrid.style.opacity = '0.5';
+                projectsGrid.style.pointerEvents = 'none';
+                
+                // Fetch filtered projects
+                const response = await fetch(`/investor/filter-projects?category=${category}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                // Animate out old content
+                projectsGrid.style.opacity = '0';
+                
+                // Update content
+                setTimeout(() => {
+                    projectsGrid.innerHTML = data.html;
+                    
+                    // Update stats
+                    document.querySelector('.info-box-content span:last-child').textContent = data.totalProjects;
+                    document.querySelector('.info-box:last-child .info-box-content span:last-child').textContent = 
+                        '₱' + Number(data.totalFundingNeeded).toLocaleString();
+                    
+                    // Animate in new content
+                    projectsGrid.style.opacity = '1';
+                    projectsGrid.style.pointerEvents = 'auto';
+                }, 300);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                projectsGrid.style.opacity = '1';
+                projectsGrid.style.pointerEvents = 'auto';
             }
-            
-            window.location.href = url.toString();
         });
     });
-
-    // Set active state based on current URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentCategory = urlParams.get('category') || 'all';
-    document.querySelector(`[data-category="${currentCategory}"]`)?.classList.add('active');
 });
 </script>
 @endsection

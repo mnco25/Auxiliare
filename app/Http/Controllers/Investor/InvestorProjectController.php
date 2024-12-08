@@ -28,4 +28,21 @@ class InvestorProjectController extends Controller
     {
         return view('investor.project-details', compact('project'));
     }
+
+    public function filterProjects(Request $request)
+    {
+        $query = Project::query();
+        
+        if ($request->category && $request->category !== 'all') {
+            $query->where('category', $request->category);
+        }
+
+        $projects = $query->get();
+        
+        return response()->json([
+            'html' => view('investor.partials.project-cards', compact('projects'))->render(),
+            'totalProjects' => $projects->count(),
+            'totalFundingNeeded' => $projects->sum('funding_goal')
+        ]);
+    }
 }

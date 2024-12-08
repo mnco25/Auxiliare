@@ -69,6 +69,7 @@
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 30px;
     margin-top: 40px;
+    transition: opacity 0.3s ease;
 }
 
 .project-card {
@@ -77,6 +78,7 @@
     padding: 25px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease;
+    animation: slideIn 0.3s ease forwards;
 }
 
 .project-card:hover {
@@ -439,6 +441,36 @@
         padding: 0.4rem 0.8rem;
         font-size: 0.8rem;
     }
+}
+
+/* Animation Styles */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading State */
+.projects-grid.loading {
+    position: relative;
+}
+
+.projects-grid.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* ...existing code... */
