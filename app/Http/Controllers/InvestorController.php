@@ -24,7 +24,19 @@ class InvestorController extends Controller
 
     public function financial()
     {
-        return view('investor.financial');
+        $user = Auth::user();
+        $transactions = Transaction::where('user_id', $user->user_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $stats = [
+            'total_deposits' => $transactions->where('transaction_type', 'Deposit')->sum('amount'),
+            'total_investments' => $transactions->where('transaction_type', 'Investment')->sum('amount'),
+            'current_balance' => $user->balance,
+            'pending_transactions' => $transactions->where('transaction_status', 'Pending')->count()
+        ];
+
+        return view('investor.financial', compact('transactions', 'stats'));
     }
 
     public function profile()
