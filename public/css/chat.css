@@ -1,0 +1,152 @@
+.chat-wrapper {
+    display: flex;
+    height: calc(100vh - 100px);
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    overflow: hidden;
+}
+
+.contacts-sidebar {
+    width: 300px;
+    background: #f5f7fb;
+    border-right: 1px solid #e6e9f0;
+}
+
+.contacts-header {
+    padding: 20px;
+    border-bottom: 1px solid #e6e9f0;
+}
+
+.contacts-header h3 {
+    margin: 0 0 15px 0;
+    color: #1a1a1a;
+}
+
+.contact-search {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e6e9f0;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.contacts-list {
+    overflow-y: auto;
+    height: calc(100% - 90px);
+}
+
+.chat-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    padding: 15px 20px;
+    background: #fff;
+    border-bottom: 1px solid #e6e9f0;
+}
+
+.chat-contact-info {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.contact-details h4 {
+    margin: 0;
+    color: #1a1a1a;
+}
+
+.status {
+    font-size: 13px;
+    color: #666;
+}
+
+.messages-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+.chat-input-area {
+    padding: 20px;
+    background: #fff;
+    border-top: 1px solid #e6e9f0;
+}
+
+.message-form {
+    display: flex;
+    gap: 10px;
+}
+
+#message-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #e6e9f0;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.message-form button {
+    padding: 0 20px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.message-form button:hover {
+    background: #0056b3;
+}
+
+/* Message bubbles */
+.message {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.message.sent {
+    align-items: flex-end;
+}
+
+.message.received {
+    align-items: flex-start;
+}
+
+.message-content {
+    max-width: 70%;
+    padding: 12px 15px;
+    border-radius: 15px;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.sent .message-content {
+    background: #007bff;
+    color: #fff;
+    border-bottom-right-radius: 5px;
+}
+
+.received .message-content {
+    background: #e9ecef;
+    color: #1a1a1a;
+    border-bottom-left-radius: 5px;
+}
+
+.message-time {
+    font-size: 12px;
+    color: #666;
+}

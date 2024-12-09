@@ -46,6 +46,9 @@ Route::middleware(['auth', 'entrepreneur'])->group(function () {
     Route::get('/financial', [EntrepreneurController::class, 'financial'])->name('entrepreneur.financial');
     Route::get('/entrepreneur/profile', [ProfileController::class, 'show'])->name('entrepreneur.profile');
     Route::post('/entrepreneur/profile/update', [ProfileController::class, 'update'])->name('entrepreneur.profile.update');
+    Route::get('/chat', function () {
+        return view('entrepreneur.chat');
+    })->name('entrepreneur.chat');
 });
 
 // Include route files
@@ -72,6 +75,9 @@ Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
     });
     Route::get('/investor/financial', [InvestorController::class, 'financial'])->name('investor.financial');
     Route::post('/deposit', [InvestorController::class, 'deposit'])->name('investor.deposit');
+    Route::get('/chat', function () {
+        return view('investor.chat');
+    })->name('investor.chat');
 });
 
 Route::post('/investor/projects/{project}/invest', [InvestmentController::class, 'invest'])->name('investor.invest')->middleware('auth');
