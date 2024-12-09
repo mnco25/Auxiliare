@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
 use App\Models\Transaction; // Ensure this line is present
 use App\Models\User;
+use App\Models\Profile; // Ensure this line is present
 
 class InvestorController extends Controller
 {
@@ -113,7 +114,56 @@ class InvestorController extends Controller
 
     public function profile()
     {
-        return view('investor.profile');
+        $user = Auth::user();
+        $profile = $user->profile; // Assuming a 'profile' relationship exists on the User model
+
+        return view('investor.profile', compact('user', 'profile'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'location' => 'required|string|max:255',
+                'bio' => 'required|string',
+                'interests' => 'required|string',
+                'profile_pic' => 'nullable|image|max:5120', // 5MB max
+                'profile_pic_url' => 'nullable|url'
+            ]);
+
+            $user = Auth::user();
+            $profile = Profile::where('user_id', $user->user_id)->first();
+
+            if (!$profile) {
+                $profile = new Profile(['user_id' => $user->user_id]);
+            }
+
+            $profile->name = $request->name;
+            $profile->location = $request->location;
+            $profile->bio = $request->bio;
+            $profile->interests = array_map('trim', explode(',', $request->interests));
+
+            // Handle profile picture upload
+            if ($request->hasFile('profile_pic')) {
+                if ($profile->profile_pic) {
+                    Storage::disk('public')->delete('profile_pictures/' . $profile->profile_pic);
+                }
+                $fileName = time() . '_' . $request->file('profile_pic')->getClientOriginalName();
+                $request->file('profile_pic')->storeAs('profile_pictures', $fileName, 'public');
+                $profile->profile_pic = $fileName;
+                $profile->profile_pic_url = null;
+            } elseif ($request->profile_pic_url) {
+                $profile->profile_pic_url = $request->profile_pic_url;
+                $profile->profile_pic = null;
+            }
+
+            $profile->save();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function projects()

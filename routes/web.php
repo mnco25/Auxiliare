@@ -68,6 +68,7 @@ Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
     Route::get('/portfolio', [InvestorController::class, 'portfolio'])->name('investor.portfolio');
     Route::get('/financial', [InvestorController::class, 'financial'])->name('investor.financial');
     Route::get('/profile', [InvestorController::class, 'profile'])->name('investor.profile');
+    Route::post('/profile/update', [InvestorController::class, 'updateProfile'])->name('investor.profile.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('investor.logout');
     Route::get('/filter-projects', [InvestorProjectController::class, 'filterProjects'])->name('investor.filter.projects');
     Route::get('/investor/portfolio', function () {
