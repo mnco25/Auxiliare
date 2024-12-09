@@ -1,4 +1,4 @@
-@extends('investor.layout')
+@extends('entrepreneur.layout')
 
 @section('title', 'Chat - Auxiliare')
 
