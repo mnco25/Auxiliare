@@ -1,35 +1,38 @@
 .chat-wrapper {
     display: flex;
     height: calc(100vh - 100px);
-    background: #fff;
+    background: linear-gradient(to right, rgba(10, 26, 60, 0.02), rgba(10, 26, 60, 0.05));
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 30px rgba(228, 181, 76, 0.1);
     margin: 20px;
     overflow: hidden;
 }
 
 .contacts-sidebar {
     width: 300px;
-    background: #f5f7fb;
-    border-right: 1px solid #e6e9f0;
+    background: rgba(10, 26, 60, 0.02);
+    border-right: 1px solid rgba(228, 181, 76, 0.1);
 }
 
 .contacts-header {
     padding: 20px;
     border-bottom: 1px solid #e6e9f0;
+    background: linear-gradient(90deg, #0a1a3c 0%, #1a2a4c 100%);
 }
 
 .contacts-header h3 {
     margin: 0 0 15px 0;
-    color: #1a1a1a;
+    color: #e4b54c;
 }
 
 .contact-search {
     width: 100%;
     padding: 8px 12px;
-    border: 1px solid #e6e9f0;
+    border: 2px solid rgba(228, 181, 76, 0.2);
     border-radius: 5px;
     font-size: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #0a1a3c;
 }
 
 .contacts-list {
@@ -45,7 +48,7 @@
 
 .chat-header {
     padding: 15px 20px;
-    background: #fff;
+    background: linear-gradient(90deg, #0a1a3c 0%, #1a2a4c 100%);
     border-bottom: 1px solid #e6e9f0;
 }
 
@@ -63,19 +66,19 @@
 
 .contact-details h4 {
     margin: 0;
-    color: #1a1a1a;
+    color: #e4b54c;
 }
 
 .status {
     font-size: 13px;
-    color: #666;
+    color: rgba(228, 181, 76, 0.7);
 }
 
 .messages-container {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
-    background: #f8f9fa;
+    background: rgba(248, 249, 250, 0.5);
 }
 
 .chat-input-area {
@@ -92,23 +95,33 @@
 #message-input {
     flex: 1;
     padding: 12px;
-    border: 1px solid #e6e9f0;
+    border: 2px solid rgba(228, 181, 76, 0.2);
     border-radius: 5px;
     font-size: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #0a1a3c;
+}
+
+#message-input:focus {
+    outline: none;
+    border-color: #e4b54c;
 }
 
 .message-form button {
     padding: 0 20px;
-    background: #007bff;
-    color: #fff;
+    background: linear-gradient(45deg, #e4b54c, #c99f43);
+    color: #0a1a3c;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.2s;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
 .message-form button:hover {
-    background: #0056b3;
+    background: linear-gradient(45deg, #c99f43, #b58e3c);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(228, 181, 76, 0.3);
 }
 
 /* Message bubbles */
@@ -135,18 +148,21 @@
 }
 
 .sent .message-content {
-    background: #007bff;
-    color: #fff;
+    background: linear-gradient(45deg, #e4b54c, #c99f43);
+    color: #0a1a3c;
     border-bottom-right-radius: 5px;
+    box-shadow: 0 2px 8px rgba(228, 181, 76, 0.2);
 }
 
 .received .message-content {
-    background: #e9ecef;
-    color: #1a1a1a;
+    background: linear-gradient(90deg, #0a1a3c 0%, #1a2a4c 100%);
+    color: #fff;
     border-bottom-left-radius: 5px;
+    box-shadow: 0 2px 8px rgba(10, 26, 60, 0.2);
 }
 
 .message-time {
     font-size: 12px;
-    color: #666;
+    color: rgba(10, 26, 60, 0.6);
+    font-weight: 500;
 }
