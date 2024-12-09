@@ -25,6 +25,12 @@
                 <li><a href="{{ route('investor.portfolio') }}" class="{{ request()->routeIs('investor.portfolio') ? 'active' : '' }}">Portfolio</a></li>
                 <li><a href="{{ route('investor.financial') }}" class="{{ request()->routeIs('investor.financial') ? 'active' : '' }}">Financial</a></li>
                 <li><a href="{{ route('investor.chat') }}" class="{{ request()->routeIs('investor.chat') ? 'active' : '' }}">Chat</a></li>
+                <li class="notification-item">
+                    <a href="#" class="notification-link">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">0</span>
+                    </a>
+                </li>
                 <li><a href="{{ route('investor.profile') }}" class="{{ request()->routeIs('investor.profile') ? 'active' : '' }}">Profile</a></li>
                 <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
             </ul>
