@@ -1,6 +1,6 @@
 @extends('investor.layout')
 
-@section('title', 'Projects - Auxiliare')
+@section('title', 'Projects 55555555555555555555 - Auxiliare')
 
 @section('additional_css')
 <link rel="stylesheet" href="{{ asset('css/investor/projects.css') }}">
