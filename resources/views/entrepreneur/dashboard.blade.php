@@ -152,6 +152,15 @@
                         <span><i class="fas fa-tag"></i> {{ $project->category }}</span>
                         <span><i class="fas fa-calendar"></i> {{ date('M d, Y', strtotime($project->end_date)) }}</span>
                     </div>
+
+                    <div class="contact-investors">
+                        <a href="{{ route('messages.conversations') }}" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i> Messages from Investors
+                            @if($unreadMessages > 0)
+                                <span class="badge badge-light">{{ $unreadMessages }}</span>
+                            @endif
+                        </a>
+                    </div>
                 </div>
             </div>
             @empty

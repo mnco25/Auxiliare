@@ -95,10 +95,12 @@
                 <div class="entrepreneur-info">
                     <img src="{{ $project->user->avatar ?? asset('assets/default-avatar.png') }}" alt="Entrepreneur" class="avatar">
                     <div class="info">
-                        <span class="name">{{ $project->user->firstname }} {{ $project->user->lastname }}</span>
+                        <span class="name">{{ $project->user->first_name }} {{ $project->user->last_name }}</span>
                         <span class="role">Project Lead</span>
                     </div>
-                    <button class="contact-btn" title="Contact Entrepreneur">
+                    <button class="contact-btn" 
+                            onclick="window.location.href='{{ route('messages.show', $project->user->user_id) }}'" 
+                            title="Contact Entrepreneur">
                         <i class="fas fa-envelope"></i>
                     </button>
                 </div>

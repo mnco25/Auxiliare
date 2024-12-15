@@ -8,6 +8,8 @@ use App\Models\Project;
 use App\Models\Transaction; // Ensure this line is present
 use App\Models\User;
 use App\Models\Profile; // Ensure this line is present
+use App\Models\Message;
+use Illuminate\Support\Facades\Storage;
 
 class InvestorController extends Controller
 {
@@ -205,5 +207,43 @@ class InvestorController extends Controller
         $user->save();
 
         return redirect()->route('investor.financial')->with('success', 'Deposit successful.');
+    }
+
+    public function dashboard()
+    {
+        $user = auth()->user();
+        
+        // Get unread messages count
+        $unreadMessages = Message::where('receiver_id', $user->user_id)
+            ->where('is_read', false)
+            ->count();
+
+        // ... existing code ...
+
+        return view('investor.dashboard', compact(
+            // ... existing variables ...
+            'unreadMessages'
+        ));
+    }
+
+    public function chat()
+    {
+        $messages = collect(); // Initialize empty collection for messages
+        $currentChat = null;  // Initialize currentChat as null
+        
+        $user = auth()->user();
+        $conversations = Message::where('sender_id', $user->user_id)
+            ->orWhere('receiver_id', $user->user_id)
+            ->orderBy('created_at', 'asc')
+            ->get()
+            ->groupBy(function($message) use ($user) {
+                return $message->sender_id == $user->user_id ? $message->receiver_id : $message->sender_id;
+            });
+
+        $unreadMessages = Message::where('receiver_id', $user->user_id)
+            ->where('is_read', false)
+            ->count();
+
+        return view('investor.chat', compact('conversations', 'unreadMessages', 'messages', 'currentChat'));
     }
 }
