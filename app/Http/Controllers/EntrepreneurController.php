@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Message;
 
 class EntrepreneurController extends Controller
 {
@@ -48,7 +49,13 @@ class EntrepreneurController extends Controller
 
     public function dashboard()
     {
-        $projects = auth()->user()->projects;
+        $user = auth()->user();
+        $projects = $user->projects;
+
+        // Get unread messages count
+        $unreadMessages = Message::where('receiver_id', $user->user_id)
+            ->where('is_read', false)
+            ->count();
 
         // Calculate statistics
         $totalProjects = $projects->count();
@@ -77,7 +84,8 @@ class EntrepreneurController extends Controller
             'fundingLabels',
             'fundingData',
             'categoryLabels',
-            'categoryData'
+            'categoryData',
+            'unreadMessages'
         ));
     }
 
@@ -119,5 +127,23 @@ class EntrepreneurController extends Controller
             'cashFlow',
             'transactions'
         ));
+    }
+
+    public function chat()
+    {
+        $messages = collect(); // Initialize empty collection for messages
+        $currentChat = null;  // Initialize currentChat as null
+        
+        $conversations = Message::where('sender_id', auth()->id())
+            ->orWhere('receiver_id', auth()->id())
+            ->orderBy('created_at', 'asc')
+            ->get()
+            ->groupBy(function ($message) {
+                return $message->sender_id == auth()->id()
+                    ? $message->receiver_id
+                    : $message->sender_id;
+            });
+
+        return view('entrepreneur.chat', compact('conversations', 'messages', 'currentChat'));
     }
 }

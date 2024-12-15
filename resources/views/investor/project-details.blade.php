@@ -60,7 +60,9 @@
 
                     <div class="action-section">
                         <button class="invest-btn primary">Invest in Project</button>
-                        <button class="contact-entrepreneur">Contact Entrepreneur</button>
+                        <a href="{{ route('messages.show', $project->user->user_id) }}" class="contact-entrepreneur">
+                            <i class="fas fa-envelope"></i> Contact Entrepreneur
+                        </a>
                     </div>
 
 

@@ -368,33 +368,3 @@ h2 {
     margin-bottom: 80px;
     min-height: calc(100vh - 180px);
 }
-
-.notification-item {
-    position: relative;
-}
-
-.notification-link {
-    position: relative;
-    padding: 8px 16px;
-}
-
-.notification-count {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: #e4b54c;
-    color: #0a1a3c;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-.fa-bell {
-    font-size: 1.2rem;
-    color: #fff;
-}

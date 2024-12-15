@@ -8,6 +8,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InvestorController;
 use App\Http\Controllers\Investor\InvestorProjectController;
 use App\Http\Controllers\InvestmentController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ChatController;
 
 // Public routes
 Route::get('/', function () {
@@ -35,6 +37,9 @@ Route::middleware(['auth', 'entrepreneur'])->prefix('entrepreneur')->group(funct
     Route::get('/home', [EntrepreneurController::class, 'home'])->name('entrepreneur.home');
     // ...other entrepreneur routes...
     require base_path('routes/entrepreneur.php');
+    Route::get('/chat', [EntrepreneurController::class, 'chat'])->name('entrepreneur.chat');
+    Route::get('/messages/{userId}', [MessageController::class, 'show'])->name('entrepreneur.messages.show');
+    Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('entrepreneur.messages.send');
 });
 
 Route::resource('projects', ProjectController::class)->except(['index']);
@@ -46,9 +51,6 @@ Route::middleware(['auth', 'entrepreneur'])->group(function () {
     Route::get('/financial', [EntrepreneurController::class, 'financial'])->name('entrepreneur.financial');
     Route::get('/entrepreneur/profile', [ProfileController::class, 'show'])->name('entrepreneur.profile');
     Route::post('/entrepreneur/profile/update', [ProfileController::class, 'update'])->name('entrepreneur.profile.update');
-    Route::get('/chat', function () {
-        return view('entrepreneur.chat');
-    })->name('entrepreneur.chat');
 });
 
 // Include route files
@@ -58,6 +60,18 @@ require __DIR__ . '/entrepreneur.php';
 Route::middleware(['auth'])->group(function () {
     // ...existing routes...
     Route::post('/entrepreneur/profile/update', [ProfileController::class, 'update'])->name('entrepreneur.profile.update');
+    Route::get('/chat/messages/new/{lastMessageId}', [ChatController::class, 'getNewMessages'])
+         ->name('chat.messages.new');
+    Route::post('/chat/typing', [MessageController::class, 'typingStatus'])->name('chat.typing');
+});
+
+// Messaging routes - ensure these are outside other middleware groups
+Route::middleware(['auth'])->group(function () {
+    Route::get('/messages/{userId}', [MessageController::class, 'show'])->name('messages.show');
+    Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('messages.send');
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/conversations', [MessageController::class, 'getConversations'])->name('messages.conversations');
+    Route::get('/chat/messages/new/{lastMessageId}/{currentChatId}', [MessageController::class, 'getNewMessages'])->name('chat.messages.new');
 });
 
 // Investor routes
@@ -71,14 +85,20 @@ Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
     Route::post('/profile/update', [InvestorController::class, 'updateProfile'])->name('investor.profile.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('investor.logout');
     Route::get('/filter-projects', [InvestorProjectController::class, 'filterProjects'])->name('investor.filter.projects');
-    Route::get('/investor/portfolio', function () {
-        return view('investor.portfolio');
-    });
-    Route::get('/investor/financial', [InvestorController::class, 'financial'])->name('investor.financial');
+    Route::get('/chat', [InvestorController::class, 'chat'])->name('investor.chat');
     Route::post('/deposit', [InvestorController::class, 'deposit'])->name('investor.deposit');
-    Route::get('/chat', function () {
-        return view('investor.chat');
-    })->name('investor.chat');
+    Route::get('/messages/{userId}', [MessageController::class, 'show'])->name('investor.messages.show');
+    Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('investor.messages.send');
 });
 
-Route::post('/investor/projects/{project}/invest', [InvestmentController::class, 'invest'])->name('investor.invest')->middleware('auth');
+Route::post('/investor/projects/{project}/invest', [InvestmentController::class, 'invest'])
+    ->name('investor.invest')
+    ->middleware('auth');
+
+Route::post('/entrepreneur/messages/send', [MessageController::class, 'sendMessage'])
+    ->name('entrepreneur.messages.send')
+    ->middleware(['auth', 'entrepreneur']);
+
+// Add these routes to your existing chat routes
+Route::post('/chat/typing', 'ChatController@updateTypingStatus')->name('chat.typing');
+Route::post('/messages/mark-as-read', 'ChatController@markAsRead')->name('messages.mark-as-read');
