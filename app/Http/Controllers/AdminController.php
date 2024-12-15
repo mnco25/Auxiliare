@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -24,7 +25,12 @@ class AdminController extends Controller
 
     public function userManagement()
     {
-        return view('admin.user_management');
+        $totalUsers = User::count();
+        $totalEntrepreneurs = User::where('user_type', 'Entrepreneur')->count();
+        $totalInvestors = User::where('user_type', 'Investor')->count();
+        $totalAdmins = User::where('user_type', 'Admin')->count();
+
+        return view('admin.user_management', compact('totalUsers', 'totalEntrepreneurs', 'totalInvestors', 'totalAdmins'));
     }
 
     public function logout()

@@ -28,7 +28,7 @@
           <span class="info-box-icon bg-primary"><i class="fas fa-users"></i></span>
           <div class="info-box-content">
             <span>Total Users</span>
-            <span>20</span>
+            <span>{{ $totalUsers }}</span>
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@
           <span class="info-box-icon bg-entrepreneur"><i class="fas fa-user-tie"></i></span>
           <div class="info-box-content">
             <span>Total Entrepreneurs</span>
-            <span>8</span>
+            <span>{{ $totalEntrepreneurs }}</span>
           </div>
         </div>
       </div>
@@ -56,7 +56,7 @@
           <span class="info-box-icon bg-investor"><i class="fas fa-hand-holding-usd"></i></span>
           <div class="info-box-content">
             <span>Total Investors</span>
-            <span>10</span>
+            <span>{{ $totalInvestors }}</span>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
           <span class="info-box-icon bg-admin"><i class="fas fa-user-shield"></i></span>
           <div class="info-box-content">
             <span>Total Admins</span>
-            <span>2</span>
+            <span>{{ $totalAdmins }}</span>
           </div>
         </div>
       </div>

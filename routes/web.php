@@ -6,6 +6,7 @@ use App\Http\Controllers\EntrepreneurController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\InvestorController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Investor\InvestorProjectController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\MessageController;
@@ -102,3 +103,6 @@ Route::post('/entrepreneur/messages/send', [MessageController::class, 'sendMessa
 // Add these routes to your existing chat routes
 Route::post('/chat/typing', 'ChatController@updateTypingStatus')->name('chat.typing');
 Route::post('/messages/mark-as-read', 'ChatController@markAsRead')->name('messages.mark-as-read');
+
+
+Route::get('/admin/user-management', [AdminController::class, 'userManagement'])->name('admin.user_management');
