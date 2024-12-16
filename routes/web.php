@@ -104,5 +104,6 @@ Route::post('/entrepreneur/messages/send', [MessageController::class, 'sendMessa
 Route::post('/chat/typing', 'ChatController@updateTypingStatus')->name('chat.typing');
 Route::post('/messages/mark-as-read', 'ChatController@markAsRead')->name('messages.mark-as-read');
 
+Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
 
 Route::get('/admin/user-management', [AdminController::class, 'userManagement'])->name('admin.user_management');

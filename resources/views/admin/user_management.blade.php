@@ -88,7 +88,7 @@
             <i class="mdi mdi-magnify"></i>
             <input type="text" placeholder="Search users..." />
           </div>
-          <button class="add-user-btn">
+          <button type="button" class="add-user-btn">
             <i class="mdi mdi-account-plus"></i>
             Add User
           </button>
@@ -150,4 +150,81 @@
     </div>
   </div>
 </section>
+
+<!-- User Registration Modal -->
+<div id="userRegistrationModal" class="modal">
+    <div class="modal-content card">
+        <header class="card-header">
+            <h2><i class="mdi mdi-account-plus"></i> Add New User</h2>
+            <span id="closeModal" class="close">&times;</span>
+        </header>
+        <form class="card-body" action="{{ route('admin.users.store') }}" method="POST" id="userRegistrationForm">
+            @csrf
+            <div id="error-messages" class="alert alert-danger" style="display: none;"></div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>
+                        <i class="mdi mdi-account"></i>
+                        <input type="text" name="username" placeholder="Enter username" class="form-control" required />
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <i class="mdi mdi-email"></i>
+                        <input type="email" name="email" placeholder="Enter email" class="form-control" required />
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <i class="mdi mdi-lock"></i>
+                        <input type="password" name="password" placeholder="Password" class="form-control" required />
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <i class="mdi mdi-lock"></i>
+                        <input type="password" name="password_confirmation" placeholder="Confirm Password" class="form-control" required />
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <i class="mdi mdi-account"></i>
+                        <input type="text" name="first_name" placeholder="First Name" class="form-control" required />
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <i class="mdi mdi-account"></i>
+                        <input type="text" name="last_name" placeholder="Last Name" class="form-control" required />
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <i class="mdi mdi-account-group"></i>
+                        <select name="user_type" class="form-control" required>
+                            <option value="" disabled selected>Select Role</option>
+                            <option value="Entrepreneur">Entrepreneur</option>
+                            <option value="Investor">Investor</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="save-btn">
+                    <i class="mdi mdi-account-plus"></i> Add User
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+
+@section('styles')
+<link rel="stylesheet" href="{{ asset('css/admin/user_management.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css" />
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/admin/user_management.js') }}"></script>
 @endsection

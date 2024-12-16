@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Admin - Auxiliare</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @section('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin/transactions.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admin/user_management.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css" />
+    <!-- Material Design Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    @show
 </head>
 
 <body class="layout-fixed">
@@ -280,6 +287,10 @@
             document.body.classList.add("sidebar-collapsed");
         }
     </script>
+    @section('scripts')
+    @show
+
+    @yield('scripts') <!-- Ensure this line is present before </body> -->
 </body>
 
 </html>
