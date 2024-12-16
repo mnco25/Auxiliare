@@ -49,13 +49,14 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         try {
-            // Check if user owns the project
-            if ($project->user_id !== auth()->id()) {
-                return response()->json(['error' => 'Unauthorized'], 403);
+            // Check if user is admin or owns the project
+            if (auth()->user()->user_type === 'Admin' || 
+                (auth()->user()->user_type === 'Entrepreneur' && $project->user_id === auth()->id())) {
+                $project->delete();
+                return response()->json(['success' => true]);
             }
 
-            $project->delete();
-            return response()->json(['success' => true]);
+            return response()->json(['error' => 'Unauthorized'], 403);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to delete project'], 500);
         }

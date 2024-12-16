@@ -9,13 +9,14 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('content')
 <div class="content-header">
   <div class="container-fluid">
     <h1 class="dashboard-title">
-      <i class="fas fa-briefcase"></i> <!-- Changed from mdi to fas -->
+      <i class="fas fa-briefcase"></i> 
       Project Management
     </h1>
     <div class="dashboard-breadcrumb">
@@ -32,7 +33,7 @@
     <div class="stats-row">
       <div class="stats-category">
         <h4 class="category-title">
-          <i class="fas fa-briefcase"></i> <!-- Changed from mdi to fas -->
+          <i class="fas fa-briefcase"></i>
           All Projects
         </h4>
         <div class="info-box">
@@ -143,7 +144,7 @@
                       <i class="mdi mdi-pencil"></i>
                     </button>
                     <button class="delete-btn" title="Delete Project" onclick="deleteProject({{ $project->id }})">
-                      <i class="mdi mdi-delete"></i>
+                        <i class="mdi mdi-delete"></i>
                     </button>
                   </div>
                 </td>
@@ -160,4 +161,8 @@
     </div>
   </div>
 </section>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/admin/projects.js') }}"></script>
 @endsection

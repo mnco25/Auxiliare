@@ -108,9 +108,8 @@ Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.
 
 Route::get('/admin/user-management', [AdminController::class, 'userManagement'])->name('admin.user_management');
 
-// Add these routes inside the admin middleware group
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    // ...existing routes...
     Route::get('/users/{id}', [AdminController::class, 'getUser']);
     Route::post('/users/{id}', [AdminController::class, 'update']);
+    Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
 });
