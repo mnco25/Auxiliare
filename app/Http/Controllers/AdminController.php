@@ -44,6 +44,7 @@ class AdminController extends Controller
             'success_rates' => $this->getSuccessRatesData()
         ];
 
+        // Pass 'chartData' to the view, which includes 'user_growth'
         return view('admin.admin', compact('stats', 'chartData'));
     }
 
@@ -316,5 +317,29 @@ class AdminController extends Controller
     {
         Auth::logout();
         return redirect()->route('login')->with('success_message', 'Successfully logged out.');
+    }
+
+    public function index()
+    {
+        $totalUsers = User::count();
+        $totalEntrepreneurs = User::where('user_type', 'entrepreneur')->count();
+        $totalInvestors = User::where('user_type', 'investor')->count();
+        $totalProjects = Project::count();
+
+        $monthlyUserGrowth = User::select(
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('COUNT(*) as count')
+        )
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+        return view('admin.admin', [
+            'totalUsers' => $totalUsers,
+            'totalEntrepreneurs' => $totalEntrepreneurs,
+            'totalInvestors' => $totalInvestors,
+            'totalProjects' => $totalProjects,
+            'monthlyUserGrowth' => $monthlyUserGrowth,
+        ]);
     }
 }

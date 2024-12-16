@@ -151,8 +151,17 @@
         </div>
     </div>
 </section>
+
+<script>
+    var statisticsData = {
+        totalUsers: {{ $stats['total_users'] }},
+        totalEntrepreneurs: {{ $stats['entrepreneurs']['total'] }},
+        totalInvestors: {{ $stats['investors']['total'] }},
+        totalProjects: {{ $stats['total_projects'] }},
+        monthlyUserGrowth: @json($chartData['user_growth']),
+    };
+</script>
 @endsection
 
-<!-- Ensure Chart.js is included -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ asset('js/admin-dashboard.js') }}"></script>

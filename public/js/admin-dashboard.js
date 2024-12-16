@@ -3,21 +3,28 @@ document.addEventListener("DOMContentLoaded", function() {
     const doughnutCtx = document
         .getElementById("doughnutChart")
         .getContext("2d");
+    // Use statisticsData variable from the updated structure
+    const doughnutData = {
+        labels: ["Users", "Entrepreneurs", "Investors", "Projects"],
+        datasets: [{
+            data: [
+                statisticsData.totalUsers,
+                statisticsData.totalEntrepreneurs,
+                statisticsData.totalInvestors,
+                statisticsData.totalProjects
+            ],
+            backgroundColor: [
+                "rgba(54, 162, 235, 0.8)",
+                "rgba(255, 99, 132, 0.8)",
+                "rgba(255, 206, 86, 0.8)",
+                "rgba(75, 192, 192, 0.8)",
+            ],
+            borderWidth: 1,
+        }],
+    };
     new Chart(doughnutCtx, {
         type: "doughnut",
-        data: {
-            labels: ["Users", "Entrepreneurs", "Investors", "Projects"],
-            datasets: [{
-                data: [20, 11, 9, 11],
-                backgroundColor: [
-                    "rgba(54, 162, 235, 0.8)",
-                    "rgba(255, 99, 132, 0.8)",
-                    "rgba(255, 206, 86, 0.8)",
-                    "rgba(75, 192, 192, 0.8)",
-                ],
-                borderWidth: 1,
-            }],
-        },
+        data: doughnutData,
         options: {
             responsive: true,
             plugins: {
@@ -30,18 +37,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Bar Chart Initialization
     const barCtx = document.getElementById("barChart").getContext("2d");
+    // Prepare data for Bar Chart using the updated monthlyUserGrowth
+    const barLabels = Object.keys(statisticsData.monthlyUserGrowth);
+    const barDataValues = Object.values(statisticsData.monthlyUserGrowth);
+    const barData = {
+        labels: barLabels,
+        datasets: [{
+            label: "Active Users",
+            data: barDataValues,
+            backgroundColor: "rgba(54, 162, 235, 0.8)",
+            borderColor: "rgba(54, 162, 235, 1)",
+            borderWidth: 1,
+        }],
+    };
     new Chart(barCtx, {
         type: "bar",
-        data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-            datasets: [{
-                label: "Active Users",
-                data: [1200, 1500, 1000, 2000, 2500, 2300],
-                backgroundColor: "rgba(54, 162, 235, 0.8)",
-                borderColor: "rgba(54, 162, 235, 1)",
-                borderWidth: 1,
-            }],
-        },
+        data: barData,
         options: {
             responsive: true,
             scales: {
