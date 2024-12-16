@@ -14,7 +14,9 @@ class Project extends Model
         'funding_goal',
         'category',
         'start_date',
-        'end_date'
+        'end_date',
+        'status',
+        'current_funding'
     ];
 
     public function user()

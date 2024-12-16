@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Project; // Add this line at the top if not already present
 
 class AdminController extends Controller
 {
@@ -17,7 +18,19 @@ class AdminController extends Controller
 
     public function projects()
     {
-        return view('admin.projects');
+        // Calculate project statistics
+        $stats = [
+            'total' => Project::count(),
+            'active' => Project::where('status', 'Active')->count(),
+            'pending' => Project::where('status', 'Pending')->count(),
+            'completed' => Project::where('status', 'Completed')->count(),
+        ];
+
+        // Fetch projects
+        $projects = Project::with('user')->latest()->get();
+
+        // Pass 'stats' and 'projects' to the view
+        return view('admin.projects', compact('stats', 'projects'));
     }
 
     public function transactions()

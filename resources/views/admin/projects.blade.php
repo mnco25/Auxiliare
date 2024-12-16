@@ -28,7 +28,7 @@
           <span class="info-box-icon bg-primary"><i class="fas fa-project-diagram"></i></span>
           <div class="info-box-content">
             <span>Total Projects</span>
-            <span>15</span>
+            <span>{{ $stats['total'] }}</span>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@
           <span class="info-box-icon bg-success"><i class="fas fa-tasks"></i></span>
           <div class="info-box-content">
             <span>Active</span>
-            <span>8</span>
+            <span>{{ $stats['active'] }}</span>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@
           <span class="info-box-icon bg-warning"><i class="fas fa-hourglass-half"></i></span>
           <div class="info-box-content">
             <span>Pending</span>
-            <span>5</span>
+            <span>{{ $stats['pending'] }}</span>
           </div>
         </div>
       </div>
@@ -67,7 +67,7 @@
           <span class="info-box-icon bg-info"><i class="fas fa-flag-checkered"></i></span>
           <div class="info-box-content">
             <span>Completed</span>
-            <span>2</span>
+            <span>{{ $stats['completed'] }}</span>
           </div>
         </div>
       </div>
@@ -104,50 +104,57 @@
             </tr>
           </thead>
           <tbody>
+            @forelse($projects as $project)
             <tr>
               <td>
                 <div class="project-info">
-                  <img
-                    src="../../assets/project-icon.png"
-                    alt="Project"
-                    class="project-icon" />
-                  <span>E-Commerce Platform</span>
+                  <img src="{{ asset('assets/project-icon.png') }}" alt="Project" class="project-icon" />
+                  <span>{{ $project->title }}</span>
                 </div>
               </td>
               <td>
                 <p class="project-description">
-                  Online marketplace for local artisans
+                  {{ Str::limit($project->description, 100) }}
                 </p>
               </td>
               <td>
                 <div class="author-info">
-                  <img
-                    src="../../assets/default-avatar.png"
-                    alt="Author"
-                    class="author-avatar" />
-                  <span>John Doe</span>
+                  @if($project->user->profile && $project->user->profile->profile_pic)
+                    <img src="{{ asset('storage/profile_pictures/' . $project->user->profile->profile_pic) }}" alt="Author" class="author-avatar" />
+                  @else
+                    <img src="{{ asset('assets/default-avatar.png') }}" alt="Author" class="author-avatar" />
+                  @endif
+                  <span>{{ $project->user->first_name }} {{ $project->user->last_name }}</span>
                 </div>
               </td>
               <td>
-                <span class="status-badge status-active">In Progress</span>
+                <span class="status-badge status-{{ strtolower($project->status) }}">{{ $project->status }}</span>
               </td>
               <td>
                 <div class="progress-bar">
-                  <div class="progress" style="width: 75%">75%</div>
+                  @php
+                    $progress = ($project->current_funding / $project->funding_goal) * 100;
+                    $progress = min(100, $progress);
+                  @endphp
+                  <div class="progress" style="width: {{ $progress }}%">{{ number_format($progress) }}%</div>
                 </div>
               </td>
               <td>
                 <div class="action-buttons">
-                  <button class="edit-btn" title="Edit Project">
+                  <button class="edit-btn" title="Edit Project" onclick="editProject({{ $project->id }})">
                     <i class="mdi mdi-pencil"></i>
                   </button>
-                  <button class="delete-btn" title="Delete Project">
+                  <button class="delete-btn" title="Delete Project" onclick="deleteProject({{ $project->id }})">
                     <i class="mdi mdi-delete"></i>
                   </button>
                 </div>
               </td>
             </tr>
-            <!-- Add more project rows with the same structure -->
+            @empty
+            <tr>
+              <td colspan="6" class="text-center">No projects found</td>
+            </tr>
+            @endforelse
           </tbody>
         </table>
       </div>
