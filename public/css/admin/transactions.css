@@ -16,12 +16,6 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-/* Ensure transactions content aligns with content-wrapper */
-.transactions-content {
-    /* ...existing styles... */
-    /* Adjust margins or padding if necessary */
-}
-
 /* Table styles */
 .table-container {
     margin-top: 1rem;
@@ -82,15 +76,9 @@ td {
 
 /* Adjust content-wrapper to occupy full space beside the sidebar */
 .content-wrapper {
-    /* Remove top margin or padding if previously set for the header */
-    /* ...existing code... */
-
-    /* Ensure it spans the full width minus the sidebar */
     margin-left: 260px; /* Updated sidebar width */
     width: calc(100% - 260px);
 
-    /* Additional adjustments if necessary */
-    /* ...existing code... */
 }
 
 /* Responsive adjustments if needed */

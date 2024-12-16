@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Project; // Add this line at the top if not already present
+use App\Models\Project;
+use App\Models\Transaction;
 
 class AdminController extends Controller
 {
@@ -35,7 +36,18 @@ class AdminController extends Controller
 
     public function transactions()
     {
-        return view('admin.transactions');
+        $stats = [
+            'total' => Transaction::count(),
+            'completed' => Transaction::where('transaction_status', 'completed')->count(),
+            'pending' => Transaction::where('transaction_status', 'pending')->count(),
+            'failed' => Transaction::where('transaction_status', 'failed')->count()
+        ];
+
+        $transactions = Transaction::with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.transactions', compact('stats', 'transactions'));
     }
 
     public function userManagement()

@@ -27,7 +27,7 @@
           <span class="info-box-icon bg-primary"><i class="fas fa-exchange-alt"></i></span>
           <div class="info-box-content">
             <span>Total transactions</span>
-            <span>45</span>
+            <span>{{ $stats['total'] }}</span>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
           <span class="info-box-icon bg-success"><i class="fas fa-check-circle"></i></span>
           <div class="info-box-content">
             <span>Completed</span>
-            <span>32</span>
+            <span>{{ $stats['completed'] }}</span>
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@
           <span class="info-box-icon bg-warning"><i class="fas fa-clock"></i></span>
           <div class="info-box-content">
             <span>Pending</span>
-            <span>10</span>
+            <span>{{ $stats['pending'] }}</span>
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@
           <span class="info-box-icon bg-danger"><i class="fas fa-times-circle"></i></span>
           <div class="info-box-content">
             <span>Failed</span>
-            <span>3</span>
+            <span>{{ $stats['failed'] }}</span>
           </div>
         </div>
       </div>
@@ -93,46 +93,24 @@
               </tr>
             </thead>
             <tbody>
+              @forelse($transactions as $transaction)
               <tr>
-                <td>2024-12-01</td>
+                <td>{{ $transaction->created_at->format('Y-m-d') }}</td>
                 <td>
-                  <p>Name: <strong>Jix</strong></p>
-                  <p>Contact: 098733456171</p>
+                  <p><strong>{{ $transaction->user->first_name . ' ' . $transaction->user->last_name }}</strong></p>
+                  <p>{{ $transaction->user->email }}</p>
                 </td>
-                <td>Payment to Jix</td>
-                <td>$50,000.00</td>
-                <td class="completed">Completed</td>
+                <td>{{ $transaction->transaction_type }}</td>
+                <td>₱{{ number_format($transaction->amount, 2) }}</td>
+                <td class="{{ strtolower($transaction->transaction_status) }}">
+                  {{ ucfirst($transaction->transaction_status) }}
+                </td>
               </tr>
+              @empty
               <tr>
-                <td>2024-12-05</td>
-                <td>
-                  <p>Name: <strong>Jix</strong></p>
-                  <p>Contact: 098733456171</p>
-                </td>
-                <td>Payment from Jix</td>
-                <td>$10,000.00</td>
-                <td class="pending">Pending</td>
+                <td colspan="5" class="text-center">No transactions found</td>
               </tr>
-              <tr>
-                <td>2024-12-07</td>
-                <td>
-                  <p>Name: <strong>Marc</strong></p>
-                  <p>Contact: 098733526171</p>
-                </td>
-                <td>Payment from Marc</td>
-                <td>$200,000.00</td>
-                <td class="completed">Completed</td>
-              </tr>
-              <tr>
-                <td>2024-12-10</td>
-                <td>
-                  <p>Name: <strong>Dawn</strong></p>
-                  <p>Contact: 09873892319</p>
-                </td>
-                <td>Payment to Dawn</td>
-                <td>$150,000,000.00</td>
-                <td class="failed">Failed</td>
-              </tr>
+              @endforelse
             </tbody>
           </table>
         </div>
