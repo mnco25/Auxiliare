@@ -220,6 +220,11 @@ td {
     color: #c0392b;
 }
 
+.status-suspended {
+    background: rgba(241, 196, 15, 0.15);
+    color: #d4ac0d;
+}
+
 /* Stats Row Modification */
 .stats-row {
     margin-bottom: 2rem;
@@ -293,18 +298,275 @@ td {
     }
 }
 
-/* Modal Styles */
+/* Modal Styles - Optimized */
 .modal {
-    display: none;
+    display: none; /* Keep this initially as none */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    height: 100vh;
+    background: rgba(10, 26, 60, 0.97);
+    backdrop-filter: blur(10px);
     z-index: 1050;
-    padding: 20px;
+    overflow: auto;
+    padding: 2rem;
+}
+
+/* Remove all duplicate .modal declarations and combine styles */
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: modalFadeIn 0.3s ease;
+}
+
+/* Update JavaScript to use these classes */
+.modal .card {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.modal .card-header {
+    text-align: center;
+    margin-bottom: 0;
+    position: relative;
+    border-bottom: 1px solid rgba(228, 181, 76, 0.2);
+    padding: 2rem;
+}
+
+.modal .card-body {
+    padding: 2rem;
+    max-height: calc(90vh - 200px);
     overflow-y: auto;
+}
+
+/* Enhanced Modal Styles - Matching Login Registration */
+.modal .card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+}
+
+.modal .card-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    border-bottom: 1px solid rgba(228, 181, 76, 0.2);
+    padding: 2rem 2rem 1.5rem;
+}
+
+.modal .card-header h2 {
+    color: #e4b54c;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.modal .card-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modal .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin: 0;
+}
+
+.modal .form-group {
+    position: relative;
+    margin: 0;
+}
+
+.modal .form-group label {
+    display: block;
+    color: #e4b54c;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.modal .form-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #e4b54c;
+    font-size: 1.2rem;
+    z-index: 1;
+}
+
+.modal .form-control {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 2px solid rgba(228, 181, 76, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    height: auto;
+}
+
+.modal .form-control:focus {
+    border-color: #e4b54c;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(228, 181, 76, 0.2);
+}
+
+.modal .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.modal select.form-control {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23e4b54c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.25rem;
+    padding-right: 2.5rem;
+}
+
+.modal select.form-control option {
+    background: #0a1a3c;
+    color: #fff;
+    padding: 10px;
+}
+
+.modal .form-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.modal .save-btn,
+.modal .cancel-btn {
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+}
+
+.modal .save-btn {
+    background: linear-gradient(45deg, #e4b54c, #c99f43);
+    color: #0a1a3c;
+    flex: 2;
+}
+
+.modal .cancel-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    flex: 1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal .save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(228, 181, 76, 0.3);
+}
+
+.modal .cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.modal .close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(228, 181, 76, 0.3);
+    background: transparent;
+    color: #e4b54c;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.modal .close:hover {
+    color: #fff;
+    border-color: #fff;
+    transform: rotate(90deg);
+}
+
+.alert-danger {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    color: #e74c3c;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .modal {
+        padding: 1rem;
+    }
+
+    .modal .card {
+        max-width: 100%;
+    }
+
+    .modal .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .modal .form-actions {
+        flex-direction: column;
+    }
+
+    .modal .save-btn,
+    .modal .cancel-btn {
+        width: 100%;
+    }
+}
+
+/* Alert styles */
+.alert-danger {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    color: #e74c3c;
 }
 
 .modal-content {
@@ -407,11 +669,6 @@ td {
     line-height: 8px;
 }
 
-/* Update status badges for projects */
-.status-badge {
-    /* ...existing code... */
-}
-
 .status-inprogress {
     background: rgba(52, 152, 219, 0.15);
     color: #2980b9;
@@ -439,3 +696,5 @@ td {
     /* ...existing styles... */
     /* Adjust margins or padding if necessary */
 }
+
+/* ...existing code... */

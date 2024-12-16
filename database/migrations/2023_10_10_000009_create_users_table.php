@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->enum('user_type', ['Entrepreneur', 'Investor', 'Admin']);
-            $table->enum('account_status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('account_status', ['Active', 'Inactive', 'Suspended'])->default('Active');
             $table->timestamps();
         });
 

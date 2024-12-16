@@ -107,3 +107,10 @@ Route::post('/messages/mark-as-read', 'ChatController@markAsRead')->name('messag
 Route::post('/admin/users', [AdminController::class, 'storeUser'])->name('admin.users.store');
 
 Route::get('/admin/user-management', [AdminController::class, 'userManagement'])->name('admin.user_management');
+
+// Add these routes inside the admin middleware group
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    // ...existing routes...
+    Route::get('/users/{id}', [AdminController::class, 'getUser']);
+    Route::post('/users/{id}', [AdminController::class, 'update']);
+});
