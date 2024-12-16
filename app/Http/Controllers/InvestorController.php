@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\Project;
 use App\Models\Transaction;
 use App\Models\User;
@@ -295,7 +296,7 @@ class InvestorController extends Controller
                 ], 400);
             }
 
-            \DB::transaction(function() use ($user, $project, $amount) {
+            DB::transaction(function() use ($user, $project, $amount) {
                 // Create investment record
                 Investment::create([
                     'investor_id' => $user->user_id,

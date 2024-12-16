@@ -36,7 +36,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(base_path('routes/a
 // Entrepreneur routes
 Route::middleware(['auth', 'entrepreneur'])->prefix('entrepreneur')->group(function () {
     Route::get('/home', [EntrepreneurController::class, 'home'])->name('entrepreneur.home');
-    // ...other entrepreneur routes...
     require base_path('routes/entrepreneur.php');
     Route::get('/chat', [EntrepreneurController::class, 'chat'])->name('entrepreneur.chat');
     Route::get('/messages/{userId}', [MessageController::class, 'show'])->name('entrepreneur.messages.show');
@@ -54,12 +53,10 @@ Route::middleware(['auth', 'entrepreneur'])->group(function () {
     Route::post('/entrepreneur/profile/update', [ProfileController::class, 'update'])->name('entrepreneur.profile.update');
 });
 
-// Include route files
 require __DIR__ . '/admin.php';
 require __DIR__ . '/entrepreneur.php';
 
 Route::middleware(['auth'])->group(function () {
-    // ...existing routes...
     Route::post('/entrepreneur/profile/update', [ProfileController::class, 'update'])->name('entrepreneur.profile.update');
     Route::get('/chat/messages/new/{lastMessageId}', [ChatController::class, 'getNewMessages'])
          ->name('chat.messages.new');
