@@ -5,7 +5,6 @@
 @section('additional_css')
 <link rel="stylesheet" href="{{ asset('css/investor/projects.css') }}">
 <link rel="stylesheet" href="{{ asset('css/entrepreneur/home.css') }}">
-
 @endsection
 
 @section('content')
@@ -50,73 +49,87 @@
         <!-- Projects Grid -->
         <div class="projects-grid">
             @forelse($projects as $project)
-            <div class="project-card">
-                <div class="project-header">
-                    <div class="title-section">
-                        <h3>{{ $project->title }}</h3>
-                        <span class="category-badge">{{ $project->category }}</span>
+            <a href="{{ route('investor.project.details', $project->id) }}" class="project-card-link">
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="title-section">
+                            <h3>{{ $project->title }}</h3>
+                            <span class="category-badge">{{ $project->category }}</span>
+                        </div>
+                        <div class="status-badge {{ strtotime($project->end_date) < time() ? 'closed' : 'active' }}">
+                            {{ strtotime($project->end_date) < time() ? 'Closed' : 'Active' }}
+                        </div>
                     </div>
-                    <div class="status-badge {{ strtotime($project->end_date) < time() ? 'closed' : 'active' }}">
-                        {{ strtotime($project->end_date) < time() ? 'Closed' : 'Active' }}
+
+                    <p class="description">{{ $project->description }}</p>
+
+                    <div class="investment-details">
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>Min. Investment: ₱{{ number_format($project->minimum_investment) }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ \Carbon\Carbon::parse($project->end_date)->diffForHumans() }}</span>
+                        </div>
+                    </div>
+
+                    <div class="funding-progress">
+                        @php
+                        $percentage = ($project->current_funding / $project->funding_goal) * 100;
+                        $percentage = min(100, round($percentage));
+                        @endphp
+                        <div class="progress-info">
+                            <span class="progress-label">Funding Progress</span>
+                            <span class="progress-percentage">{{ $percentage }}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: {{ $percentage }}%"></div>
+                        </div>
+                        <div class="funding-stats">
+                            <span>₱{{ number_format($project->current_funding) }} raised</span>
+                            <span>of ₱{{ number_format($project->funding_goal) }} goal</span>
+                        </div>
+                    </div>
+
+                    <div class="entrepreneur-info">
+                        <div class="avatar-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="info">
+                            <span class="name">{{ $project->user->first_name }} {{ $project->user->last_name }}</span>
+                            <span class="role">Project Lead</span>
+                        </div>
+                        <button class="contact-btn" 
+                                onclick="window.location.href='{{ route('messages.show', $project->user->user_id) }}'" 
+                                title="Contact Entrepreneur">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                    </div>
+
+                    <div class="project-meta">
+                        <div class="meta-info">
+                            <span class="deadline">
+                                <i class="fas fa-calendar-alt"></i>
+                                Deadline: {{ date('M d, Y', strtotime($project->end_date)) }}
+                            </span>
+                        </div>
+                        <button 
+                            class="invest-btn" 
+                            data-toggle="modal" 
+                            data-target="#investmentModal"
+                            data-project-id="{{ $project->id }}"
+                            data-project-title="{{ $project->title }}"
+                            data-min-investment="{{ $project->minimum_investment }}"
+                            data-max-investment="{{ $project->funding_goal - $project->current_funding }}"
+                            {{ strtotime($project->end_date) < time() ? 'disabled' : '' }}
+                        >
+                            <i class="fas fa-chart-line"></i> 
+                            {{ strtotime($project->end_date) < time() ? 'Investment Closed' : 'Invest Now' }}
+                        </button>
                     </div>
                 </div>
-
-                <p class="description">{{ $project->description }}</p>
-
-                <div class="investment-details">
-                    <div class="detail-item">
-                        <i class="fas fa-users"></i>
-                        <span>Min. Investment: ₱{{ number_format($project->minimum_investment) }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        <span>{{ \Carbon\Carbon::parse($project->end_date)->diffForHumans() }}</span>
-                    </div>
-                </div>
-
-                <div class="funding-progress">
-                    @php
-                    $percentage = ($project->current_funding / $project->funding_goal) * 100;
-                    $percentage = min(100, round($percentage));
-                    @endphp
-                    <div class="progress-info">
-                        <span class="progress-label">Funding Progress</span>
-                        <span class="progress-percentage">{{ $percentage }}%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: {{ $percentage }}%"></div>
-                    </div>
-                    <div class="funding-stats">
-                        <span>₱{{ number_format($project->current_funding) }} raised</span>
-                        <span>of ₱{{ number_format($project->funding_goal) }} goal</span>
-                    </div>
-                </div>
-
-                <div class="entrepreneur-info">
-                    <img src="{{ $project->user->avatar ?? asset('assets/default-avatar.png') }}" alt="Entrepreneur" class="avatar">
-                    <div class="info">
-                        <span class="name">{{ $project->user->first_name }} {{ $project->user->last_name }}</span>
-                        <span class="role">Project Lead</span>
-                    </div>
-                    <button class="contact-btn" 
-                            onclick="window.location.href='{{ route('messages.show', $project->user->user_id) }}'" 
-                            title="Contact Entrepreneur">
-                        <i class="fas fa-envelope"></i>
-                    </button>
-                </div>
-
-                <div class="project-meta">
-                    <div class="meta-info">
-                        <span class="deadline">
-                            <i class="fas fa-calendar-alt"></i>
-                            Deadline: {{ date('M d, Y', strtotime($project->end_date)) }}
-                        </span>
-                    </div>
-                    <button class="invest-btn" data-project-id="{{ $project->id }}" data-min-investment="{{ $project->minimum_investment }}">
-                        <i class="fas fa-chart-line"></i> Invest Now
-                    </button>
-                </div>
-            </div>
+            </a>
             @empty
             <div class="no-projects">
                 <i class="fas fa-folder-open"></i>
@@ -125,24 +138,36 @@
             @endforelse
         </div>
 
-        <!-- Investment Modal -->
+        <!-- Enhanced Investment Modal -->
         <div class="modal fade" id="investmentModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Make an Investment</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h5 class="modal-title">Invest in <span id="projectTitle"></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <form id="investmentForm">
                             @csrf
                             <div class="form-group">
-                                <label>Investment Amount (₱)</label>
-                                <input type="number" name="amount" class="form-control" required>
-                                <small class="text-muted">Minimum investment: ₱<span id="minInvestment"></span></small>
+                                <label for="investmentAmount">Investment Amount (₱)</label>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    id="investmentAmount" 
+                                    name="amount" 
+                                    required
+                                    step="1000"
+                                >
+                                <small class="text-muted">
+                                    Minimum investment: ₱<span id="minInvestment"></span><br>
+                                    Maximum investment: ₱<span id="maxInvestment"></span>
+                                </small>
                             </div>
                             <div class="balance-info">
-                                Your current balance: ₱<span id="currentBalance">{{ number_format(auth()->user()->balance) }}</span>
+                                Your current balance: ₱<span id="currentBalance">{{ number_format(auth()->user()->balance, 2) }}</span>
                             </div>
                         </form>
                     </div>
@@ -213,71 +238,71 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Investment handling
     let currentProjectId = null;
-    const investButtons = document.querySelectorAll('.invest-btn');
-    const modal = document.getElementById('investmentModal');
+    const modal = $('#investmentModal');
 
-    investButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            currentProjectId = this.dataset.projectId;
-            const minInvestment = this.dataset.minInvestment;
-            document.getElementById('minInvestment').textContent = minInvestment;
-            document.querySelector('[name="amount"]').min = minInvestment;
-            $('#investmentModal').modal('show');
-        });
+    // Update modal content when showing
+    modal.on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        currentProjectId = button.data('project-id');
+        const projectTitle = button.data('project-title');
+        const minInvestment = button.data('min-investment');
+        const maxInvestment = button.data('max-investment');
+
+        $('#projectTitle').text(projectTitle);
+        $('#minInvestment').text(numberFormat(minInvestment));
+        $('#maxInvestment').text(numberFormat(maxInvestment));
+        
+        const amountInput = $('#investmentAmount');
+        amountInput.attr('min', minInvestment);
+        amountInput.attr('max', maxInvestment);
     });
 
-    document.getElementById('confirmInvestment').addEventListener('click', async function() {
-        const form = document.getElementById('investmentForm');
-        const amount = form.querySelector('[name="amount"]').value;
-
-        if (!amount || parseFloat(amount) <= 0) {
-            alert('Please enter a valid investment amount');
-            return;
-        }
-
+    // Handle investment submission
+    $('#confirmInvestment').click(async function() {
+        const amount = $('#investmentAmount').val();
+        
         try {
             const response = await fetch(`/investor/projects/${currentProjectId}/invest`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 },
-                body: JSON.stringify({
-                    amount: parseFloat(amount)
-                })
+                body: JSON.stringify({ amount: parseFloat(amount) })
             });
 
-            const data = await response.json();
+            const result = await response.json();
 
-            if (data.success) {
-                $('#investmentModal').modal('hide');
-                alert('Investment successful!');
-                window.location.reload();
+            if (result.success) {
+                modal.modal('hide');
+                // Show success message and reload the page
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Your investment has been processed successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.reload();
+                });
             } else {
-                alert(data.message || 'Investment failed');
+                throw new Error(result.message || 'Investment failed');
             }
         } catch (error) {
-            console.error('Investment error:', error);
-            alert('An error occurred while processing your investment. Please try again.');
+            Swal.fire({
+                title: 'Error',
+                text: error.message || 'An error occurred while processing your investment',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
         }
     });
 
-    // Amount input validation
-    const amountInput = document.querySelector('[name="amount"]');
-    amountInput.addEventListener('input', function() {
-        const currentBalance = parseFloat(document.getElementById('currentBalance').textContent.replace(/[^0-9.-]+/g,""));
-        const minInvestment = parseFloat(document.getElementById('minInvestment').textContent);
-
-        if (parseFloat(this.value) > currentBalance) {
-            this.setCustomValidity('Amount exceeds your current balance');
-        } else if (parseFloat(this.value) < minInvestment) {
-            this.setCustomValidity(`Minimum investment amount is ₱${minInvestment}`);
-        } else {
-            this.setCustomValidity('');
-        }
-    });
+    function numberFormat(number) {
+        return new Intl.NumberFormat('en-PH', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(number);
+    }
 });
 </script>
 @endsection

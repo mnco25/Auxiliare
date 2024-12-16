@@ -272,4 +272,57 @@ class InvestorController extends Controller
 
         return view('investor.chat', compact('conversations', 'unreadMessages', 'messages', 'currentChat'));
     }
+
+    public function invest(Request $request, Project $project)
+    {
+        try {
+            $request->validate([
+                'amount' => [
+                    'required',
+                    'numeric',
+                    'min:' . $project->minimum_investment,
+                    'max:' . ($project->funding_goal - $project->current_funding)
+                ]
+            ]);
+
+            $user = auth()->user();
+            $amount = $request->amount;
+
+            if ($user->balance < $amount) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Insufficient balance'
+                ], 400);
+            }
+
+            \DB::transaction(function() use ($user, $project, $amount) {
+                // Create investment record
+                Investment::create([
+                    'investor_id' => $user->user_id,
+                    'project_id' => $project->id,
+                    'investment_amount' => $amount,
+                    'investment_status' => 'Confirmed',
+                    'investment_date' => now()
+                ]);
+
+                // Update project funding
+                $project->current_funding += $amount;
+                $project->save();
+
+                // Update user balance
+                $user->balance -= $amount;
+                $user->save();
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Investment successful'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }
