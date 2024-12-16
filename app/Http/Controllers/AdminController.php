@@ -14,7 +14,105 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.admin');
+        // Gather general statistics
+        $stats = [
+            'total_users' => User::count(),
+            'total_projects' => Project::count(),
+            'entrepreneurs' => [
+                'total' => User::where('user_type', 'Entrepreneur')->count(),
+                'active_projects' => Project::where('status', 'Active')->count()
+            ],
+            'investors' => [
+                'total' => User::where('user_type', 'Investor')->count(),
+                'total_investments' => Transaction::where('transaction_type', 'Investment')
+                    ->where('transaction_status', 'Success')
+                    ->sum('amount')
+            ],
+            'admins' => [
+                'total' => User::where('user_type', 'Admin')->count(),
+                'active_tasks' => Project::where('status', 'Pending')->count() // Tasks requiring admin attention
+            ]
+        ];
+
+        // Get monthly data for charts
+        $chartData = [
+            'user_growth' => $this->getUserGrowthData(),
+            'funding_progress' => $this->getFundingProgressData(),
+            'project_categories' => $this->getProjectCategoriesData(),
+            'transaction_distribution' => $this->getTransactionDistributionData(),
+            'investment_trends' => $this->getInvestmentTrendsData(),
+            'success_rates' => $this->getSuccessRatesData()
+        ];
+
+        return view('admin.admin', compact('stats', 'chartData'));
+    }
+
+    private function getUserGrowthData()
+    {
+        return User::selectRaw('DATE_FORMAT(created_at, "%b") as month, COUNT(*) as count, MIN(created_at) as month_start')
+            ->whereRaw('created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)')
+            ->groupBy(DB::raw('DATE_FORMAT(created_at, "%b")'))
+            ->orderBy('month_start')
+            ->pluck('count', 'month')
+            ->toArray();
+    }
+
+    private function getFundingProgressData()
+    {
+        return Transaction::selectRaw('DATE_FORMAT(created_at, "%b") as month, SUM(amount) as total, MIN(created_at) as month_start')
+            ->where('transaction_type', 'Investment')
+            ->where('transaction_status', 'Success')
+            ->whereRaw('created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)')
+            ->groupBy(DB::raw('DATE_FORMAT(created_at, "%b")'))
+            ->orderBy('month_start')
+            ->pluck('total', 'month')
+            ->toArray();
+    }
+
+    private function getProjectCategoriesData()
+    {
+        return Project::selectRaw('category, COUNT(*) as count')
+            ->groupBy('category')
+            ->pluck('count', 'category')
+            ->toArray();
+    }
+
+    private function getTransactionDistributionData()
+    {
+        return Transaction::selectRaw('transaction_type, COUNT(*) as count')
+            ->where('transaction_status', 'Success')
+            ->groupBy('transaction_type')
+            ->pluck('count', 'transaction_type')
+            ->toArray();
+    }
+
+    private function getInvestmentTrendsData()
+    {
+        return [
+            'volumes' => Transaction::selectRaw('CONCAT("Q", QUARTER(created_at)) as quarter, SUM(amount) as total')
+                ->where('transaction_type', 'Investment')
+                ->where('transaction_status', 'Success')
+                ->whereRaw('created_at >= DATE_SUB(NOW(), INTERVAL 1 YEAR)')
+                ->groupBy('quarter')
+                ->pluck('total', 'quarter')
+                ->toArray(),
+            'investors' => Transaction::selectRaw('CONCAT("Q", QUARTER(created_at)) as quarter, COUNT(DISTINCT user_id) as count')
+                ->where('transaction_type', 'Investment')
+                ->where('transaction_status', 'Success')
+                ->whereRaw('created_at >= DATE_SUB(NOW(), INTERVAL 1 YEAR)')
+                ->groupBy('quarter')
+                ->pluck('count', 'quarter')
+                ->toArray()
+        ];
+    }
+
+    private function getSuccessRatesData()
+    {
+        return Project::selectRaw('category, 
+            ROUND((COUNT(CASE WHEN status = "Completed" THEN 1 END) / COUNT(*)) * 100, 2) as success_rate')
+            ->groupBy('category')
+            ->pluck('success_rate', 'category')
+            ->toArray();
     }
 
     public function projects()
