@@ -1,5 +1,16 @@
 @extends('admin.layout')
 
+@section('styles')
+<!-- Base Admin CSS -->
+<link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
+<!-- Projects specific CSS -->
+<link rel="stylesheet" href="{{ asset('css/admin/projects.css') }}">
+<!-- Material Design Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+@endsection
+
 @section('content')
 <div class="content-header">
   <div class="container-fluid">
@@ -80,117 +91,73 @@
           <i class="mdi mdi-briefcase"></i>
           Projects List
         </h4>
-        <div class="header-actions">
-          <div class="search-box">
-            <i class="mdi mdi-magnify"></i>
-            <input type="text" placeholder="Search projects..." />
-          </div>
-          <button class="add-user-btn">
-            <i class="mdi mdi-briefcase-plus"></i>
-            Add Project
-          </button>
-        </div>
       </div>
       <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th width="20%">Project</th>
-              <th width="25%">Description</th>
-              <th width="15%">Author</th>
-              <th width="15%">Status</th>
-              <th width="15%">Progress</th>
-              <th width="10%">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @forelse($projects as $project)
-            <tr>
-              <td>
-                <div class="project-info">
-                  <img src="{{ asset('assets/project-icon.png') }}" alt="Project" class="project-icon" />
-                  <span>{{ $project->title }}</span>
-                </div>
-              </td>
-              <td>
-                <p class="project-description">
-                  {{ Str::limit($project->description, 100) }}
-                </p>
-              </td>
-              <td>
-                <div class="author-info">
-                  @if($project->user->profile && $project->user->profile->profile_pic)
-                    <img src="{{ asset('storage/profile_pictures/' . $project->user->profile->profile_pic) }}" alt="Author" class="author-avatar" />
-                  @else
-                    <img src="{{ asset('assets/default-avatar.png') }}" alt="Author" class="author-avatar" />
-                  @endif
-                  <span>{{ $project->user->first_name }} {{ $project->user->last_name }}</span>
-                </div>
-              </td>
-              <td>
-                <span class="status-badge status-{{ strtolower($project->status) }}">{{ $project->status }}</span>
-              </td>
-              <td>
-                <div class="progress-bar">
-                  @php
-                    $progress = ($project->current_funding / $project->funding_goal) * 100;
-                    $progress = min(100, $progress);
-                  @endphp
-                  <div class="progress" style="width: {{ $progress }}%">{{ number_format($progress) }}%</div>
-                </div>
-              </td>
-              <td>
-                <div class="action-buttons">
-                  <button class="edit-btn" title="Edit Project" onclick="editProject({{ $project->id }})">
-                    <i class="mdi mdi-pencil"></i>
-                  </button>
-                  <button class="delete-btn" title="Delete Project" onclick="deleteProject({{ $project->id }})">
-                    <i class="mdi mdi-delete"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            @empty
-            <tr>
-              <td colspan="6" class="text-center">No projects found</td>
-            </tr>
-            @endforelse
-          </tbody>
-        </table>
+        <div class="table-responsive" style="overflow-y: auto; height: 100%;">
+          <table>
+            <thead>
+              <tr>
+                <th width="20%">Project</th>
+                <th width="25%">Description</th>
+                <th width="15%">Author</th>
+                <th width="15%">Status</th>
+                <th width="15%">Progress</th>
+                <th width="10%">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse($projects as $project)
+              <tr>
+                <td>
+                  <div class="project-info">
+                    <i class="fas fa-briefcase project-icon"></i>
+                    <span>{{ $project->title }}</span>
+                  </div>
+                </td>
+                <td>
+                  <p class="project-description">
+                    {{ Str::limit($project->description, 100) }}
+                  </p>
+                </td>
+                <td>
+                  <div class="author-info">
+                    <i class="fas fa-user-circle author-avatar"></i>
+                    <span>{{ $project->user->first_name }} {{ $project->user->last_name }}</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge status-{{ strtolower($project->status) }}">{{ $project->status }}</span>
+                </td>
+                <td>
+                  <div class="progress-bar">
+                    @php
+                      $progress = ($project->current_funding / $project->funding_goal) * 100;
+                      $progress = min(100, $progress);
+                    @endphp
+                    <div class="progress" style="width: {{ $progress }}%">{{ number_format($progress) }}%</div>
+                  </div>
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="edit-btn" title="Edit Project" onclick="editProject({{ $project->id }})">
+                      <i class="mdi mdi-pencil"></i>
+                    </button>
+                    <button class="delete-btn" title="Delete Project" onclick="deleteProject({{ $project->id }})">
+                      <i class="mdi mdi-delete"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              @empty
+              <tr>
+                <td colspan="6" class="text-center">No projects found</td>
+              </tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </section>
-@endsection
-
-@section('scripts')
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const toggleBtn = document.querySelector("#toggle-menu");
-    if (toggleBtn) {
-      toggleBtn.addEventListener("click", function() {
-        document.body.classList.toggle("sidebar-collapsed");
-      });
-    }
-
-    if (localStorage.getItem("sidebarCollapsed") === "true") {
-      document.body.classList.add("sidebar-collapsed");
-    }
-  });
-
-  // Modal functionality
-  const addUserBtn = document.querySelector(".add-user-btn");
-  const modal = document.getElementById("addUserModal");
-  const closeModal = document.getElementById("closeModal");
-
-  addUserBtn.onclick = () => (modal.style.display = "block");
-
-  closeModal.onclick = () => (modal.style.display = "none");
-
-  window.onclick = (event) => {
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  };
-</script>
 @endsection

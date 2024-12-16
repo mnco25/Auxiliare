@@ -1,0 +1,284 @@
+/* Import base admin styles if needed */
+@import url('../admin.css');
+
+/* Content Wrapper Styles */
+.content-wrapper {
+    margin-left: 260px; /* Match sidebar width */
+    padding: 20px;
+    height: calc(100vh - 60px); /* Change min-height to height */
+    transition: margin-left 0.3s ease;
+    background: #f4f6f9;
+    overflow: hidden; /* Prevent wrapper scrolling */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1600px; /* Add max-width for larger screens */
+    margin: 0 auto;
+    margin-left: 260px;
+    padding: 20px;
+}
+
+/* Adjust content section */
+.content {
+    height: calc(100vh - 140px); /* Account for header and padding */
+    overflow: hidden;
+}
+
+/* Adjust when sidebar is collapsed */
+body.sidebar-collapsed .content-wrapper {
+    margin-left: 70px;
+}
+
+/* Container fluid adjustments */
+.container-fluid {
+    padding: 0 15px;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1400px; /* Limit maximum width */
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Content Header Adjustments */
+.content-header {
+    padding: 15px 0;
+    margin-bottom: 20px;
+}
+
+.dashboard-title {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #1f2b77;
+}
+
+/* Stats Section */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 0 -10px 1rem; /* Reduce bottom margin */
+    padding: 10px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto 1rem;
+}
+
+.stats-category {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 1rem; /* Reduce padding */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.info-box {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin: 0.5rem 0; /* Reduce margin */
+    background: linear-gradient(145deg, #ffffff, #f6f7f9);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.info-box-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin-right: 1rem;
+    color: #ffffff;
+}
+
+/* Table Container Adjustments */
+.table-container {
+    background: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-top: 1rem;
+    height: calc(100vh - 350px); /* Adjust based on content above */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1400px;
+    margin: 1rem auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    background: #ffffff;
+    z-index: 10;
+}
+
+tbody {
+    overflow-y: auto;
+    height: 100%;
+}
+
+th {
+    background: #f8f9fa;
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    color: #1f2b77;
+}
+
+td {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Project Info Styles */
+.project-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.project-info .project-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f2ff;
+    color: #3d5af1;
+    border-radius: 8px;
+}
+
+/* Author Info Styles */
+.author-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.author-info .author-avatar {
+    font-size: 24px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8ecff;
+    color: #1f2b77;
+    border-radius: 50%;
+}
+
+/* Progress Bar Styles */
+.progress-bar {
+    background: #f0f0f0;
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: linear-gradient(45deg, #3d5af1, #1f2b77);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+/* Status Badge Styles */
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-active {
+    background: rgba(46, 204, 113, 0.15);
+    color: #27ae60;
+}
+
+.status-pending {
+    background: rgba(241, 196, 15, 0.15);
+    color: #f39c12;
+}
+
+.status-completed {
+    background: rgba(52, 152, 219, 0.15);
+    color: #2980b9;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.edit-btn, .delete-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-btn {
+    background: rgba(52, 152, 219, 0.15);
+    color: #2980b9;
+}
+
+.delete-btn {
+    background: rgba(231, 76, 60, 0.15);
+    color: #c0392b;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1600px) {
+    .content-wrapper {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    .content-wrapper {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+    
+    .container-fluid,
+    .stats-row,
+    .table-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        margin-left: 0;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .container-fluid {
+        padding: 0 10px;
+    }
+
+    .dashboard-title {
+        font-size: 1.5rem;
+    }
+}
