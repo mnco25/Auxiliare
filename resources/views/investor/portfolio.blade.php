@@ -38,7 +38,7 @@
             <div class="stat-content">
                 <h3>Active Investments</h3>
                 <div class="stat-value" data-value="{{ $activeInvestments }}">
-                    {{ $activeInvestments }}
+                    {{ number_format($activeInvestments) }}
                 </div>
                 <p class="stat-label">Current active projects</p>
             </div>
@@ -147,53 +147,5 @@
 @endsection
 
 @section('scripts')
-<script>
-// Add animated counter effect
-function animateValue(element, start, end, duration) {
-    let startTimestamp = null;
-    const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const current = Math.floor(progress * (end - start) + start);
-        
-        if (element.classList.contains('percentage')) {
-            element.textContent = current.toFixed(1) + '%';
-        } else {
-            element.textContent = '₱' + current.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        }
-        
-        if (progress < 1) {
-            window.requestAnimationFrame(step);
-        }
-    };
-    window.requestAnimationFrame(step);
-}
-
-// Animate all stat values on page load
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.stat-value').forEach(stat => {
-        const value = parseFloat(stat.dataset.value);
-        if (!isNaN(value)) {
-            animateValue(stat, 0, value, 2000);
-        }
-    });
-    
-    // Existing status filter code
-    document.getElementById('statusFilter').addEventListener('change', function() {
-        const status = this.value;
-        const items = document.querySelectorAll('.investment-item');
-        
-        items.forEach(item => {
-            if (!status || item.querySelector('.status-badge').textContent.trim() === status) {
-                item.style.display = 'block';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    });
-});
-</script>
+<script src="{{ asset('js/investor/portfolio.js') }}"></script>
 @endsection
