@@ -23,4 +23,14 @@ class Project extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function getProgressPercentage()
+    {
+        if ($this->funding_goal <= 0) {
+            return 0;
+        }
+        
+        $percentage = ($this->current_funding / $this->funding_goal) * 100;
+        return min(100, round($percentage)); // Ensures percentage doesn't exceed 100
+    }
 }

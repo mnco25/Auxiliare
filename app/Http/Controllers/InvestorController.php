@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Project;
-use App\Models\Transaction; // Ensure this line is present
+use App\Models\Transaction;
 use App\Models\User;
-use App\Models\Profile; // Ensure this line is present
+use App\Models\Profile;
 use App\Models\Message;
+use App\Models\Investment; // Add this line
 use Illuminate\Support\Facades\Storage;
 
 class InvestorController extends Controller
@@ -22,7 +23,34 @@ class InvestorController extends Controller
 
     public function portfolio()
     {
-        return view('investor.portfolio');
+        $investor = auth()->user();
+        
+        // Get all investments for the investor with their related projects
+        $investments = Investment::with('project')
+            ->where('investor_id', $investor->user_id)
+            ->orderBy('investment_date', 'desc')
+            ->get();
+    
+        // Calculate portfolio statistics
+        $totalInvested = $investments->sum('investment_amount');
+        $activeInvestments = $investments->where('investment_status', 'Confirmed')->count();
+        
+        // Calculate simplified ROI and returns (you may want to implement your own logic)
+        $averageROI = 0;
+        $totalReturns = 0;
+        
+        if ($activeInvestments > 0) {
+            $averageROI = 8.5; // Example fixed ROI
+            $totalReturns = $totalInvested * ($averageROI / 100);
+        }
+    
+        return view('investor.portfolio', compact(
+            'investments',
+            'totalInvested',
+            'activeInvestments',
+            'averageROI',
+            'totalReturns'
+        ));
     }
 
     public function financial()
@@ -217,8 +245,6 @@ class InvestorController extends Controller
         $unreadMessages = Message::where('receiver_id', $user->user_id)
             ->where('is_read', false)
             ->count();
-
-        // ... existing code ...
 
         return view('investor.dashboard', compact(
             // ... existing variables ...
