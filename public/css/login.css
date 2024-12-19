@@ -164,6 +164,11 @@ h2 {
     font-size: 1rem;
     transition: all 0.3s ease;
     box-sizing: border-box;
+    touch-action: manipulation;
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-tap-highlight-color: transparent;
+    cursor: text;
 }
 
 .form-control:focus {
@@ -335,6 +340,7 @@ textarea {
     -moz-appearance: none;
     appearance: none;
     border-radius: 10px;
+    font-size: 16px !important; /* Prevent zoom on iOS */
 }
 
 /* Prevent zoom on focus in iOS */
@@ -652,5 +658,65 @@ textarea {
         position: fixed;
         width: 100%;
         height: 100%;
+    }
+}
+
+/* Improved iOS Input Handling */
+input,
+select,
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 16px !important; /* Prevent zoom on iOS */
+    border-radius: 10px;
+}
+
+.form-control {
+    /* ...existing properties... */
+    touch-action: manipulation;
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-tap-highlight-color: transparent;
+    cursor: text;
+}
+
+/* Fix scrolling issues on iOS */
+@supports (-webkit-touch-callout: none) {
+    .container1 {
+        padding-bottom: env(safe-area-inset-bottom);
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .modal-content {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    /* Prevent elastic scroll */
+    .half {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* Allow scrolling in container */
+    .container1 {
+        height: 100%;
+        overflow-y: auto;
+    }
+}
+
+/* Adjust input padding and height for better touch targets */
+@media (max-width: 768px) {
+    .form-control {
+        padding: 15px 15px 15px 45px;
+        height: 50px;
+        line-height: normal;
+    }
+    
+    /* Add margin to prevent keyboard overlap */
+    .form-group:last-child {
+        margin-bottom: 60px;
     }
 }

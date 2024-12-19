@@ -66,14 +66,33 @@
                         <div class="form-group">
                             <label for="login-email">
                                 <i class="fas fa-envelope"></i>
-                                <input type="email" id="login-email" name="login" placeholder="Enter username or email" class="form-control" required autocapitalize="off" autocomplete="email" inputmode="email" />
+                                <input 
+                                    type="email" 
+                                    id="login-email" 
+                                    name="login" 
+                                    placeholder="Enter username or email" 
+                                    class="form-control" 
+                                    required 
+                                    autocapitalize="off"
+                                    autocomplete="email"
+                                    inputmode="email"
+                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                />
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label for="login-password">
                                 <i class="fas fa-lock"></i>
-                                <input type="password" id="login-password" name="password" placeholder="Password" class="form-control" required />
+                                <input 
+                                    type="password" 
+                                    id="login-password" 
+                                    name="password" 
+                                    placeholder="Password" 
+                                    class="form-control" 
+                                    required
+                                    autocomplete="current-password"
+                                />
                             </label>
                         </div>
 
