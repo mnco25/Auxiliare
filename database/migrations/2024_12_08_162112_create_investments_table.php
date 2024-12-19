@@ -19,7 +19,7 @@ class CreateInvestmentsTable extends Migration
             $table->enum('investment_status', ['Pending', 'Confirmed', 'Refunded'])->default('Pending');
             $table->timestamps();
 
-            $table->foreign('investor_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('investor_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
 
             $table->index('investment_status', 'idx_investment_status');
