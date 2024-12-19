@@ -10,18 +10,16 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Login & Register</title>
-    <!-- Add Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicon_io/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon_io/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicon_io/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('assets/favicon_io/site.webmanifest') }}">
-    <!-- Existing CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="{{asset('css/login.css')}}" />
     <link rel="stylesheet" href="{{asset('css/index.css')}}" />
     <script>
         function showAlert(message, type = 'error') {
-            alert(message); // You can replace this with a more sophisticated popup library if desired
+            alert(message); 
         }
     </script>
 </head>
@@ -67,16 +65,13 @@
                             <label for="login-email">
                                 <i class="fas fa-envelope"></i>
                                 <input 
-                                    type="email" 
+                                    type="text"
                                     id="login-email" 
                                     name="login" 
                                     placeholder="Enter username or email" 
                                     class="form-control" 
                                     required 
-                                    autocapitalize="off"
-                                    autocomplete="email"
-                                    inputmode="email"
-                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                    autocomplete="off"
                                 />
                             </label>
                         </div>
