@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -14,9 +13,11 @@ class AddStatusToProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->string('status')->default('Active')->after('end_date');
-        });
+        if (Schema::hasTable('projects')) {
+            Schema::table('projects', function (Blueprint $table) {
+                $table->string('status')->default('Active')->after('end_date');
+            });
+        }
     }
 
     /**
