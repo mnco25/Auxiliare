@@ -54,6 +54,7 @@
 
     <!-- Base Scripts -->
     <script src="{{ asset('js/navigation.js') }}"></script>
+    <script src="{{ asset('js/mobile-menu.js') }}"></script>
     <!-- Additional Page Scripts -->
     @yield('scripts')
 </body>
