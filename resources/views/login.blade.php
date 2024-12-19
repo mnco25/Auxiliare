@@ -3,7 +3,12 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a1a3c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Login & Register</title>
     <!-- Add Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicon_io/apple-touch-icon.png') }}">
@@ -55,13 +60,13 @@
                     <header class="card-header">
                         <h2><i class="fas fa-user-circle"></i> Login</h2>
                     </header>
-                    <form class="card-body" action="{{ route('login.submit') }}" method="POST">
+                    <form class="card-body" action="{{ route('login.submit') }}" method="POST" autocomplete="off">
                         @csrf <!-- CSRF Token -->
 
                         <div class="form-group">
                             <label for="login-email">
                                 <i class="fas fa-envelope"></i>
-                                <input type="text" id="login-email" name="login" placeholder="Enter username or email" class="form-control" required />
+                                <input type="email" id="login-email" name="login" placeholder="Enter username or email" class="form-control" required autocapitalize="off" autocomplete="email" inputmode="email" />
                             </label>
                         </div>
 
@@ -160,7 +165,7 @@
 
     @endsection
 
-    <script src="{{ asset('js/script.js')}}"></script>
+    <script src="{{ asset('js/login-modal.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
 </body>
-
 </html>

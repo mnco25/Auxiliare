@@ -11,13 +11,15 @@ html {
 .half {
     display: flex;
     width: 100%;
-    min-height: calc(100vh - 80px);
+    height: calc(100vh - 80px); /* Changed min-height to height */
     margin-top: 80px;
     background: linear-gradient(
         135deg,
         rgba(10, 26, 60, 0.97),
         rgba(20, 36, 70, 0.97)
     );
+    position: relative; /* Added position relative */
+    overflow: hidden; /* Added overflow hidden */
 }
 
 .container1,
@@ -243,21 +245,33 @@ h2 {
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 2000; /* Increased z-index to ensure it's above everything */
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(10, 26, 60, 0.9);
+    background-color: rgba(10, 26, 60, 0.95);
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .modal-content {
-    margin: 40px auto;
+    position: relative;
+    margin: 20px auto;
     max-width: 600px;
     width: 90%;
-    animation: modalFade 0.3s ease-out;
-    position: relative; /* Add this to make it a positioning context for the close button */
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: modalFadeIn 0.3s forwards;
+}
+
+@keyframes modalFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .modal .card-body {
@@ -313,32 +327,286 @@ select[name="user_type"] option[value=""] {
     }
 }
 
+/* iOS Optimizations */
+input,
+select,
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 10px;
+}
+
+/* Prevent zoom on focus in iOS */
+@supports (-webkit-touch-callout: none) {
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
+}
+
+/* Updated media queries for mobile */
 @media (max-width: 768px) {
     .half {
         flex-direction: column;
+        height: calc(100vh - 60px); /* Changed min-height to height */
+        margin-top: 60px;
     }
 
     .container1 {
-        padding: 20px;
-    }
-
-    .container2 {
-        display: none;
+        padding: 15px;
+        min-height: 100vh;
     }
 
     .card {
+        width: 100%;
+        max-width: none;
+        padding: 1.5rem;
+        margin: 10px;
+    }
+
+    .form-control {
+        padding: 12px 12px 12px 40px;
+        height: 45px;
+    }
+
+    .btn {
+        padding: 12px;
+        height: 45px;
+        touch-action: manipulation;
+    }
+
+    /* Improved touch targets */
+    .form-group i {
+        padding: 10px;
+        font-size: 1.1rem;
+    }
+
+    .close {
+        padding: 15px;
+        font-size: 24px;
+    }
+
+    /* Fix modal on mobile */
+    .modal-content {
+        margin: 10px;
+        width: auto;
+        max-height: 85vh;
+        padding: 15px;
+    }
+
+    .form-grid {
+        gap: 12px;
+    }
+}
+
+/* Fix for iOS devices */
+@supports (-webkit-touch-callout: none) {
+    .half {
+        height: calc(100% - 80px); /* Changed min-height to height */
+    }
+    
+    .container1 {
+        min-height: -webkit-fill-available;
+    }
+}
+
+/* Mobile and iOS Optimizations */
+:root {
+    --safe-area-inset-top: env(safe-area-inset-top);
+    --safe-area-inset-bottom: env(safe-area-inset-bottom);
+}
+
+/* Touch feedback improvements */
+@media (hover: none) {
+    .btn:active {
+        transform: scale(0.98);
+        background: #c99f43;
+    }
+
+    .form-control:active {
+        background: rgba(255, 255, 255, 0.15);
+    }
+}
+
+/* Enhanced iOS/Mobile Styles */
+@media (max-width: 768px) {
+    .half {
+        margin-top: calc(60px + var(--safe-area-inset-top));
+        min-height: calc(100vh - 60px - var(--safe-area-inset-top));
+        padding-bottom: var(--safe-area-inset-bottom);
+    }
+
+    .card {
+        margin: 10px;
+        padding: 1.25rem;
+        border-radius: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        font-size: 16px; /* Prevent iOS zoom */
+        padding: 12px 12px 12px 40px;
+        min-height: 44px; /* iOS minimum touch target */
+    }
+
+    /* Improve modal for mobile */
+    .modal {
+        padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+    }
+
+    .modal-content {
+        margin: 10px;
+        max-height: calc(100vh - 40px - var(--safe-area-inset-top) - var(--safe-area-inset-bottom));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Improve keyboard behavior */
+    .form-group input:focus {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Better touch targets */
+    .close {
+        padding: 15px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+    .half {
+        min-height: -webkit-fill-available;
+    }
+
+    /* Prevent elastic scrolling */
+    body {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+
+    .container1 {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Fix modal scrolling */
+    .modal-content {
+        max-height: -webkit-fill-available;
+    }
+}
+
+/* Fix notched devices */
+@media screen and (orientation: landscape) {
+    .half {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* Mobile & iOS Core Optimizations */
+@media (max-width: 768px) {
+    body {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .half {
+        height: 100%;
+        margin-top: 60px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .container1 {
+        min-height: auto;
+        padding: 20px;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        margin: 10px auto;
         width: 90%;
         max-width: 400px;
     }
 
-    .form-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
+    .form-control {
+        height: 50px;
+        font-size: 16px;
+        padding: 12px 12px 12px 45px;
+        -webkit-appearance: none;
+        appearance: none;
     }
 
-    .modal-content {
-        margin: 20px auto;
-        max-height: 90vh;
+    .btn {
+        height: 50px;
+        margin-top: 0;
+        -webkit-tap-highlight-color: transparent;
+    }
+}
+
+/* iOS-specific fixes */
+@supports (-webkit-touch-callout: none) {
+    .half {
+        height: -webkit-fill-available;
+    }
+
+    .container1 {
+        height: 100%;
         overflow-y: auto;
+    }
+
+    .form-control:focus {
+        transform: translateY(-1px);
+    }
+
+    .btn:active {
+        transform: scale(0.98);
+    }
+}
+
+/* Improved touch feedback */
+@media (hover: none) {
+    .form-control:active {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn {
+        transition: transform 0.1s ease;
+    }
+
+    .btn:active {
+        background: #c99f43;
+    }
+}
+
+/* Safe area adjustments */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .half {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* Hide container2 on mobile */
+@media (max-width: 768px) {
+    .container2 {
+        display: none;
+    }
+
+    .container1 {
+        flex: 1;
     }
 }
