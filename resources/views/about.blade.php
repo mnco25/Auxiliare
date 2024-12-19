@@ -5,6 +5,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>About - Auxiliare</title>
+  <!-- Add Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicon_io/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon_io/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicon_io/favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ asset('assets/favicon_io/site.webmanifest') }}">
+  <!-- Existing CSS -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -22,6 +28,11 @@
       </a>
       <h2 class="homelogotext">AUXILIARE</h2>
     </div>
+    <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
     <nav aria-label="Main Navigation">
       <ul class="nav-menu">
         <li><a href="{{ url('/') }}" class="nav-button">Home</a></li>
@@ -212,6 +223,7 @@
       });
     });
   </script>
+  <script src="{{ asset('js/mobile-menu.js') }}"></script>
 </body>
 
 </html>

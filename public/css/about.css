@@ -689,110 +689,226 @@
     transform: translateY(0);
 }
 
+/* Mobile Navigation Styles */
+.mobile-nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.mobile-nav-toggle .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background: #e4b54c;
+    transition: all 0.3s ease;
+}
+
 @media (max-width: 768px) {
     .hero-section {
-        height: 40vh;
+        min-height: 60vh;
+        padding-top: 100px;
+        padding-bottom: 40px;
     }
 
     .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
 
     .hero-content p {
+        font-size: 1.1rem;
+        padding: 0 15px;
+    }
+
+    .mission-section {
+        padding: 60px 0;
+    }
+
+    .mission-section h2, 
+    .offerings-section h2,
+    .team-section h2,
+    .impact-section h2 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .mission-section p {
+        font-size: 1rem;
+        padding: 15px;
+    }
+
+    .offerings-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 15px;
+    }
+
+    .offering-card {
+        padding: 25px;
+    }
+
+    .offering-card i {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+    }
+
+    .offering-card h3 {
+        font-size: 1.3rem;
+    }
+
+    .offering-card p {
+        font-size: 1rem;
+    }
+
+    .team-section {
+        padding: 60px 0;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        padding: 0 15px;
+        gap: 20px;
+    }
+
+    .team-member {
+        padding: 25px 20px;
+    }
+
+    .team-member.team-leader {
+        transform: none;
+        margin-bottom: 20px;
+    }
+
+    .team-member.team-leader:hover {
+        transform: translateY(-5px);
+    }
+
+    .team-member h3 {
         font-size: 1.2rem;
     }
 
-    .offerings-grid,
-    .team-grid {
-        grid-template-columns: 1fr;
+    .team-member p {
+        font-size: 0.95rem;
+    }
+
+    .team-member .contribution {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 8px;
+    }
+
+    .impact-section {
+        padding: 60px 0;
+    }
+
+    .impact-section p {
+        font-size: 1rem;
+        padding: 15px;
+        margin: 0 15px;
+    }
+
+    .join-section {
+        padding: 60px 15px;
+    }
+
+    .join-section .container {
+        padding: 30px 20px;
+    }
+
+    .join-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .join-section p {
+        font-size: 1rem;
+    }
+
+    .join-section .cta-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .scroll-indicator {
+        display: none;
     }
 
     .container {
         padding: 0 15px;
     }
 
-    .team-member.team-leader {
-        transform: scale(1.02);
-    }
-    
-    .team-member.team-leader:hover {
-        transform: scale(1.02) translateY(-10px);
+    /* Mobile Navigation Styles */
+    .mobile-nav-toggle {
+        display: block;
     }
 
-    .team-grid {
-        grid-template-columns: 1fr;
-        max-width: 500px;
-        margin: 40px auto 0;
+    .nav-menu {
+        position: fixed;
+        right: -100%;
+        top: 70px;
+        flex-direction: column;
+        background: linear-gradient(to bottom, rgba(10, 26, 60, 0.98), rgba(20, 36, 70, 0.98));
+        width: 100%;
+        height: calc(100vh - 70px);
+        padding: 20px 0;
+        transition: 0.4s ease;
+        gap: 0;
+        backdrop-filter: blur(10px);
     }
 
-    .team-member.team-leader {
-        margin-bottom: 30px;
-        max-width: 100%;
+    .nav-menu.active {
+        right: 0;
     }
 
-    .team-grid .team-member:not(.team-leader) {
-        margin-top: 0;
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
     }
 
-    .mission-section {
-        padding: 80px 0;
-    }
-
-    .mission-section h2 {
-        font-size: 2.2rem;
-    }
-
-    .mission-section p {
-        font-size: 1.1rem;
+    .nav-button {
+        display: block;
         padding: 15px;
+        width: 100%;
+        border-radius: 0;
     }
 
-    .join-section .container {
-        padding: 40px 20px;
-        margin: 0 15px;
+    .nav-button::after {
+        display: none;
     }
 
-    .join-section h2 {
-        font-size: 2.2rem;
+    .mobile-nav-toggle.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
     }
 
-    .join-section p {
-        font-size: 1.1rem;
-        margin-bottom: 30px;
+    .mobile-nav-toggle.active .bar:nth-child(2) {
+        opacity: 0;
     }
 
-    .join-section .cta-button {
-        padding: 15px 40px;
-        font-size: 1.1rem;
+    .mobile-nav-toggle.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
     }
 
-    .team-member .contribution {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 8px;
+    body.menu-open {
+        overflow: hidden;
     }
 
-    .team-member .contribution p {
-        font-size: 0.8rem;
-        padding: 6px;
+    /* Adjust header for mobile */
+    .main-header {
+        padding: 0 15px;
+        height: 70px;
     }
 
-    .team-member .contribution {
-        padding: 8px;
-    }
-
-    .team-member .contribution p {
-        font-size: 0.85rem;
-    }
-
-    #scroll-to-top {
-        bottom: 20px;
-        right: 20px;
-        width: 40px;
+    .logo {
         height: 40px;
     }
 
-    #scroll-to-top i {
-        font-size: 16px;
+    .homelogotext {
+        font-size: 1.5rem;
     }
 }
 

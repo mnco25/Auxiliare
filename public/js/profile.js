@@ -1,1 +1,156 @@
-(()=>{var e=document.getElementById("edit-profile-btn"),t=document.getElementById("modal-overlay"),n=document.getElementById("edit-profile-modal"),i=document.getElementById("close-modal-btn"),d=(document.getElementById("save-profile-btn"),document.getElementById("profile-name")),o=document.getElementById("profile-location"),l=document.getElementById("profile-bio"),a=document.getElementById("profile-skills"),s=document.getElementById("profile-pic"),c=document.getElementById("edit-name"),r=document.getElementById("edit-location"),m=document.getElementById("edit-bio"),u=document.getElementById("edit-skills"),f=document.getElementById("edit-profile-pic"),p=document.getElementById("profile-pic-url");function v(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"success",n=document.createElement("div");n.className="notification ".concat(t),n.textContent=e,document.body.appendChild(n),setTimeout((function(){n.remove()}),3e3)}p.addEventListener("input",(function(e){this.value&&(f.value="")})),f.addEventListener("change",(function(e){this.files.length>0&&(p.value="")})),e.addEventListener("click",(function(){t.classList.remove("hidden"),n.classList.remove("hidden"),c.value=d.textContent,r.value=o.textContent,m.value=l.textContent,u.value=Array.from(a.children).map((function(e){return e.textContent})).join(", ")})),i.addEventListener("click",(function(){t.classList.add("hidden"),n.classList.add("hidden")})),t.addEventListener("click",(function(){t.classList.add("hidden"),n.classList.add("hidden")})),document.getElementById("edit-profile-form").addEventListener("submit",(function(e){e.preventDefault();var i=this,s=new FormData(i),c=i.querySelector('button[type="submit"]');c.innerHTML='<i class="fas fa-spinner fa-spin"></i> Saving...',c.disabled=!0,fetch(i.action,{method:"POST",body:s,headers:{"X-CSRF-TOKEN":document.querySelector('meta[name="csrf-token"]').content,"X-HTTP-Method-Override":"PUT"},credentials:"same-origin"}).then((function(e){return e.json()})).then((function(e){if(!e.success)throw new Error(e.message||"Failed to update profile");!function(e){d.textContent=e.get("name"),o.textContent=e.get("location"),l.textContent=e.get("bio");var t=e.get("skills").split(",").map((function(e){return e.trim()}));a.innerHTML="",t.forEach((function(e){var t=document.createElement("li");t.textContent=e,a.appendChild(t)}))}(s),t.classList.add("hidden"),n.classList.add("hidden"),v("Profile updated successfully!","success")})).catch((function(e){console.error("Error:",e),v(e.message||"Failed to update profile","error")})).finally((function(){c.innerHTML='<i class="fas fa-save"></i> Save Changes',c.disabled=!1}))})),f.addEventListener("change",(function(e){if(this.files&&this.files[0]){var t=new FileReader;t.onload=function(e){if(s.classList.contains("profile-icon")){s.classList.remove("profile-icon"),s.innerHTML="";var t=document.createElement("img");t.src=e.target.result,t.classList.add("profile-pic"),s.parentNode.replaceChild(t,s)}else s.src=e.target.result},t.readAsDataURL(this.files[0])}}))})();
+/******/ (() => { // webpackBootstrap
+/*!*********************************!*\
+  !*** ./resources/js/profile.js ***!
+  \*********************************/
+// Get elements
+var editProfileBtn = document.getElementById("edit-profile-btn");
+var modalOverlay = document.getElementById("modal-overlay");
+var editProfileModal = document.getElementById("edit-profile-modal");
+var closeModalBtn = document.getElementById("close-modal-btn");
+var saveProfileBtn = document.getElementById("save-profile-btn");
+
+// Get profile info to update
+var profileName = document.getElementById("profile-name");
+var profileLocation = document.getElementById("profile-location");
+var profileBio = document.getElementById("profile-bio");
+var profileSkills = document.getElementById("profile-skills");
+var profilePic = document.getElementById("profile-pic");
+
+// Get edit form elements
+var editName = document.getElementById("edit-name");
+var editLocation = document.getElementById("edit-location");
+var editBio = document.getElementById("edit-bio");
+var editSkills = document.getElementById("edit-skills");
+var editProfilePic = document.getElementById("edit-profile-pic");
+
+// Add URL input handler
+var profilePicUrl = document.getElementById('profile-pic-url');
+profilePicUrl.addEventListener('input', function (e) {
+  if (this.value) {
+    // Clear file input if URL is entered
+    editProfilePic.value = '';
+  }
+});
+editProfilePic.addEventListener('change', function (e) {
+  if (this.files.length > 0) {
+    // Clear URL input if file is selected
+    profilePicUrl.value = '';
+  }
+});
+
+// Open modal
+editProfileBtn.addEventListener("click", function () {
+  modalOverlay.classList.remove("hidden");
+  editProfileModal.classList.remove("hidden");
+
+  // Pre-fill form with current profile values
+  editName.value = profileName.textContent;
+  editLocation.value = profileLocation.textContent;
+  editBio.value = profileBio.textContent;
+  editSkills.value = Array.from(profileSkills.children).map(function (skill) {
+    return skill.textContent;
+  }).join(", ");
+});
+
+// Close modal
+closeModalBtn.addEventListener("click", function () {
+  modalOverlay.classList.add("hidden");
+  editProfileModal.classList.add("hidden");
+});
+
+// Close modal if clicked outside the modal
+modalOverlay.addEventListener("click", function () {
+  modalOverlay.classList.add("hidden");
+  editProfileModal.classList.add("hidden");
+});
+
+// Update form submission to use PUT method
+document.getElementById('edit-profile-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var form = this;
+  var formData = new FormData(form);
+  var submitBtn = form.querySelector('button[type="submit"]');
+
+  // Show loading state
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+  submitBtn.disabled = true;
+  fetch(form.action, {
+    method: 'POST',
+    // Laravel uses POST with method override for PUT
+    body: formData,
+    headers: {
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+      'X-HTTP-Method-Override': 'PUT' // Method override to simulate PUT request
+    },
+    credentials: 'same-origin'
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    if (data.success) {
+      // Update UI
+      updateProfileUI(formData);
+      modalOverlay.classList.add('hidden');
+      editProfileModal.classList.add('hidden');
+      showNotification('Profile updated successfully!', 'success');
+    } else {
+      throw new Error(data.message || 'Failed to update profile');
+    }
+  })["catch"](function (error) {
+    console.error('Error:', error);
+    showNotification(error.message || 'Failed to update profile', 'error');
+  })["finally"](function () {
+    submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+    submitBtn.disabled = false;
+  });
+});
+
+// Update profile picture if a new one is selected
+editProfilePic.addEventListener('change', function (e) {
+  if (this.files && this.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      // Remove existing profile icon if it exists
+      if (profilePic.classList.contains('profile-icon')) {
+        profilePic.classList.remove('profile-icon');
+        profilePic.innerHTML = ''; // Remove the icon
+        var img = document.createElement('img');
+        img.src = e.target.result;
+        img.classList.add('profile-pic');
+        profilePic.parentNode.replaceChild(img, profilePic);
+      } else {
+        profilePic.src = e.target.result;
+      }
+    };
+    reader.readAsDataURL(this.files[0]);
+  }
+});
+function showNotification(message) {
+  var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
+  var notification = document.createElement('div');
+  notification.className = "notification ".concat(type);
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  setTimeout(function () {
+    notification.remove();
+  }, 3000);
+}
+function updateProfileUI(formData) {
+  profileName.textContent = formData.get('name');
+  profileLocation.textContent = formData.get('location');
+  profileBio.textContent = formData.get('bio');
+
+  // Update skills
+  var skills = formData.get('skills').split(',').map(function (skill) {
+    return skill.trim();
+  });
+  profileSkills.innerHTML = '';
+  skills.forEach(function (skill) {
+    var li = document.createElement('li');
+    li.textContent = skill;
+    profileSkills.appendChild(li);
+  });
+}
+
+// Remove the old saveProfileBtn click handler since we're using form submission
+/******/ })()
+;
