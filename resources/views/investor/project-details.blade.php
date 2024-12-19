@@ -142,6 +142,10 @@
                     <button class="invest-btn primary" 
                             data-toggle="modal" 
                             data-target="#investmentModal"
+                            data-project-id="{{ $project->id }}"
+                            data-project-title="{{ $project->title }}"
+                            data-min-investment="{{ $project->minimum_investment }}"
+                            data-max-investment="{{ $project->funding_goal - $project->current_funding }}"
                             {{ strtotime($project->end_date) < time() ? 'disabled' : '' }}>
                         <i class="fas fa-hand-holding-usd"></i>
                         {{ strtotime($project->end_date) < time() ? 'Investment Closed' : 'Invest Now' }}
@@ -205,25 +209,36 @@
     </div>
 </div>
 
-<!-- Investment Modal - Keep existing modal code -->
+<!-- Replace the existing investment modal with this optimized version -->
 <div class="modal fade" id="investmentModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Invest in {{ $project->title }}</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <form id="investmentForm">
                     @csrf
                     <div class="form-group">
-                        <label>Investment Amount (₱)</label>
-                        <input type="number" name="amount" class="form-control"
-                            min="{{ $project->minimum_investment }}" step="100" required>
-                        <small class="text-muted">Minimum investment: ₱{{ number_format($project->minimum_investment) }}</small>
+                        <label for="investmentAmount">Investment Amount (₱)</label>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="investmentAmount" 
+                            name="amount" 
+                            required
+                            step="1000"
+                        >
+                        <small class="text-muted">
+                            Minimum investment: ₱{{ number_format($project->minimum_investment) }}<br>
+                            Maximum investment: ₱{{ number_format($project->funding_goal - $project->current_funding) }}
+                        </small>
                     </div>
                     <div class="balance-info">
-                        Your current balance: ₱<span id="currentBalance">{{ number_format(auth()->user()->balance) }}</span>
+                        Your current balance: ₱<span id="currentBalance">{{ number_format(auth()->user()->balance, 2) }}</span>
                     </div>
                 </form>
             </div>
@@ -237,70 +252,6 @@
 
 @endsection
 
-@push('scripts')
-<script>
-    document.getElementById('confirmInvestment').addEventListener('click', async function() {
-        const form = document.getElementById('investmentForm');
-        const amount = form.querySelector('[name="amount"]').value;
-
-        try {
-            const response = await fetch(`/investor/projects/${@json($project->id)}/invest`, {  // Updated route path
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({
-                    amount: parseFloat(amount)  // Ensure amount is sent as a number
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                // Update UI elements
-                document.getElementById('currentBalance').textContent = number_format(data.new_balance);
-                
-                // Update funding stats
-                const fundingStats = document.querySelector('.funding-stats');
-                const raisedAmount = fundingStats.querySelector('.stat-item:first-child .value');
-                raisedAmount.textContent = '₱' + number_format(data.project_funding);
-                
-                // Update progress bar if it exists
-                const progressBar = document.querySelector('.progress');
-                if (progressBar) {
-                    const percentage = (data.project_funding / @json($project->funding_goal)) * 100;
-                    progressBar.style.width = Math.min(100, percentage) + '%';
-                }
-
-                // Close modal and show success message
-                $('#investmentModal').modal('hide');
-                toastr.success('Investment successful!');
-                
-                // Reload page after short delay to refresh all data
-                setTimeout(() => window.location.reload(), 1500);
-            } else {
-                toastr.error(data.message || 'Investment failed');
-            }
-        } catch (error) {
-            console.error('Investment error:', error);
-            toastr.error('An error occurred while processing your investment');
-        }
-    });
-    
-    // Add input validation
-    const amountInput = document.querySelector('[name="amount"]');
-    amountInput.addEventListener('input', function() {
-        const currentBalance = parseFloat(document.getElementById('currentBalance').textContent.replace(/[^0-9.-]+/g,""));
-        const minInvestment = @json($project->minimum_investment);
-        
-        if (parseFloat(this.value) > currentBalance) {
-            this.setCustomValidity('Amount exceeds your current balance');
-        } else if (parseFloat(this.value) < minInvestment) {
-            this.setCustomValidity(`Minimum investment amount is ₱${minInvestment}`);
-        } else {
-            this.setCustomValidity('');
-        }
-    });
-</script>
-@endpush
+@section('scripts')
+<script src="{{ asset('js/investor/projects.js') }}"></script>
+@endsection

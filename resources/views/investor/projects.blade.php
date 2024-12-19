@@ -137,47 +137,6 @@
             </div>
             @endforelse
         </div>
-
-        <!-- Enhanced Investment Modal -->
-        <div class="modal fade" id="investmentModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Invest in <span id="projectTitle"></span></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="investmentForm">
-                            @csrf
-                            <div class="form-group">
-                                <label for="investmentAmount">Investment Amount (₱)</label>
-                                <input 
-                                    type="number" 
-                                    class="form-control" 
-                                    id="investmentAmount" 
-                                    name="amount" 
-                                    required
-                                    step="1000"
-                                >
-                                <small class="text-muted">
-                                    Minimum investment: ₱<span id="minInvestment"></span><br>
-                                    Maximum investment: ₱<span id="maxInvestment"></span>
-                                </small>
-                            </div>
-                            <div class="balance-info">
-                                Your current balance: ₱<span id="currentBalance">{{ number_format(auth()->user()->balance, 2) }}</span>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" id="confirmInvestment">Confirm Investment</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
