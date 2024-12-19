@@ -66,7 +66,7 @@
 
 | Requirement | Version |
 |------------|---------|
-| PHP | >= 7.3 |
+| PHP | >= 8.1 |
 | Laravel | 8.x |
 | MySQL | 5.7+ |
 | Node.js | 14+ |
