@@ -6,46 +6,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showModal() {
         registerModal.style.display = "block";
-        body.style.overflow = "hidden";
+        body.classList.add('modal-open');
+        // Force redraw for iOS
+        registerModal.offsetHeight;
     }
 
     function hideModal() {
         registerModal.style.display = "none";
-        body.style.overflow = "";
+        body.classList.remove('modal-open');
     }
 
-    // Open modal
+    // Improve touch events
     if (openModal) {
-        openModal.addEventListener('click', function(e) {
-            e.preventDefault();
-            showModal();
-        });
+        ['click', 'touchend'].forEach(evt => 
+            openModal.addEventListener(evt, function(e) {
+                e.preventDefault();
+                showModal();
+            }, { passive: false })
+        );
     }
 
-    // Close modal with X button
     if (closeModal) {
-        closeModal.addEventListener('click', hideModal);
+        ['click', 'touchend'].forEach(evt => 
+            closeModal.addEventListener(evt, function(e) {
+                e.preventDefault();
+                hideModal();
+            }, { passive: false })
+        );
     }
 
-    // Close modal when clicking outside
-    window.addEventListener('click', function(e) {
+    // Prevent modal content click from closing
+    registerModal?.querySelector('.modal-content')?.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // Close modal on outside click
+    registerModal?.addEventListener('click', function(e) {
         if (e.target === registerModal) {
             hideModal();
         }
     });
 
-    // Prevent modal close when clicking modal content
-    registerModal?.querySelector('.modal-content')?.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
-
-    // Handle form submission
-    const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', function(e) {
-            const errorMessages = document.getElementById('error-messages');
-            errorMessages.style.display = 'none';
-            errorMessages.innerHTML = '';
+    // Handle form inputs
+    const inputs = document.querySelectorAll('.form-control');
+    inputs.forEach(input => {
+        input.addEventListener('focus', () => {
+            // Small delay to ensure keyboard is shown
+            setTimeout(() => {
+                input.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
         });
-    }
+    });
 });
