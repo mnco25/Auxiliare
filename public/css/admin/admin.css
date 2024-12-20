@@ -875,3 +875,494 @@ nav.main-header {
         padding: 10px;
     }
 }
+
+/* Mobile Optimization Styles */
+@media (hover: none) and (pointer: coarse) {
+    /* Optimize touch targets */
+    .sidebar-nav .nav-link {
+        padding: 1rem;
+        min-height: 44px; /* iOS minimum tap target size */
+    }
+
+    .nav-link i {
+        font-size: 1.5rem; /* Larger icons for touch */
+    }
+
+    /* Prevent text selection on tap */
+    .main-sidebar * {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        user-select: none;
+    }
+}
+
+/* iOS Specific Fixes */
+@supports (-webkit-touch-callout: none) {
+    .sidebar-wrapper {
+        /* Fix iOS momentum scrolling */
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .content-wrapper {
+        /* Prevent elastic scrolling on iOS */
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Enhanced Mobile Sidebar */
+@media (max-width: 768px) {
+    .main-sidebar {
+        transform: translateX(-100%);
+        width: 260px;
+        z-index: 1050;
+    }
+
+    .sidebar-collapsed .main-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar-open .main-sidebar {
+        transform: translateX(0);
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .content-wrapper,
+    .main-header {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Add overlay when sidebar is open */
+    .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .sidebar-open .sidebar-backdrop {
+        display: block;
+    }
+
+    /* Optimize sidebar transitions */
+    .main-sidebar {
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+/* Mobile-friendly content adjustments */
+@media (max-width: 576px) {
+    .stats-row {
+        margin: 0;
+        padding: 10px;
+    }
+
+    .info-box {
+        padding: 1rem;
+    }
+
+    .info-box-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .chart-card {
+        padding: 1rem;
+    }
+}
+
+/* Mobile Sidebar Toggle Button */
+.mobile-sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1060;
+    background: rgba(228, 181, 76, 0.9);
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-sidebar-toggle i {
+    color: #0a1a3c;
+    font-size: 24px;
+}
+
+/* Mobile Sidebar Styles */
+@media (max-width: 768px) {
+    .mobile-sidebar-toggle {
+        display: flex;
+        z-index: 1090; /* Increased to stay on top */
+    }
+
+    .main-sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+        box-shadow: none;
+        z-index: 1085; /* Higher than backdrop */
+        will-change: transform;
+        pointer-events: all !important;
+    }
+
+    .sidebar-collapsed .main-sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar-open .main-sidebar {
+        transform: translateX(0);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: none; /* Remove blur for better performance */
+        z-index: 1080;
+        opacity: 0;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+        visibility: hidden;
+        pointer-events: none; /* Allow clicks to pass through */
+    }
+
+    .sidebar-open .sidebar-backdrop {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .sidebar-wrapper {
+        z-index: 1086;
+        pointer-events: all !important;
+    }
+
+    .sidebar-nav .nav-link {
+        z-index: 1087;
+        pointer-events: all !important;
+        position: relative;
+        -webkit-tap-highlight-color: rgba(228, 181, 76, 0.2);
+    }
+
+    .content-wrapper {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding-left: 60px; /* Make room for toggle button */
+        z-index: 1;
+        pointer-events: none; /* Only block pointer events on content when sidebar is open */
+    }
+
+    .main-footer {
+        left: 0;
+        width: 100%;
+    }
+
+    /* Prevent scroll when sidebar is open */
+    body.sidebar-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Ensure links are clickable */
+    .sidebar-nav .nav-link {
+        position: relative;
+        z-index: 1071; /* Ensure links are clickable */
+        pointer-events: auto;
+        /* Remove any backdrop-filter or blur effects */
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    /* iOS Specific */
+    @supports (-webkit-touch-callout: none) {
+        .main-sidebar {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        
+        .sidebar-wrapper {
+            height: calc(100% - env(safe-area-inset-bottom));
+            pointer-events: auto;
+            z-index: 1071;
+            position: relative;
+        }
+    }
+
+    /* Reset pointer events when sidebar is closed */
+    body:not(.sidebar-open) .sidebar-backdrop {
+        pointer-events: none;
+    }
+}
+
+/* Mobile Dashboard Optimization */
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 10px;
+        margin: 0;
+        width: 100% !important;
+        max-width: 100%;
+        padding-top: 60px; /* Reduced padding top */
+        overflow-x: hidden;
+    }
+
+    /* Charts Container Mobile Optimization */
+    .charts-container {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0;
+        width: 100%;
+        margin: 0 0 12px 0;
+    }
+
+    .chart-card {
+        margin: 0;
+        padding: 12px;
+        width: 100%;
+        min-height: auto;
+    }
+
+    .chart-card.main-chart {
+        min-height: 300px;
+    }
+
+    .chart-wrapper {
+        height: 250px;
+        margin-top: 0.5rem;
+    }
+
+    /* Stats Row Mobile Optimization */
+    .stats-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .stats-category {
+        margin: 0;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .info-box {
+        margin: 8px 0;
+        padding: 12px;
+    }
+
+    .info-box-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.4rem;
+        margin-right: 12px;
+    }
+
+    .info-box-content span:last-child {
+        font-size: 1.4rem;
+    }
+
+    /* Footer Mobile Optimization */
+    .main-footer {
+        position: relative;
+        left: 0;
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    /* Container Fluid Adjustment */
+    .container-fluid {
+        padding: 0;
+        width: 100%;
+        margin: 0;
+    }
+
+    /* Content Header Mobile Optimization */
+    .content-header {
+        margin: 0 0 12px 0;
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .dashboard-title {
+        font-size: 1.4rem;
+    }
+
+    .dashboard-title i {
+        font-size: 1.4rem;
+    }
+
+    .dashboard-breadcrumb {
+        font-size: 0.8rem;
+    }
+}
+
+/* iOS Specific Adjustments */
+@supports (-webkit-touch-callout: none) {
+    @media (max-width: 768px) {
+        .content-wrapper {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .main-footer {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 12px);
+        }
+
+        /* Prevent rubber-banding */
+        body {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .content-wrapper {
+            height: calc(100vh - env(safe-area-inset-top));
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+}
+
+/* Card Content Adjustments for Mobile */
+@media (max-width: 768px) {
+    .chart-card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+    }
+
+    /* Better touch targets */
+    .nav-link, 
+    .info-box,
+    .chart-card {
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(228, 181, 76, 0.1);
+    }
+
+    /* Improve scrolling performance */
+    .content-wrapper * {
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+    }
+}
+
+/* Center all content on mobile */
+@media (max-width: 768px) {
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 0 8px;
+    }
+
+    .charts-container,
+    .stats-row {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    /* Ensure cards are full width on mobile */
+    .chart-card,
+    .stats-category {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Mobile Footer Optimization */
+@media (max-width: 768px) {
+    .main-footer {
+        position: static;
+        left: 0;
+        width: 100%;
+        margin-left: 0;
+        padding: 15px 10px;
+        font-size: 0.9rem;
+        background: linear-gradient(90deg, #0a1a3c 0%, #1a2a4c 100%);
+        border-top: 1px solid rgba(228, 181, 76, 0.1);
+        margin-top: auto;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        text-align: center;
+    }
+
+    .main-footer strong {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .main-footer a {
+        display: inline-block;
+        padding: 5px;
+        color: #e4b54c;
+    }
+
+    /* Container adjustment for footer */
+    .content-wrapper {
+        min-height: calc(100vh - 60px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Push footer to bottom */
+    .container-fluid {
+        flex: 1 0 auto;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+/* iOS Specific Footer Fixes */
+@supports (-webkit-touch-callout: none) {
+    @media (max-width: 768px) {
+        .main-footer {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 15px);
+            bottom: 0;
+            margin-bottom: 0;
+        }
+
+        /* Adjust content wrapper to account for footer */
+        .content-wrapper {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 60px);
+        }
+
+        /* Prevent overflow issues */
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    }
+}

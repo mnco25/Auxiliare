@@ -7,6 +7,9 @@
     <title>Admin - Auxiliare</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     @section('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
@@ -291,6 +294,11 @@
     @show
 
     @yield('scripts') <!-- Ensure this line is present before </body> -->
+    <script src="{{ asset('js/admin/mobile-sidebar.js') }}"></script>
+</body>
+
+    @yield('scripts') <!-- Ensure this line is present before </body> -->
+</html>
 </body>
 
 </html>
