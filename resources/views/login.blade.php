@@ -34,13 +34,13 @@
         </div>
         <nav aria-label="Main Navigation">
             <ul class="nav-menu">
-                <li><a href="{{ url('/') }}" class="nav-button">Home</a></li>
-                <li><a href="{{ url('/about') }}" class="nav-button">About</a></li>
-                <li><a href="{{ url('/') }}#features" class="nav-button">Features</a></li>
-                <li><a href="{{ url('/') }}#faq" class="nav-button">FAQ</a></li>
-                <li><a href="{{ url('/') }}#contact" class="nav-button">Contact</a></li>
-                <li><a href="{{ url('/pricing') }}" class="nav-button">Pricing</a></li>
-                <li><a href="{{ url('/login') }}" class="nav-button">Login</a></li>
+                <li><a href="{{ url('/') }}" class="nav-button gradient-text"><i class="fas fa-home"></i><span>Home</span></a></li>
+                <li><a href="{{ url('/about') }}" class="nav-button gradient-text"><i class="fas fa-info-circle"></i><span>About</span></a></li>
+                <li><a href="{{ url('/#features') }}" class="nav-button gradient-text"><i class="fas fa-star"></i><span>Features</span></a></li>
+                <li><a href="{{ url('/#faq') }}" class="nav-button gradient-text"><i class="fas fa-question-circle"></i><span>FAQ</span></a></li>
+                <li><a href="{{ url('/#contact') }}" class="nav-button gradient-text"><i class="fas fa-envelope"></i><span>Contact</span></a></li>
+                <li><a href="{{ url('/pricing') }}" class="nav-button gradient-text"><i class="fas fa-tags"></i><span>Pricing</span></a></li>
+                <li><a href="{{ url('/login') }}" class="nav-button gradient-text"><i class="fas fa-sign-in-alt"></i><span>Login</span></a></li>
             </ul>
         </nav>
     </header>

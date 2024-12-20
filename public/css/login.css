@@ -768,3 +768,94 @@ textarea {
         padding-bottom: env(safe-area-inset-bottom);
     }
 }
+
+/* Enhanced Navigation Styles */
+.nav-menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    gap: 35px;
+    align-items: center;
+}
+
+.nav-button {
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+}
+
+.nav-button.gradient-text {
+    background: linear-gradient(45deg, #e4b54c, #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    background-size: 200% auto;
+    animation: gradient 8s ease infinite;
+}
+
+.nav-button.gradient-text i {
+    background: linear-gradient(45deg, #e4b54c, #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.nav-button:hover i {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.nav-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(228, 181, 76, 0.1), rgba(255, 255, 255, 0.1));
+    border-radius: 8px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Update mobile styles */
+@media (max-width: 768px) {
+    .nav-button {
+        justify-content: center;
+        width: 90%;
+        margin: 5px auto;
+        padding: 15px 20px;
+        border-radius: 12px;
+    }
+
+    .nav-button i {
+        font-size: 1.4rem;
+    }
+
+    .nav-menu.active .nav-button {
+        animation: slideIn 0.3s ease forwards;
+    }
+}
