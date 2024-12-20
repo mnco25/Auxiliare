@@ -24,20 +24,59 @@
             </a>
             <h2 class="homelogotext">AUXILIARE</h2>
         </div>
-        <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+        <button 
+            class="mobile-nav-toggle" 
+            aria-label="Toggle navigation menu"
+            aria-expanded="false"
+            aria-controls="nav-menu">
             <span class="bar"></span>
             <span class="bar"></span>
             <span class="bar"></span>
         </button>
-        <nav aria-label="Main Navigation">
-            <ul class="nav-menu">
-                <li><a href="{{ url('/') }}" class="nav-button">Home</a></li>
-                <li><a href="{{ url('/about') }}" class="nav-button">About</a></li>
-                <li><a href="#features" class="nav-button">Features</a></li>
-                <li><a href="#faq" class="nav-button">FAQ</a></li>
-                <li><a href="#contact" class="nav-button">Contact</a></li>
-                <li><a href="{{ url('/pricing') }}" class="nav-button">Pricing</a></li>
-                <li><a href="{{ url('/login') }}" class="nav-button">Login</a></li>
+        <nav aria-label="Main Navigation" class="main-nav">
+            <ul class="nav-menu" role="menubar">
+                <li role="none">
+                    <a href="{{ url('/') }}" class="nav-button" role="menuitem">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="{{ url('/about') }}" class="nav-button" role="menuitem">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#features" class="nav-button" role="menuitem">
+                        <i class="fas fa-star"></i>
+                        <span>Features</span>
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#faq" class="nav-button" role="menuitem">
+                        <i class="fas fa-question-circle"></i>
+                        <span>FAQ</span>
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="#contact" class="nav-button" role="menuitem">
+                        <i class="fas fa-envelope"></i>
+                        <span>Contact</span>
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="{{ url('/pricing') }}" class="nav-button" role="menuitem">
+                        <i class="fas fa-tags"></i>
+                        <span>Pricing</span>
+                    </a>
+                </li>
+                <li role="none">
+                    <a href="{{ url('/login') }}" class="nav-button" role="menuitem">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>
