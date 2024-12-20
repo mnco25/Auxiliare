@@ -64,44 +64,72 @@ modalOverlay.addEventListener("click", function () {
   editProfileModal.classList.add("hidden");
 });
 
-// Update form submission to use PUT method
-document.getElementById('edit-profile-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  var form = this;
-  var formData = new FormData(form);
-  var submitBtn = form.querySelector('button[type="submit"]');
+// Update form submission handler
+document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Show loading state
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
 
-  // Show loading state
-  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-  submitBtn.disabled = true;
-  fetch(form.action, {
-    method: 'POST',
-    // Laravel uses POST with method override for PUT
-    body: formData,
-    headers: {
-      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-      'X-HTTP-Method-Override': 'PUT' // Method override to simulate PUT request
-    },
-    credentials: 'same-origin'
-  }).then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    if (data.success) {
-      // Update UI
-      updateProfileUI(formData);
-      modalOverlay.classList.add('hidden');
-      editProfileModal.classList.add('hidden');
-      showNotification('Profile updated successfully!', 'success');
-    } else {
-      throw new Error(data.message || 'Failed to update profile');
-    }
-  })["catch"](function (error) {
-    console.error('Error:', error);
-    showNotification(error.message || 'Failed to update profile', 'error');
-  })["finally"](function () {
-    submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
-    submitBtn.disabled = false;
-  });
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json' // Add this line to expect JSON response
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Update UI with the returned data
+            if (data.profile) {
+                document.getElementById('profile-name').textContent = data.profile.name;
+                document.getElementById('profile-location').textContent = data.profile.location;
+                document.getElementById('profile-bio').textContent = data.profile.bio;
+                
+                // Update skills
+                const skillsContainer = document.getElementById('profile-skills');
+                skillsContainer.innerHTML = '';
+                if (Array.isArray(data.profile.skills)) {
+                    data.profile.skills.forEach(skill => {
+                        const skillTag = document.createElement('span');
+                        skillTag.className = 'skill-tag';
+                        skillTag.textContent = skill;
+                        skillsContainer.appendChild(skillTag);
+                    });
+                }
+            }
+            
+            // Close modal
+            modalOverlay.classList.add('hidden');
+            editProfileModal.classList.add('hidden');
+            
+            showNotification('Profile updated successfully', 'success');
+        } else {
+            throw new Error(data.message || 'Failed to update profile');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification(error.message || 'An error occurred while updating profile', 'error');
+    })
+    .finally(() => {
+        // Reset button state
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+    });
 });
 
 // Update profile picture if a new one is selected
