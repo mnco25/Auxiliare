@@ -91,8 +91,30 @@ html {
   letter-spacing: 0.3px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   background: transparent;
+}
+
+.nav-button.gradient-text {
+  background: linear-gradient(45deg, #e4b54c, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: gradient 8s ease infinite;
+}
+
+.nav-button.gradient-text i {
+  background: linear-gradient(45deg, #e4b54c, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.nav-button:hover i {
+  transform: scale(1.2) rotate(5deg);
 }
 
 .nav-button::before {
@@ -102,7 +124,7 @@ html {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(228, 181, 76, 0.1);
+  background: linear-gradient(45deg, rgba(228, 181, 76, 0.1), rgba(255, 255, 255, 0.1));
   border-radius: 8px;
   opacity: 0;
   transform: scale(0.8);
@@ -122,7 +144,6 @@ html {
   left: 50%;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #e4b54c, #c99f43);
   transition: all 0.3s ease;
   transform: translateX(-50%);
 }

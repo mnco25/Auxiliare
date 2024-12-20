@@ -1,61 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pricing - Auxiliare</title>
-  <!-- Add Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicon_io/apple-touch-icon.png') }}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon_io/favicon-32x32.png') }}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicon_io/favicon-16x16.png') }}">
-  <link rel="manifest" href="{{ asset('assets/favicon_io/site.webmanifest') }}">
-  <!-- Existing CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+@section('title', 'Pricing - Auxiliare')
 
-  <link rel="stylesheet" href="{{asset('css/pricing.css')}}" />
-  <link rel="stylesheet" href="{{asset('css/index.css')}}" />
-</head>
+@section('additional_css')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="{{asset('css/pricing.css')}}">
+@endsection
 
-<body>
-  <header class="main-header">
-    <div class="logo-container">
-      <a href="{{ url('/') }}">
-        <img src="{{ asset('assets/logo.png') }}" alt="AUXILIARE logo" class="logo" />
-      </a>
-      <h2 class="homelogotext">AUXILIARE</h2>
-    </div>
-    <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-    <nav aria-label="Main Navigation">
-      <ul class="nav-menu">
-        <li><a href="{{ url('/') }}" class="nav-button">Home</a></li>
-        <li><a href="{{ url('/about') }}" class="nav-button">About</a></li>
-        <li><a href="{{ url('/') }}#features" class="nav-button">Features</a></li>
-        <li><a href="{{ url('/') }}#faq" class="nav-button">FAQ</a></li>
-        <li><a href="{{ url('/') }}#contact" class="nav-button">Contact</a></li>
-        <li><a href="{{ url('/pricing') }}" class="nav-button">Pricing</a></li>
-        <li><a href="{{ url('/login') }}" class="nav-button">Login</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <section class="hero-section" data-aos="fade-up">
+@section('content')
+<section class="hero-section" data-aos="fade-up">
     <h1>
-      <span class="gradient-text">Innovation Starts Here</span>
-      <span class="subheading">Choose the plan that powers your success</span>
+        <span class="gradient-text">Innovation Starts Here</span>
+        <span class="subheading">Choose the plan that powers your success</span>
     </h1>
-  </section>
+</section>
 
-  <main class="pricing-section">
+<main class="pricing-section">
     <div class="toggle-container" data-aos="fade-up" data-aos-delay="200">
       <span id="monthly-label">Monthly</span>
       <label class="switch" aria-labelledby="monthly-label annual-label">
@@ -235,18 +195,11 @@
       </div>
     </div>
   </section>
+@endsection
 
-  <footer class="main-footer">
-    <p>&copy; 2024 AUXILIARE | All Rights Reserved</p>
-  </footer>
-
-  <button id="scroll-to-top" aria-label="Scroll to top">
-    <i class="fas fa-arrow-up"></i>
-  </button>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-  <script src="{{ asset('js/mobile-menu.js') }}"></script>
-  <script>
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
     AOS.init({
       once: true,
       offset: 200,
@@ -312,7 +265,5 @@
         behavior: "smooth",
       });
     });
-  </script>
-</body>
-
-</html>
+</script>
+@endsection

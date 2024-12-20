@@ -36,43 +36,43 @@
         <nav aria-label="Main Navigation" class="main-nav">
             <ul class="nav-menu" role="menubar">
                 <li role="none">
-                    <a href="{{ url('/') }}" class="nav-button" role="menuitem">
+                    <a href="{{ url('/') }}" class="nav-button gradient-text" role="menuitem">
                         <i class="fas fa-home"></i>
                         <span>Home</span>
                     </a>
                 </li>
                 <li role="none">
-                    <a href="{{ url('/about') }}" class="nav-button" role="menuitem">
+                    <a href="{{ url('/about') }}" class="nav-button gradient-text" role="menuitem">
                         <i class="fas fa-info-circle"></i>
                         <span>About</span>
                     </a>
                 </li>
                 <li role="none">
-                    <a href="#features" class="nav-button" role="menuitem">
+                    <a href="{{ url('/#features') }}" class="nav-button gradient-text" role="menuitem">
                         <i class="fas fa-star"></i>
                         <span>Features</span>
                     </a>
                 </li>
                 <li role="none">
-                    <a href="#faq" class="nav-button" role="menuitem">
+                    <a href="{{ url('/#faq') }}" class="nav-button gradient-text" role="menuitem">
                         <i class="fas fa-question-circle"></i>
                         <span>FAQ</span>
                     </a>
                 </li>
                 <li role="none">
-                    <a href="#contact" class="nav-button" role="menuitem">
+                    <a href="{{ url('/#contact') }}" class="nav-button gradient-text" role="menuitem">
                         <i class="fas fa-envelope"></i>
                         <span>Contact</span>
                     </a>
                 </li>
                 <li role="none">
-                    <a href="{{ url('/pricing') }}" class="nav-button" role="menuitem">
+                    <a href="{{ url('/pricing') }}" class="nav-button gradient-text" role="menuitem">
                         <i class="fas fa-tags"></i>
                         <span>Pricing</span>
                     </a>
                 </li>
                 <li role="none">
-                    <a href="{{ url('/login') }}" class="nav-button" role="menuitem">
+                    <a href="{{ url('/login') }}" class="nav-button gradient-text" role="menuitem">
                         <i class="fas fa-sign-in-alt"></i>
                         <span>Login</span>
                     </a>
