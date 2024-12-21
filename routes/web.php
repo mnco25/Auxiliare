@@ -79,8 +79,8 @@ Route::middleware(['auth', 'investor'])->prefix('investor')->group(function () {
     Route::get('/projects/{project}', [InvestorProjectController::class, 'show'])->name('investor.project.details');
     Route::get('/portfolio', [InvestorController::class, 'portfolio'])->name('investor.portfolio');
     Route::get('/financial', [InvestorController::class, 'financial'])->name('investor.financial');
-    Route::get('/profile', [InvestorController::class, 'profile'])->name('investor.profile');
-    Route::post('/profile/update', [InvestorController::class, 'updateProfile'])->name('investor.profile.update');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('investor.profile');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('investor.profile.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('investor.logout');
     Route::get('/filter-projects', [InvestorProjectController::class, 'filterProjects'])->name('investor.filter.projects');
     Route::get('/chat', [InvestorController::class, 'chat'])->name('investor.chat');

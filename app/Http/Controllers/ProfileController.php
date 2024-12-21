@@ -13,7 +13,10 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         $profile = Profile::firstOrCreate(['user_id' => $user->user_id]);
-        return view('entrepreneur.profile', compact('user', 'profile'));
+        
+        // Determine which view to return based on user type
+        $view = $user->user_type === 'investor' ? 'investor.profile' : 'entrepreneur.profile';
+        return view($view, compact('user', 'profile'));
     }
 
     public function update(Request $request)

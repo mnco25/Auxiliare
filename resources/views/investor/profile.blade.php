@@ -1,5 +1,4 @@
-
-@extends('entrepreneur.layout')
+@extends('layouts.app')
 
 @section('title', 'Profile - Auxiliare')
 
