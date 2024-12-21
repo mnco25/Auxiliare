@@ -14,8 +14,8 @@ class ProfileController extends Controller
         $user = Auth::user();
         $profile = Profile::firstOrCreate(['user_id' => $user->user_id]);
         
-        // Determine which view to return based on user type
-        $view = $user->user_type === 'investor' ? 'investor.profile' : 'entrepreneur.profile';
+        // Fix the view determination logic
+        $view = strtolower($user->user_type) === 'investor' ? 'investor.profile' : 'entrepreneur.profile';
         return view($view, compact('user', 'profile'));
     }
 

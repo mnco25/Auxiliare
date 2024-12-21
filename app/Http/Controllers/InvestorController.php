@@ -146,9 +146,26 @@ class InvestorController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $profile = $user->profile; // Assuming a 'profile' relationship exists on the User model
+        $profile = $user->profile;
 
-        return view('investor.profile', compact('user', 'profile'));
+        // Get investment statistics
+        $investments_count = Investment::where('investor_id', $user->user_id)->count();
+        $total_invested = Investment::where('investor_id', $user->user_id)->sum('investment_amount');
+        $roi = 8.5; // Example ROI calculation - implement your own logic
+
+        // Get unread messages count
+        $unreadMessages = Message::where('receiver_id', $user->user_id)
+            ->where('is_read', false)
+            ->count();
+
+        return view('investor.profile', compact(
+            'user',
+            'profile',
+            'investments_count',
+            'total_invested',
+            'roi',
+            'unreadMessages'
+        ));
     }
 
     public function updateProfile(Request $request)

@@ -1,70 +1,182 @@
-@extends('layouts.app')
+@extends('investor.layout')
 
 @section('title', 'Profile - Auxiliare')
 
 @section('additional_css')
 <link rel="stylesheet" href="{{ asset('css/entrepreneur/profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/entrepreneur/home.css') }}">
+<style>
+    .main-header {
+        position: relative;
+        z-index: 3;
+    }
+
+    .content {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+</style>
 @endsection
 
 @section('content')
-<div class="profile-container">
-    <div class="profile-card">
-        <div class="profile-header">
-            <div class="profile-pic-container">
-                @if($profile && $profile->profile_pic)
-                <img src="{{ asset('storage/profile_pictures/' . $profile->profile_pic) }}" alt="Profile Picture" class="profile-pic" id="profile-pic">
-                @elseif($profile && $profile->profile_pic_url)
-                <img src="{{ $profile->profile_pic_url }}" alt="Profile Picture" class="profile-pic" id="profile-pic">
-                @else
-                <div class="profile-pic profile-icon" id="profile-pic">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                @endif 
+<div class="profile-wrapper">
+    <div class="profile-banner">
+        <div class="banner-content">
+            <div class="banner-text">
+                <h1>My Profile</h1>
+                <p>Manage your personal information and settings</p>
             </div>
-            <h2 id="profile-name">{{ $profile->name ?? '' }}</h2>
-            <p id="profile-location">{{ $profile->location ?? '' }}</p>
+            <div class="banner-actions">
+                <button id="edit-profile-btn" class="primary-btn">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+            </div>
         </div>
+    </div>
 
-        <div class="profile-body">
-            <div class="user-info-section">
-                <h3>Account Information</h3>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <span class="info-label">Username</span>
-                        <span class="info-value">{{ $user->username }}</span>
+    <div class="profile-container">
+        <div class="profile-grid">
+            <!-- Left Column -->
+            <div class="profile-sidebar">
+                <div class="profile-card main-info">
+                    <div class="profile-pic-wrapper">
+                        <div class="profile-pic-container">
+                            @if($profile && $profile->profile_pic)
+                                <img src="{{ asset('storage/profile_pictures/' . $profile->profile_pic) }}" 
+                                     alt="Profile Picture" class="profile-pic" id="profile-pic">
+                            @elseif($profile && $profile->profile_pic_url)
+                                <img src="{{ $profile->profile_pic_url }}" 
+                                     alt="Profile Picture" class="profile-pic" id="profile-pic">
+                            @else
+                                <div class="profile-pic profile-icon" id="profile-pic">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="profile-status {{ $user->account_status === 'Active' ? 'active' : 'inactive' }}">
+                            <i class="fas fa-circle"></i> {{ $user->account_status }}
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Email</span>
-                        <span class="info-value">{{ $user->email }}</span>
+
+                    <!-- Profile Info Card -->
+                    <div class="profile-info-card">
+                        <h2 id="profile-name">{{ $profile->name ?? auth()->user()->first_name . ' ' . auth()->user()->last_name }}</h2>
+                        <div class="user-type-badge">{{ $user->user_type }}</div>
+                        <p id="profile-location" class="location">
+                            <i class="fas fa-map-marker-alt"></i> 
+                            {{ $profile->location ?? 'Location not set' }}
+                        </p>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">First Name</span>
-                        <span class="info-value">{{ $user->first_name }}</span>
+
+                    <!-- Stats Section -->
+                    <div class="stats-section">
+                        <h3><i class="fas fa-chart-line"></i> Investment Overview</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-project-diagram"></i></div>
+                                <div class="stat-details">
+                                    <span class="stat-value">{{ $investments_count ?? 0 }}</span>
+                                    <span class="stat-label">Investments</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                                <div class="stat-details">
+                                    <span class="stat-value">₱{{ number_format($total_invested ?? 0) }}</span>
+                                    <span class="stat-label">Total Invested</span>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon"><i class="fas fa-chart-pie"></i></div>
+                                <div class="stat-details">
+                                    <span class="stat-value">{{ number_format($roi ?? 0, 1) }}%</span>
+                                    <span class="stat-label">ROI</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">Last Name</span>
-                        <span class="info-value">{{ $user->last_name }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Role</span>
-                        <span class="info-value role-badge">{{ $user->user_type }}</span>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                        <div class="action-buttons">
+                            <a href="{{ route('investor.projects') }}" class="action-btn">
+                                <i class="fas fa-search"></i> Browse Projects
+                            </a>
+                            <a href="{{ route('messages.conversations') }}" class="action-btn">
+                                <i class="fas fa-envelope"></i> Messages
+                                @if($unreadMessages ?? 0 > 0)
+                                    <span class="badge">{{ $unreadMessages }}</span>
+                                @endif
+                            </a>
+                            <a href="{{ route('investor.portfolio') }}" class="action-btn">
+                                <i class="fas fa-chart-line"></i> View Portfolio
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <h3>Bio</h3>
-            <p id="profile-bio">{{ $profile->bio ?? '' }}</p>
+            <!-- Right Column Content -->
+            <div class="profile-content">
+                <!-- About Section -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-user"></i> About Me</h3>
+                    </div>
+                    <div class="section-body">
+                        <p id="profile-bio" class="bio-text">{{ $profile->bio ?? 'No bio available' }}</p>
+                    </div>
+                </div>
 
-            <h3>Investment Interests</h3>
-            <ul id="profile-skills">
-                @if(isset($profile->interests) && is_array($profile->interests))
-                    @foreach($profile->interests as $interest)
-                        <li>{{ $interest }}</li>
-                    @endforeach
-                @endif
-            </ul>
+                <!-- Skills Section -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-tools"></i> Skills & Expertise</h3>
+                    </div>
+                    <div class="section-body">
+                        <div id="profile-skills" class="skills-container">
+                            @if(isset($profile->skills) && is_array($profile->skills))
+                                @foreach($profile->skills as $skill)
+                                    <span class="skill-tag">{{ $skill }}</span>
+                                @endforeach
+                            @else
+                                <p class="no-data">No skills listed yet</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Details -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-user-shield"></i> Account Information</h3>
+                    </div>
+                    <div class="section-body">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Username</span>
+                                <span class="info-value">{{ $user->username }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Email</span>
+                                <span class="info-value">{{ $user->email }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Member Since</span>
+                                <span class="info-value">{{ $user->created_at->format('M d, Y') }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Account Status</span>
+                                <span class="info-value status-badge {{ strtolower($user->account_status) }}">
+                                    {{ $user->account_status }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button id="edit-profile-btn" class="edit-btn">Edit Profile</button>
     </div>
 </div>
 
