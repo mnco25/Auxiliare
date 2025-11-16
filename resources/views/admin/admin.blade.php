@@ -1,5 +1,10 @@
 @extends('admin.layout')
 
+@section('styles')
+@parent
+<link rel="stylesheet" href="{{ asset('css/admin/project-modal.css') }}">
+@endsection
+
 @section('content')
 <div class="content-header">
     <div class="container-fluid">
@@ -149,8 +154,127 @@
                 </div>
             </div>
         </div>
+
+        <!-- Recent Activity Section -->
+        <div class="stats-row" style="margin-top: 30px;">
+            <!-- Recent Users -->
+            <div class="stats-category" style="width: 48%;">
+                <div class="category-header">
+                    <h4 class="category-title">
+                        <i class="mdi mdi-account-multiple"></i>
+                        Recent Users
+                    </h4>
+                </div>
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Email</th>
+                                    <th>Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($recentUsers as $user)
+                                <tr>
+                                    <td>
+                                        <div class="user-info">
+                                            <i class="fas fa-user-circle"></i>
+                                            <span>{{ $user->first_name }} {{ $user->last_name }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge status-{{ strtolower($user->user_type) }}">
+                                            {{ $user->user_type }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->created_at->diffForHumans() }}</td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">No recent users</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Pitches -->
+            <div class="stats-category" style="width: 48%;">
+                <div class="category-header">
+                    <h4 class="category-title">
+                        <i class="mdi mdi-briefcase"></i>
+                        Recent Pitches
+                    </h4>
+                </div>
+                <div class="table-container">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($recentPitches as $pitch)
+                                <tr>
+                                    <td>
+                                        <div class="project-info">
+                                            <i class="fas fa-briefcase project-icon"></i>
+                                            <span>{{ Str::limit($pitch->title, 30) }}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ $pitch->user->first_name }} {{ $pitch->user->last_name }}</td>
+                                    <td>
+                                        <span class="status-badge status-{{ strtolower($pitch->status) }}">
+                                            {{ $pitch->status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="view-btn" title="View Pitch" onclick="viewPitch({{ $pitch->id }})">
+                                                <i class="mdi mdi-eye"></i>
+                                            </button>
+                                            <button class="delete-btn" title="Delete Pitch" onclick="deletePitch({{ $pitch->id }})">
+                                                <i class="mdi mdi-delete"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">No recent pitches</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+<!-- Pitch View Modal -->
+<div id="pitchViewModal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-header">
+            <h3><i class="mdi mdi-briefcase"></i> Pitch Details</h3>
+            <span class="close" onclick="closePitchModal()">&times;</span>
+        </div>
+        <div class="modal-body" id="pitchModalBody">
+            <!-- Content will be loaded dynamically -->
+        </div>
+    </div>
+</div>
 
 <script>
     var statisticsData = {

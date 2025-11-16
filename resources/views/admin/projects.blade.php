@@ -5,6 +5,8 @@
 <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
 <!-- Projects specific CSS -->
 <link rel="stylesheet" href="{{ asset('css/admin/projects.css') }}">
+<!-- Project Modal CSS -->
+<link rel="stylesheet" href="{{ asset('css/admin/project-modal.css') }}">
 <!-- Material Design Icons -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
 <!-- Font Awesome -->
@@ -140,8 +142,8 @@
                 </td>
                 <td>
                   <div class="action-buttons">
-                    <button class="edit-btn" title="Edit Project" onclick="editProject({{ $project->id }})">
-                      <i class="mdi mdi-pencil"></i>
+                    <button class="view-btn" title="View Project" onclick="viewProject({{ $project->id }})">
+                      <i class="mdi mdi-eye"></i>
                     </button>
                     <button class="delete-btn" title="Delete Project" onclick="deleteProject({{ $project->id }})">
                         <i class="mdi mdi-delete"></i>
@@ -161,6 +163,19 @@
     </div>
   </div>
 </section>
+
+<!-- Project View Modal -->
+<div id="projectViewModal" class="modal" style="display: none;">
+  <div class="modal-content" style="max-width: 800px;">
+    <div class="modal-header">
+      <h3><i class="mdi mdi-briefcase"></i> Project Details</h3>
+      <span class="close" onclick="closeProjectModal()">&times;</span>
+    </div>
+    <div class="modal-body" id="projectModalBody">
+      <!-- Content will be loaded dynamically -->
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('scripts')

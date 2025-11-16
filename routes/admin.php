@@ -11,6 +11,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::put('/users', [AdminController::class, 'updateUser'])->name('admin.users.update');
     Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
     Route::get('/projects', [AdminController::class, 'projects'])->name('admin.projects');
+    Route::get('/projects/{id}/view', [AdminController::class, 'viewPitch'])->name('admin.projects.view');
     Route::get('/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
     Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 });

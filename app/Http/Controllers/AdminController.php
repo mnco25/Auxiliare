@@ -44,8 +44,20 @@ class AdminController extends Controller
             'success_rates' => $this->getSuccessRatesData()
         ];
 
-        // Pass 'chartData' to the view, which includes 'user_growth'
-        return view('admin.admin', compact('stats', 'chartData'));
+        // Get recent users (last 5)
+        $recentUsers = User::with('profile')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Get recent pitches/projects (last 5)
+        $recentPitches = Project::with('user')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Pass 'chartData', 'recentUsers', and 'recentPitches' to the view
+        return view('admin.admin', compact('stats', 'chartData', 'recentUsers', 'recentPitches'));
     }
 
     private function getUserGrowthData()
@@ -341,5 +353,21 @@ class AdminController extends Controller
             'totalProjects' => $totalProjects,
             'monthlyUserGrowth' => $monthlyUserGrowth,
         ]);
+    }
+
+    public function viewPitch($id)
+    {
+        try {
+            $project = Project::with('user.profile')->findOrFail($id);
+            return response()->json([
+                'success' => true,
+                'project' => $project
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Project not found'
+            ], 404);
+        }
     }
 }

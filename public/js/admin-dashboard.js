@@ -205,3 +205,129 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.classList.add("sidebar-collapsed");
     }
 });
+
+// View Pitch Function
+window.viewPitch = function(pitchId) {
+    fetch(`/admin/projects/${pitchId}/view`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const project = data.project;
+            const progress = project.funding_goal > 0
+                ? Math.min(100, (project.current_funding / project.funding_goal) * 100)
+                : 0;
+
+            const modalBody = document.getElementById('pitchModalBody');
+            modalBody.innerHTML = `
+                <div class="pitch-details">
+                    <div class="pitch-header">
+                        <h2>${project.title}</h2>
+                        <span class="status-badge status-${project.status.toLowerCase()}">${project.status}</span>
+                    </div>
+
+                    <div class="pitch-info-grid">
+                        <div class="pitch-info-item">
+                            <label><i class="fas fa-user"></i> Author:</label>
+                            <span>${project.user.first_name} ${project.user.last_name}</span>
+                        </div>
+                        <div class="pitch-info-item">
+                            <label><i class="fas fa-tag"></i> Category:</label>
+                            <span>${project.category || 'N/A'}</span>
+                        </div>
+                        <div class="pitch-info-item">
+                            <label><i class="fas fa-bullseye"></i> Funding Goal:</label>
+                            <span>₱${parseFloat(project.funding_goal).toLocaleString()}</span>
+                        </div>
+                        <div class="pitch-info-item">
+                            <label><i class="fas fa-money-bill-wave"></i> Current Funding:</label>
+                            <span>₱${parseFloat(project.current_funding).toLocaleString()}</span>
+                        </div>
+                        <div class="pitch-info-item">
+                            <label><i class="fas fa-calendar-alt"></i> Start Date:</label>
+                            <span>${new Date(project.start_date).toLocaleDateString()}</span>
+                        </div>
+                        <div class="pitch-info-item">
+                            <label><i class="fas fa-calendar-check"></i> End Date:</label>
+                            <span>${new Date(project.end_date).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+
+                    <div class="pitch-progress">
+                        <label>Funding Progress:</label>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: ${progress}%">
+                                ${progress.toFixed(0)}%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pitch-description">
+                        <label><i class="fas fa-file-alt"></i> Description:</label>
+                        <p>${project.description}</p>
+                    </div>
+
+                    <div class="pitch-meta">
+                        <small><i class="fas fa-clock"></i> Created: ${new Date(project.created_at).toLocaleString()}</small>
+                        <small><i class="fas fa-sync"></i> Updated: ${new Date(project.updated_at).toLocaleString()}</small>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('pitchViewModal').style.display = 'block';
+        } else {
+            alert('Failed to load pitch details');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to load pitch details');
+    });
+};
+
+// Close Pitch Modal
+window.closePitchModal = function() {
+    document.getElementById('pitchViewModal').style.display = 'none';
+};
+
+// Delete Pitch Function
+window.deletePitch = function(pitchId) {
+    if (confirm('Are you sure you want to delete this pitch? This action cannot be undone.')) {
+        fetch(`/admin/projects/${pitchId}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Pitch deleted successfully!');
+                // Reload the page to refresh the list
+                window.location.reload();
+            } else {
+                alert(data.error || 'Failed to delete pitch');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to delete pitch. Please try again.');
+        });
+    }
+};
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('pitchViewModal');
+    if (event.target === modal) {
+        closePitchModal();
+    }
+};
